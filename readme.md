@@ -9,7 +9,7 @@ Module name on npm is `petsdb`.
 
 ```shell
 $ npm install petsdb --save     # Put latest version in your package.json
-$ npm run test:unit           # You'll need the dev dependencies to launch tests
+$ npm run test:unit             # You'll need the dev dependencies to launch tests
 ```
 
 ### Creating/loading a database
