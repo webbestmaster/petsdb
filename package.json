@@ -1,6 +1,6 @@
 {
   "name": "petsdb",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "dist/export.js",
   "types": "dist/export.d.ts",
