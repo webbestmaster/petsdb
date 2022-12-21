@@ -15,21 +15,21 @@ import {
 } from './util';
 import {
     PromiseResolveType,
-    TsdbInitialConfigType,
-    TsdbItemType,
-    TsdbQueryType,
-    TsdbReadPageConfigType,
-    TsdbReadPageResultType,
+    PetsdbInitialConfigType,
+    PetsdbItemType,
+    PetsdbQueryType,
+    PetsdbReadPageConfigType,
+    PetsdbReadPageResultType,
 } from './database-type';
 
 export class Petsdb<ItemType extends Record<string, unknown>> {
     private dbPath = '';
 
-    private dataList: Array<TsdbItemType<ItemType>> = [];
+    private dataList: Array<PetsdbItemType<ItemType>> = [];
 
     static deleteIdPostfix = '-$$delete';
 
-    constructor(initialConfig: TsdbInitialConfigType) {
+    constructor(initialConfig: PetsdbInitialConfigType) {
         const {dbPath} = initialConfig;
 
         this.dbPath = dbPath;
@@ -40,12 +40,12 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         const fullLineList: Array<string> = await readFileLineByLine(this.dbPath);
         const filteredLineList: Array<string> = fullLineList.filter<string>(getIsNotEmptyString);
 
-        const fullDataList: Array<TsdbItemType<ItemType>> = filteredLineList.map<TsdbItemType<ItemType>>(
-            (line: string): TsdbItemType<ItemType> => JSON.parse(line)
+        const fullDataList: Array<PetsdbItemType<ItemType>> = filteredLineList.map<PetsdbItemType<ItemType>>(
+            (line: string): PetsdbItemType<ItemType> => JSON.parse(line)
         );
 
         const fullIdList: Array<string> = fullDataList.map<string>(
-            (dataItem: TsdbItemType<ItemType>): string => dataItem._id
+            (dataItem: PetsdbItemType<ItemType>): string => dataItem._id
         );
 
         // eslint-disable-next-line unicorn/prefer-set-has
@@ -59,17 +59,19 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
             })
             .filter<string>((itemToRemoveId: string): itemToRemoveId is string => itemToRemoveId !== '');
 
-        const filteredDataList: Array<TsdbItemType<ItemType>> = fullDataList
+        const filteredDataList: Array<PetsdbItemType<ItemType>> = fullDataList
             // updated
-            .filter<TsdbItemType<ItemType>>(
-                (dataItem: TsdbItemType<ItemType>, dataItemIndex: number): dataItem is TsdbItemType<ItemType> => {
+            .filter<PetsdbItemType<ItemType>>(
+                (dataItem: PetsdbItemType<ItemType>, dataItemIndex: number): dataItem is PetsdbItemType<ItemType> => {
                     return dataItemIndex === fullIdList.lastIndexOf(dataItem._id);
                 }
             )
             // deleted items
-            .filter<TsdbItemType<ItemType>>((dataItem: TsdbItemType<ItemType>): dataItem is TsdbItemType<ItemType> => {
-                return !toRemoveIdList.includes(dataItem._id.replace(Petsdb.deleteIdPostfix, ''));
-            });
+            .filter<PetsdbItemType<ItemType>>(
+                (dataItem: PetsdbItemType<ItemType>): dataItem is PetsdbItemType<ItemType> => {
+                    return !toRemoveIdList.includes(dataItem._id.replace(Petsdb.deleteIdPostfix, ''));
+                }
+            );
 
         await makeDatabaseBackup(this.dbPath);
 
@@ -82,13 +84,13 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
             const dataIndex = filteredDataList.indexOf(dataItem) + 1;
 
             if (dataIndex % 100 === 0) {
-                console.log(`Tsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
+                console.log(`Petsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
             }
         }
 
         this.dataList = filteredDataList;
 
-        console.log(`Tsdb has been loaded. DbPath ${this.dbPath}.`);
+        console.log(`Petsdb has been loaded. DbPath ${this.dbPath}.`);
     }
 
     async drop(): Promise<void> {
@@ -102,7 +104,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
     }
 
     async create(itemData: ItemType): Promise<void> {
-        const tsdbItemData: TsdbItemType<ItemType> = Object.assign<ItemType, {_id: string}>(
+        const tsdbItemData: PetsdbItemType<ItemType> = Object.assign<ItemType, {_id: string}>(
             deepCopy<ItemType>(itemData),
             {_id: makeRandomString()}
         );
@@ -112,10 +114,10 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         this.dataList.push(tsdbItemData);
     }
 
-    async read(itemSelector: TsdbQueryType<ItemType>): Promise<Array<TsdbItemType<ItemType>>> {
-        return new Promise((resolve: PromiseResolveType<Array<TsdbItemType<ItemType>>>) => {
-            const itemList: Array<TsdbItemType<ItemType>> = this.dataList.filter(
-                (dataItem: TsdbItemType<ItemType>): dataItem is TsdbItemType<ItemType> =>
+    async read(itemSelector: PetsdbQueryType<ItemType>): Promise<Array<PetsdbItemType<ItemType>>> {
+        return new Promise((resolve: PromiseResolveType<Array<PetsdbItemType<ItemType>>>) => {
+            const itemList: Array<PetsdbItemType<ItemType>> = this.dataList.filter(
+                (dataItem: PetsdbItemType<ItemType>): dataItem is PetsdbItemType<ItemType> =>
                     getIsIncluded(dataItem, itemSelector)
             );
 
@@ -123,10 +125,10 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         });
     }
 
-    async readOne(itemSelector: TsdbQueryType<ItemType>): Promise<TsdbItemType<ItemType> | null> {
-        return new Promise((resolve: PromiseResolveType<TsdbItemType<ItemType> | null>) => {
-            const item: TsdbItemType<ItemType> | null =
-                this.dataList.find((dataItem: TsdbItemType<ItemType>): boolean =>
+    async readOne(itemSelector: PetsdbQueryType<ItemType>): Promise<PetsdbItemType<ItemType> | null> {
+        return new Promise((resolve: PromiseResolveType<PetsdbItemType<ItemType> | null>) => {
+            const item: PetsdbItemType<ItemType> | null =
+                this.dataList.find((dataItem: PetsdbItemType<ItemType>): boolean =>
                     getIsIncluded(dataItem, itemSelector)
                 ) || null;
 
@@ -135,22 +137,23 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
     }
 
     async readPage(
-        itemSelector: TsdbQueryType<ItemType>,
-        readPageConfig: TsdbReadPageConfigType<ItemType>
-    ): Promise<TsdbReadPageResultType<ItemType>> {
-        const fullList: Array<TsdbItemType<ItemType>> = await this.read(itemSelector);
+        itemSelector: PetsdbQueryType<ItemType>,
+        readPageConfig: PetsdbReadPageConfigType<ItemType>
+    ): Promise<PetsdbReadPageResultType<ItemType>> {
+        const fullList: Array<PetsdbItemType<ItemType>> = await this.read(itemSelector);
         const {pageIndex, pageSize, sort} = readPageConfig;
 
-        const fullSortedList: Array<TsdbItemType<ItemType>> = fullList.sort(
-            (itemA: TsdbItemType<ItemType>, itemB: TsdbItemType<ItemType>): number => compareObject(itemA, itemB, sort)
+        const fullSortedList: Array<PetsdbItemType<ItemType>> = fullList.sort(
+            (itemA: PetsdbItemType<ItemType>, itemB: PetsdbItemType<ItemType>): number =>
+                compareObject(itemA, itemB, sort)
         );
 
-        const neededOfList: Array<TsdbItemType<ItemType>> = fullSortedList.slice(
+        const neededOfList: Array<PetsdbItemType<ItemType>> = fullSortedList.slice(
             pageIndex * pageSize,
             pageIndex * pageSize + pageSize
         );
 
-        const readPageResult: TsdbReadPageResultType<ItemType> = {
+        const readPageResult: PetsdbReadPageResultType<ItemType> = {
             list: neededOfList,
             pageIndex,
             pageSize,
@@ -162,12 +165,12 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         return readPageResult;
     }
 
-    async update(itemSelector: TsdbQueryType<ItemType>, newItemData: ItemType): Promise<void> {
-        const itemToUpdateList: Array<TsdbItemType<ItemType>> = await this.read(itemSelector);
+    async update(itemSelector: PetsdbQueryType<ItemType>, newItemData: ItemType): Promise<void> {
+        const itemToUpdateList: Array<PetsdbItemType<ItemType>> = await this.read(itemSelector);
 
         // eslint-disable-next-line no-loops/no-loops
         for (const dataItem of itemToUpdateList) {
-            const itemToUpdate: TsdbItemType<ItemType> = {...newItemData, _id: dataItem._id};
+            const itemToUpdate: PetsdbItemType<ItemType> = {...newItemData, _id: dataItem._id};
             const updatedItemIndex = this.dataList.indexOf(dataItem);
 
             await fileSystem.appendFile(this.dbPath, JSON.stringify(itemToUpdate) + '\n');
@@ -176,12 +179,12 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         }
     }
 
-    async delete(itemSelector: TsdbQueryType<ItemType>): Promise<void> {
-        const itemToRemoveList: Array<TsdbItemType<ItemType>> = await this.read(itemSelector);
+    async delete(itemSelector: PetsdbQueryType<ItemType>): Promise<void> {
+        const itemToRemoveList: Array<PetsdbItemType<ItemType>> = await this.read(itemSelector);
 
         // eslint-disable-next-line no-loops/no-loops
         for (const dataItem of itemToRemoveList) {
-            const itemToDeleteUpdated: TsdbItemType<ItemType> = {
+            const itemToDeleteUpdated: PetsdbItemType<ItemType> = {
                 ...dataItem,
                 _id: dataItem._id + Petsdb.deleteIdPostfix,
             };
@@ -189,8 +192,8 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
             await fileSystem.appendFile(this.dbPath, JSON.stringify(itemToDeleteUpdated) + '\n');
         }
 
-        this.dataList = this.dataList.filter<TsdbItemType<ItemType>>(
-            (dataItem: TsdbItemType<ItemType>): dataItem is TsdbItemType<ItemType> => {
+        this.dataList = this.dataList.filter<PetsdbItemType<ItemType>>(
+            (dataItem: PetsdbItemType<ItemType>): dataItem is PetsdbItemType<ItemType> => {
                 return !getIsIncluded(dataItem, itemSelector);
             }
         );

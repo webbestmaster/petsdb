@@ -3,7 +3,7 @@ import path from 'path';
 
 import readline from 'readline';
 
-import {TsdbSortDirectionType, TsdbSortValueType} from './database-type';
+import {PetsdbSortDirectionType, PetsdbSortValueType} from './database-type';
 
 export async function readFileLineByLine(pathToFile: string): Promise<Array<string>> {
     const lineList: Array<string> = [];
@@ -106,7 +106,7 @@ export function getIsIncluded(item: Record<string, unknown>, partial: Record<str
     });
 }
 
-export type GetSortByPathResultType = {direction: TsdbSortDirectionType; value: TsdbSortValueType};
+export type GetSortByPathResultType = {direction: PetsdbSortDirectionType; value: PetsdbSortValueType};
 
 // eslint-disable-next-line complexity
 export function getSortByPath(

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import {describe, test} from '@jest/globals';
 
-import {Petsdb, TsdbItemType, TsdbReadPageResultType} from '../lib/export';
+import {Petsdb, PetsdbItemType, PetsdbReadPageResultType} from '../lib/export';
 
 import {compareBoolean, compareNumber, compareString, makeRandomString} from '../lib/src/util';
 
@@ -22,7 +22,7 @@ describe('Read page', () => {
             testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        let pageData: TsdbReadPageResultType<TestDataType> = await petsdb.readPage(
+        let pageData: PetsdbReadPageResultType<TestDataType> = await petsdb.readPage(
             {},
             {pageIndex: 1, pageSize: 10, sort: {id: 1}}
         );
@@ -33,9 +33,9 @@ describe('Read page', () => {
 
         // check UP sort string
         assert.deepEqual(
-            pageData.list.map((dataItem: TsdbItemType<TestDataType>): string => dataItem.id),
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): string => dataItem.id),
             pageData.list
-                .map((dataItem: TsdbItemType<TestDataType>): string => dataItem.id)
+                .map((dataItem: PetsdbItemType<TestDataType>): string => dataItem.id)
                 .sort((valueA: string, valueB: string): number => compareString(valueA, valueB))
         );
 
@@ -43,9 +43,9 @@ describe('Read page', () => {
 
         // check DOWN sort string
         assert.deepEqual(
-            pageData.list.map((dataItem: TsdbItemType<TestDataType>): string => dataItem.id),
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): string => dataItem.id),
             pageData.list
-                .map((dataItem: TsdbItemType<TestDataType>): string => dataItem.id)
+                .map((dataItem: PetsdbItemType<TestDataType>): string => dataItem.id)
                 .sort((valueA: string, valueB: string): number => -compareString(valueA, valueB))
         );
 
@@ -53,9 +53,9 @@ describe('Read page', () => {
 
         // check UP sort number
         assert.deepEqual(
-            pageData.list.map((dataItem: TsdbItemType<TestDataType>): number => dataItem.index),
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): number => dataItem.index),
             pageData.list
-                .map((dataItem: TsdbItemType<TestDataType>): number => dataItem.index)
+                .map((dataItem: PetsdbItemType<TestDataType>): number => dataItem.index)
                 .sort((valueA: number, valueB: number): number => compareNumber(valueA, valueB))
         );
 
@@ -63,9 +63,9 @@ describe('Read page', () => {
 
         // check DOWN sort number
         assert.deepEqual(
-            pageData.list.map((dataItem: TsdbItemType<TestDataType>): number => dataItem.index),
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): number => dataItem.index),
             pageData.list
-                .map((dataItem: TsdbItemType<TestDataType>): number => dataItem.index)
+                .map((dataItem: PetsdbItemType<TestDataType>): number => dataItem.index)
                 .sort((valueA: number, valueB: number): number => -compareNumber(valueA, valueB))
         );
 
@@ -75,9 +75,9 @@ describe('Read page', () => {
 
         // check UP sort bool
         assert.deepEqual(
-            pageData.list.map((dataItem: TsdbItemType<TestDataType>): boolean => dataItem.more.data.bool),
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): boolean => dataItem.more.data.bool),
             pageData.list
-                .map((dataItem: TsdbItemType<TestDataType>): boolean => dataItem.more.data.bool)
+                .map((dataItem: PetsdbItemType<TestDataType>): boolean => dataItem.more.data.bool)
                 .sort((valueA: boolean, valueB: boolean): number => compareBoolean(valueA, valueB))
         );
 
@@ -85,9 +85,9 @@ describe('Read page', () => {
 
         // check DOWN sort bool
         assert.deepEqual(
-            pageData.list.map((dataItem: TsdbItemType<TestDataType>): boolean => dataItem.more.data.bool),
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): boolean => dataItem.more.data.bool),
             pageData.list
-                .map((dataItem: TsdbItemType<TestDataType>): boolean => dataItem.more.data.bool)
+                .map((dataItem: PetsdbItemType<TestDataType>): boolean => dataItem.more.data.bool)
                 .sort((valueA: boolean, valueB: boolean): number => -compareBoolean(valueA, valueB))
         );
 
@@ -108,7 +108,7 @@ describe('Read page', () => {
             testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const pageData: TsdbReadPageResultType<TestDataType> = await petsdb.readPage(
+        const pageData: PetsdbReadPageResultType<TestDataType> = await petsdb.readPage(
             {id: idToFind},
             {
                 pageIndex: 0,

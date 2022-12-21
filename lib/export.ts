@@ -1,12 +1,12 @@
 export {Petsdb} from './src/database';
 
 export type {
-    TsdbInitialConfigType,
-    TsdbItemType,
-    TsdbQueryType,
-    TsdbReadPageConfigType,
-    TsdbReadPageResultType,
-    TsdbSortDirectionType,
-    TsdbSortType,
-    TsdbSortValueType,
+    PetsdbInitialConfigType,
+    PetsdbItemType,
+    PetsdbQueryType,
+    PetsdbReadPageConfigType,
+    PetsdbReadPageResultType,
+    PetsdbSortDirectionType,
+    PetsdbSortType,
+    PetsdbSortValueType,
 } from './src/database-type';

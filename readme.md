@@ -128,28 +128,28 @@ await petsdb.delete({someNumber: 1});
 ```
 
 ##### Basic querying
-Basic querying means are looking for documents whose fields match the ones you specify. You can use regular expression to match strings. To check your query use `TsdbQueryType`.
+Basic querying means are looking for documents whose fields match the ones you specify. You can use regular expression to match strings. To check your query use `PetsdbQueryType`.
 
 ```typescript
-import type {TsdbQueryType} from 'petsdb';
+import type {PetsdbQueryType} from 'petsdb';
 
-const myQuery: TsdbQueryType<ExampleDataType> = {
+const myQuery: PetsdbQueryType<ExampleDataType> = {
     someData: {data: {isExists: true}},
     someString: /one/,
 };
 ```
 
 ##### Basic sort
-Basic sorting means are sorting for documents whose fields match the ones you specify. You can use `1` or `-1` to sort. You can use only one field to sort. To check your sort use `TsdbSortType`.
+Basic sorting means are sorting for documents whose fields match the ones you specify. You can use `1` or `-1` to sort. You can use only one field to sort. To check your sort use `PetsdbSortType`.
 
 ```typescript
-import type {TsdbSortType} from 'petsdb';
+import type {PetsdbSortType} from 'petsdb';
 
-const mySortByNumber: TsdbSortType<ExampleDataType> = {
+const mySortByNumber: PetsdbSortType<ExampleDataType> = {
     someString: 1,
 };
 
-const mySortByNestedObject: TsdbSortType<ExampleDataType> = {
+const mySortByNestedObject: PetsdbSortType<ExampleDataType> = {
     someData: {data: {text: -1}},
 };
 ```
@@ -158,14 +158,14 @@ const mySortByNestedObject: TsdbSortType<ExampleDataType> = {
 ```typescript
 import {Petsdb} from 'petsdb';
 import type {
-    TsdbInitialConfigType,
-    TsdbItemType,
-    TsdbQueryType,
-    TsdbReadPageConfigType,
-    TsdbReadPageResultType,
-    TsdbSortDirectionType,
-    TsdbSortType,
-    TsdbSortValueType,
+    PetsdbInitialConfigType,
+    PetsdbItemType,
+    PetsdbQueryType,
+    PetsdbReadPageConfigType,
+    PetsdbReadPageResultType,
+    PetsdbSortDirectionType,
+    PetsdbSortType,
+    PetsdbSortValueType,
 } from 'petsdb';
 ```
 

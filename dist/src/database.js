@@ -40,11 +40,11 @@ export class Petsdb {
             await fileSystem.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
             const dataIndex = filteredDataList.indexOf(dataItem) + 1;
             if (dataIndex % 100 === 0) {
-                console.log(`Tsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
+                console.log(`Petsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
             }
         }
         this.dataList = filteredDataList;
-        console.log(`Tsdb has been loaded. DbPath ${this.dbPath}.`);
+        console.log(`Petsdb has been loaded. DbPath ${this.dbPath}.`);
     }
     async drop() {
         await fileSystem.writeFile(this.dbPath, '');

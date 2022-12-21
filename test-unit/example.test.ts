@@ -3,14 +3,14 @@ import {describe, test} from '@jest/globals';
 
 import {Petsdb} from '../lib/export';
 import type {
-    TsdbInitialConfigType,
-    TsdbItemType,
-    TsdbQueryType,
-    TsdbReadPageConfigType,
-    TsdbReadPageResultType,
-    TsdbSortDirectionType,
-    TsdbSortType,
-    TsdbSortValueType,
+    PetsdbInitialConfigType,
+    PetsdbItemType,
+    PetsdbQueryType,
+    PetsdbReadPageConfigType,
+    PetsdbReadPageResultType,
+    PetsdbSortDirectionType,
+    PetsdbSortType,
+    PetsdbSortValueType,
 } from '../lib/export';
 
 import {pathToTestDataBase} from './helper/helper';
@@ -96,17 +96,17 @@ describe('Example', () => {
         await petsdb.delete({someNumber: 1});
 
         // ##### Basic querying
-        const myQuery: TsdbQueryType<ExampleDataType> = {
+        const myQuery: PetsdbQueryType<ExampleDataType> = {
             someData: {data: {isExists: true}},
             someString: /one/,
         };
 
         // ##### Basic sort
-        const mySortByNumber: TsdbSortType<ExampleDataType> = {
+        const mySortByNumber: PetsdbSortType<ExampleDataType> = {
             someString: 1,
         };
 
-        const mySortByNestedObject: TsdbSortType<ExampleDataType> = {
+        const mySortByNestedObject: PetsdbSortType<ExampleDataType> = {
             someData: {data: {text: -1}},
         };
     });

@@ -149,18 +149,18 @@ describe('Read One', () => {
 
     /*
     test('Read-one by regexp in array / unsupported type', async () => {
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const findResult = await tsdb.readOne({listOfUnknown: new RegExp('some text', '')});
+        const findResult = await petsdb.readOne({listOfUnknown: new RegExp('some text', '')});
 
         assert.equal(findResult, null);
     });

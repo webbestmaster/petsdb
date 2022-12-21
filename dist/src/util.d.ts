@@ -1,4 +1,4 @@
-import { TsdbSortDirectionType, TsdbSortValueType } from './database-type';
+import { PetsdbSortDirectionType, PetsdbSortValueType } from './database-type';
 export declare function readFileLineByLine(pathToFile: string): Promise<Array<string>>;
 export declare function deepCopy<DataType>(object: DataType): DataType;
 export declare function makeRandomString(): string;
@@ -8,8 +8,8 @@ export declare function getIsArrayIncludedByValue(fullArray: Array<unknown>, par
 export declare function getIsArrayIncludedByRegexp(fullArray: Array<unknown>, partialValue: RegExp): boolean;
 export declare function getIsIncluded(item: Record<string, unknown>, partial: Record<string, unknown>): boolean;
 export type GetSortByPathResultType = {
-    direction: TsdbSortDirectionType;
-    value: TsdbSortValueType;
+    direction: PetsdbSortDirectionType;
+    value: PetsdbSortValueType;
 };
 export declare function getSortByPath(itemData: Record<string, unknown>, keyData: Record<string, unknown>): GetSortByPathResultType;
 export declare function compareNumber(numberA: number, numberB: number): number;
