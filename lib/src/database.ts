@@ -20,9 +20,9 @@ import {
     TsdbQueryType,
     TsdbReadPageConfigType,
     TsdbReadPageResultType,
-} from './ts-database-type';
+} from './database-type';
 
-export class Tsdb<ItemType extends Record<string, unknown>> {
+export class Petsdb<ItemType extends Record<string, unknown>> {
     private dbPath = '';
 
     private dataList: Array<TsdbItemType<ItemType>> = [];
@@ -51,8 +51,8 @@ export class Tsdb<ItemType extends Record<string, unknown>> {
         // eslint-disable-next-line unicorn/prefer-set-has
         const toRemoveIdList: Array<string> = fullIdList
             .map<string>((dataItemId: string): string => {
-                if (dataItemId.endsWith(Tsdb.deleteIdPostfix)) {
-                    return dataItemId.replace(Tsdb.deleteIdPostfix, '');
+                if (dataItemId.endsWith(Petsdb.deleteIdPostfix)) {
+                    return dataItemId.replace(Petsdb.deleteIdPostfix, '');
                 }
 
                 return '';
@@ -68,7 +68,7 @@ export class Tsdb<ItemType extends Record<string, unknown>> {
             )
             // deleted items
             .filter<TsdbItemType<ItemType>>((dataItem: TsdbItemType<ItemType>): dataItem is TsdbItemType<ItemType> => {
-                return !toRemoveIdList.includes(dataItem._id.replace(Tsdb.deleteIdPostfix, ''));
+                return !toRemoveIdList.includes(dataItem._id.replace(Petsdb.deleteIdPostfix, ''));
             });
 
         await makeDatabaseBackup(this.dbPath);
@@ -181,7 +181,10 @@ export class Tsdb<ItemType extends Record<string, unknown>> {
 
         // eslint-disable-next-line no-loops/no-loops
         for (const dataItem of itemToRemoveList) {
-            const itemToDeleteUpdated: TsdbItemType<ItemType> = {...dataItem, _id: dataItem._id + Tsdb.deleteIdPostfix};
+            const itemToDeleteUpdated: TsdbItemType<ItemType> = {
+                ...dataItem,
+                _id: dataItem._id + Petsdb.deleteIdPostfix,
+            };
 
             await fileSystem.appendFile(this.dbPath, JSON.stringify(itemToDeleteUpdated) + '\n');
         }

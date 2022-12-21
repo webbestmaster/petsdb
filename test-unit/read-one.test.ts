@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import {describe, test} from '@jest/globals';
 
-import {Tsdb} from '../lib/export';
+import {Petsdb} from '../lib/export';
 
 import {makeRandomNumber, makeRandomString} from '../lib/src/util';
 
@@ -11,10 +11,10 @@ import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/h
 describe('Read One', () => {
     test('Read-one by simple selector, get single item', async () => {
         const idToFind = makeRandomString();
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
@@ -23,103 +23,103 @@ describe('Read One', () => {
         testDataList[makeRandomNumber(10, 40)] = itemToFind;
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const findResult = await tsdb.readOne({id: idToFind});
+        const findResult = await petsdb.readOne({id: idToFind});
 
         assert.deepEqual(findResult?.id, itemToFind.id);
     });
 
     test('Read-one by value in array / string', async () => {
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         const randomItem = testDataList[makeRandomNumber(10, 40)];
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const findResult = await tsdb.readOne({listOfString: [randomItem.listOfString[0]]});
+        const findResult = await petsdb.readOne({listOfString: [randomItem.listOfString[0]]});
 
         assert.deepEqual(findResult?.id, randomItem.id);
     });
 
     test('Read-one by value in array / number', async () => {
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         const randomItem = testDataList[makeRandomNumber(10, 40)];
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const findResult = await tsdb.readOne({listOfNumber: [randomItem.listOfNumber[0]]});
+        const findResult = await petsdb.readOne({listOfNumber: [randomItem.listOfNumber[0]]});
 
         assert.deepEqual(findResult?.id, randomItem.id);
     });
 
     test('Read-one by Regexp', async () => {
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         const randomItem = testDataList[makeRandomNumber(10, 40)];
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const findResult = await tsdb.readOne({foo: new RegExp(randomItem.foo.slice(2, 12), '')});
+        const findResult = await petsdb.readOne({foo: new RegExp(randomItem.foo.slice(2, 12), '')});
 
         assert.deepEqual(findResult?.id, randomItem.id);
     });
 
     test('Read-one by empty object selector', async () => {
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const findResult = await tsdb.readOne({more: {data: {}}});
+        const findResult = await petsdb.readOne({more: {data: {}}});
 
         assert.notEqual(findResult, null);
     });
 
     test('Read-one in object by regexp', async () => {
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         const randomItem = testDataList[makeRandomNumber(10, 40)];
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const findResult = await tsdb.readOne({
+        const findResult = await petsdb.readOne({
             more: {data: {text: new RegExp(randomItem.more.data.text.slice(2, 12), '')}},
         });
 
@@ -127,20 +127,22 @@ describe('Read One', () => {
     });
 
     test('Read-one in array by regexp', async () => {
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         const randomItem = testDataList[makeRandomNumber(10, 40)];
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const findResult = await tsdb.readOne({listOfString: new RegExp(randomItem.listOfString[0].slice(2, 12), '')});
+        const findResult = await petsdb.readOne({
+            listOfString: new RegExp(randomItem.listOfString[0].slice(2, 12), ''),
+        });
 
         assert.equal(findResult?.id, randomItem.id);
     });
@@ -166,18 +168,18 @@ describe('Read One', () => {
 
     test('Read-one by non-exists selector - get null', async () => {
         const idToFind = makeRandomString();
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const findResult = await tsdb.readOne({id: idToFind});
+        const findResult = await petsdb.readOne({id: idToFind});
 
         assert.deepEqual(findResult, null);
     });

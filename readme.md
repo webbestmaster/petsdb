@@ -13,12 +13,12 @@ $ npm run test:unit           # You'll need the dev dependencies to launch tests
 ```
 
 ### Creating/loading a database
-You can use `TSDB` as a persistent datastore. One datastore is the equivalent of a collection\array. The constructor is used as follows `new Tsdb(config)` where `config` is an object with the following fields (actually one field only):
+You can use `Petsdb` as a persistent datastore. One datastore is the equivalent of a collection\array. The constructor is used as follows `new Petsdb(config)` where `config` is an object with the following fields (actually one field only):
 
 * `dbPath` (required): path to the file where the data is persisted.
 
 ```typescript
-import {Tsdb} from 'tsdb';
+import {Petsdb} from 'petsdb';
 
 type ExampleDataType = {
     listOfNumber: Array<number>;
@@ -34,14 +34,14 @@ type ExampleDataType = {
 };
 
 // create dataBase
-const tsdb: Tsdb<ExampleDataType> = new Tsdb<ExampleDataType>({dbPath: 'path/to/your/file'});
+const petsdb: Petsdb<ExampleDataType> = new Petsdb<ExampleDataType>({dbPath: 'path/to/your/file'});
 
 // run dataBase, use async/await OR Promises
-await tsdb.run();
+await petsdb.run();
 ```
 
 ### Creating documents
-TSDB uses `JSON.stringify` to place document. Also, TSDB will automatically generate `_id` (a 16-characters alphanumerical string). The `_id` of a document, once set, cannot be modified.
+Petsdb uses `JSON.stringify` to place document. Also, Petsdb will automatically generate `_id` (a 16-characters alphanumerical string). The `_id` of a document, once set, cannot be modified.
 
 ```typescript
 const someDocument: ExampleDataType = {
@@ -58,7 +58,7 @@ const someDocument: ExampleDataType = {
 };
 
 // create document into dataBase, use async/await OR Promises
-await tsdb.create(someDocument);
+await petsdb.create(someDocument);
 ```
 
 ### Reading documents
@@ -75,29 +75,29 @@ Method `.read()` read database by query. It returns promise with array of items.
 
 ```typescript
 // search by key\value
-await tsdb.read({someString: 'the string'});
+await petsdb.read({someString: 'the string'});
 
 // search by nested object
-await tsdb.read({someData: {data: {isExists: false}}});
+await petsdb.read({someData: {data: {isExists: false}}});
 
 // search by value(s) of array
-await tsdb.read({listOfString: ['one']});
+await petsdb.read({listOfString: ['one']});
 
 // search by RegExp instead of string
-await tsdb.read({someString: /the/});
+await petsdb.read({someString: /the/});
 
 // search by RegExp instead of array of string
-await tsdb.read({listOfString: /thr/});
+await petsdb.read({listOfString: /thr/});
 ```
 
 #### Reading documents: readPage
 Method `.readPage()` read database by query and sort. It returns promise with page of items.
 ```typescript
 // get page by index 0, set page's size as 10 and sort by `someNumber`
-await tsdb.readPage({someString: /the/}, {pageIndex: 0, pageSize: 10, sort: {someNumber: 1}});
+await petsdb.readPage({someString: /the/}, {pageIndex: 0, pageSize: 10, sort: {someNumber: 1}});
 
 // the same, but use for sort nested object
-await tsdb.readPage({someString: /the/}, {pageIndex: 0, pageSize: 10, sort: {someData: {data: {text: -1}}}});
+await petsdb.readPage({someString: /the/}, {pageIndex: 0, pageSize: 10, sort: {someData: {data: {text: -1}}}});
 ```
 
 #### Updating documents
@@ -118,20 +118,20 @@ const newDocument: ExampleDataType = {
 };
 
 // fully update document, all data needed
-await tsdb.update({someNumber: 1}, newDocument);
+await petsdb.update({someNumber: 1}, newDocument);
 ```
 
 #### Deleting documents
 Method `.deete()` delete documents by query.
 ```typescript
-await tsdb.delete({someNumber: 1});
+await petsdb.delete({someNumber: 1});
 ```
 
 ##### Basic querying
 Basic querying means are looking for documents whose fields match the ones you specify. You can use regular expression to match strings. To check your query use `TsdbQueryType`.
 
 ```typescript
-import type {TsdbQueryType} from 'tsdb';
+import type {TsdbQueryType} from 'petsdb';
 
 const myQuery: TsdbQueryType<ExampleDataType> = {
     someData: {data: {isExists: true}},
@@ -143,7 +143,7 @@ const myQuery: TsdbQueryType<ExampleDataType> = {
 Basic sorting means are sorting for documents whose fields match the ones you specify. You can use `1` or `-1` to sort. You can use only one field to sort. To check your sort use `TsdbSortType`.
 
 ```typescript
-import type {TsdbSortType} from 'tsdb';
+import type {TsdbSortType} from 'petsdb';
 
 const mySortByNumber: TsdbSortType<ExampleDataType> = {
     someString: 1,
@@ -156,7 +156,7 @@ const mySortByNestedObject: TsdbSortType<ExampleDataType> = {
 
 ##### Full export: class and types
 ```typescript
-import {Tsdb} from 'tsdb';
+import {Petsdb} from 'petsdb';
 import type {
     TsdbInitialConfigType,
     TsdbItemType,
@@ -166,9 +166,9 @@ import type {
     TsdbSortDirectionType,
     TsdbSortType,
     TsdbSortValueType,
-} from 'tsdb';
+} from 'petsdb';
 ```
 
 ## License
 
-See [License](license)
+See [license](license)

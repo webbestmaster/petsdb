@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import {describe, test} from '@jest/globals';
 
-import {Tsdb, TsdbItemType, TsdbReadPageResultType} from '../lib/export';
+import {Petsdb, TsdbItemType, TsdbReadPageResultType} from '../lib/export';
 
 import {compareBoolean, compareNumber, compareString, makeRandomString} from '../lib/src/util';
 
@@ -11,18 +11,18 @@ import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/h
 describe('Read page', () => {
     // eslint-disable-next-line max-statements
     test('Read page by simple selector', async () => {
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        let pageData: TsdbReadPageResultType<TestDataType> = await tsdb.readPage(
+        let pageData: TsdbReadPageResultType<TestDataType> = await petsdb.readPage(
             {},
             {pageIndex: 1, pageSize: 10, sort: {id: 1}}
         );
@@ -39,7 +39,7 @@ describe('Read page', () => {
                 .sort((valueA: string, valueB: string): number => compareString(valueA, valueB))
         );
 
-        pageData = await tsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {id: -1}});
+        pageData = await petsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {id: -1}});
 
         // check DOWN sort string
         assert.deepEqual(
@@ -49,7 +49,7 @@ describe('Read page', () => {
                 .sort((valueA: string, valueB: string): number => -compareString(valueA, valueB))
         );
 
-        pageData = await tsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {index: 1}});
+        pageData = await petsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {index: 1}});
 
         // check UP sort number
         assert.deepEqual(
@@ -59,7 +59,7 @@ describe('Read page', () => {
                 .sort((valueA: number, valueB: number): number => compareNumber(valueA, valueB))
         );
 
-        pageData = await tsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {index: -1}});
+        pageData = await petsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {index: -1}});
 
         // check DOWN sort number
         assert.deepEqual(
@@ -69,7 +69,7 @@ describe('Read page', () => {
                 .sort((valueA: number, valueB: number): number => -compareNumber(valueA, valueB))
         );
 
-        pageData = await tsdb.readPage({}, {pageIndex: 0, pageSize: 45, sort: {more: {data: {bool: 1}}}});
+        pageData = await petsdb.readPage({}, {pageIndex: 0, pageSize: 45, sort: {more: {data: {bool: 1}}}});
 
         assert.equal(pageData.totalPageCount, 2);
 
@@ -81,7 +81,7 @@ describe('Read page', () => {
                 .sort((valueA: boolean, valueB: boolean): number => compareBoolean(valueA, valueB))
         );
 
-        pageData = await tsdb.readPage({}, {pageIndex: 0, pageSize: 45, sort: {more: {data: {bool: -1}}}});
+        pageData = await petsdb.readPage({}, {pageIndex: 0, pageSize: 45, sort: {more: {data: {bool: -1}}}});
 
         // check DOWN sort bool
         assert.deepEqual(
@@ -92,23 +92,23 @@ describe('Read page', () => {
         );
 
         // check do not throw error if selector is not number or string
-        // await tsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {more: {data: {bool: 1}}}});
+        // await petsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {more: {data: {bool: 1}}}});
     });
 
     test('Read-page by non-exists selector - get empty array of items', async () => {
         const idToFind = makeRandomString();
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const pageData: TsdbReadPageResultType<TestDataType> = await tsdb.readPage(
+        const pageData: TsdbReadPageResultType<TestDataType> = await petsdb.readPage(
             {id: idToFind},
             {
                 pageIndex: 0,

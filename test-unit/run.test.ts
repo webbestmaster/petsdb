@@ -3,7 +3,7 @@ import {promises as fileSystem} from 'fs';
 
 import {describe, test} from '@jest/globals';
 
-import {Tsdb} from '../lib/export';
+import {Petsdb} from '../lib/export';
 
 import {makeRandomNumber, makeRandomString} from '../lib/src/util';
 
@@ -11,68 +11,68 @@ import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/h
 
 describe('Running', () => {
     test('If file exists -> return resolved promise', async () => {
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        const runResult: void = await tsdb.run();
+        const runResult: void = await petsdb.run();
 
         // eslint-disable-next-line no-undefined
         assert.equal(runResult, undefined);
     });
 
     test('If file does not exists -> return rejected promise', async () => {
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: 'file/do/not/exists'});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: 'file/do/not/exists'});
 
-        await assert.rejects(tsdb.run());
+        await assert.rejects(petsdb.run());
     });
 
     test('Remove deleted items from file', async () => {
         const idToDelete = makeRandomString();
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(200);
 
         testDataList[makeRandomNumber(10, 40)] = {...generateTestDataList(1)[0], id: idToDelete};
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        await tsdb.delete({id: idToDelete});
+        await petsdb.delete({id: idToDelete});
 
         // another run
-        const tsdbAfterDeleting: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const tsdbAfterDeleting: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await tsdbAfterDeleting.run();
 
         const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: 'utf8'});
 
-        assert.equal(tsdb.getSize(), testDataList.length - 1);
+        assert.equal(petsdb.getSize(), testDataList.length - 1);
         assert.equal(fileContent.includes(idToDelete), false);
     });
 
     test('Remove updated items from file', async () => {
         const databaseSize = 3;
 
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const [testData1, testData2, testData3]: Array<TestDataType> = generateTestDataList(databaseSize);
 
         const idToUpdate = testData2.id;
         const newItem: TestDataType = {...testData2, bar: 'bar', foo: 'foo'};
 
-        await tsdb.create(testData1);
-        await tsdb.create(testData2);
-        await tsdb.create(testData3);
+        await petsdb.create(testData1);
+        await petsdb.create(testData2);
+        await petsdb.create(testData3);
 
-        await tsdb.update({id: idToUpdate}, newItem);
+        await petsdb.update({id: idToUpdate}, newItem);
 
-        const tsdbUpdated: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const tsdbUpdated: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await tsdbUpdated.run();
 
@@ -80,6 +80,6 @@ describe('Running', () => {
 
         assert.equal(updatedItem?.bar, newItem.bar);
         assert.equal(updatedItem?.foo, newItem.foo);
-        assert.equal(tsdb.getSize(), databaseSize);
+        assert.equal(petsdb.getSize(), databaseSize);
     });
 });

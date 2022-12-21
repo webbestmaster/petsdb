@@ -5,7 +5,7 @@ import {promises as fileSystem} from 'fs';
 
 import {describe, test} from '@jest/globals';
 
-import {Tsdb} from '../lib/export';
+import {Petsdb} from '../lib/export';
 
 import {makeRandomNumber, makeRandomString} from '../lib/src/util';
 
@@ -14,10 +14,10 @@ import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/h
 describe('Delete', () => {
     test('Delete by simple selector', async () => {
         const idToDelete = makeRandomString();
-        const tsdb: Tsdb<TestDataType> = new Tsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
-        await tsdb.drop();
+        await petsdb.run();
+        await petsdb.drop();
 
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
@@ -26,15 +26,15 @@ describe('Delete', () => {
         testDataList[makeRandomNumber(10, 40)] = itemToDelete;
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => tsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
         );
 
-        const fullItemToDelete = await tsdb.readOne({id: idToDelete});
+        const fullItemToDelete = await petsdb.readOne({id: idToDelete});
 
-        await tsdb.delete({id: idToDelete});
+        await petsdb.delete({id: idToDelete});
         const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: 'utf8'});
 
-        assert.equal(tsdb.getSize(), testDataList.length - 1);
-        assert.equal(fileContent.includes(`${fullItemToDelete?._id + Tsdb.deleteIdPostfix}`), true);
+        assert.equal(petsdb.getSize(), testDataList.length - 1);
+        assert.equal(fileContent.includes(`${fullItemToDelete?._id + Petsdb.deleteIdPostfix}`), true);
     });
 });

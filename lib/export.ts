@@ -1,4 +1,4 @@
-export {Tsdb} from './src/ts-database';
+export {Petsdb} from './src/database';
 
 export type {
     TsdbInitialConfigType,
@@ -9,4 +9,4 @@ export type {
     TsdbSortDirectionType,
     TsdbSortType,
     TsdbSortValueType,
-} from './src/ts-database-type';
+} from './src/database-type';

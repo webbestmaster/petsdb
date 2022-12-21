@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, no-unused-vars */
 import {describe, test} from '@jest/globals';
 
-import {Tsdb} from '../lib/export';
+import {Petsdb} from '../lib/export';
 import type {
     TsdbInitialConfigType,
     TsdbItemType,
@@ -31,9 +31,9 @@ describe('Example', () => {
             someString: string;
         };
 
-        const tsdb: Tsdb<ExampleDataType> = new Tsdb<ExampleDataType>({dbPath: pathToTestDataBase});
+        const petsdb: Petsdb<ExampleDataType> = new Petsdb<ExampleDataType>({dbPath: pathToTestDataBase});
 
-        await tsdb.run();
+        await petsdb.run();
 
         // ### Creating documents
         const someDocument: ExampleDataType = {
@@ -50,31 +50,31 @@ describe('Example', () => {
         };
 
         // create document into dataBase, use async/await OR Promises
-        await tsdb.create(someDocument);
+        await petsdb.create(someDocument);
 
         // ### Reading documents: read\readOne
 
         // search by key\value
-        await tsdb.read({someString: 'the string'});
+        await petsdb.read({someString: 'the string'});
 
         // search by nested object
-        await tsdb.read({someData: {data: {isExists: false}}});
+        await petsdb.read({someData: {data: {isExists: false}}});
 
         // search by value of array
-        await tsdb.read({listOfString: ['one']});
+        await petsdb.read({listOfString: ['one']});
 
         // search by RegExp instead of string
-        await tsdb.read({someString: /the/});
+        await petsdb.read({someString: /the/});
 
         // search by RegExp instead of array of string
-        await tsdb.read({listOfString: /thr/});
+        await petsdb.read({listOfString: /thr/});
 
         // #### Reading documents: readPage
         // get page by index 0, set page's size as 10 and sort by `someNumber`
-        await tsdb.readPage({someString: /the/}, {pageIndex: 0, pageSize: 10, sort: {someNumber: 1}});
+        await petsdb.readPage({someString: /the/}, {pageIndex: 0, pageSize: 10, sort: {someNumber: 1}});
 
         // the same, but use for sort nested object
-        await tsdb.readPage({someString: /the/}, {pageIndex: 0, pageSize: 10, sort: {someData: {data: {text: -1}}}});
+        await petsdb.readPage({someString: /the/}, {pageIndex: 0, pageSize: 10, sort: {someData: {data: {text: -1}}}});
 
         // #### Updating documents
         const newDocument: ExampleDataType = {
@@ -90,10 +90,10 @@ describe('Example', () => {
             someString: 'new string',
         };
 
-        await tsdb.update({someNumber: 1}, newDocument);
+        await petsdb.update({someNumber: 1}, newDocument);
 
         // #### Deleting documents
-        await tsdb.delete({someNumber: 1});
+        await petsdb.delete({someNumber: 1});
 
         // ##### Basic querying
         const myQuery: TsdbQueryType<ExampleDataType> = {
