@@ -95,13 +95,13 @@ describe('Example', () => {
         // #### Deleting documents
         await petsdb.delete({someNumber: 1});
 
-        // ##### Basic querying
+        // #### Basic querying
         const myQuery: PetsdbQueryType<ExampleDataType> = {
             someData: {data: {isExists: true}},
             someString: /one/,
         };
 
-        // ##### Basic sort
+        // #### Basic sorting
         const mySortByNumber: PetsdbSortType<ExampleDataType> = {
             someString: 1,
         };

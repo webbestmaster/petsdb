@@ -127,7 +127,7 @@ Method `.deete()` delete documents by query.
 await petsdb.delete({someNumber: 1});
 ```
 
-##### Basic querying
+#### Basic querying
 Basic querying means are looking for documents whose fields match the ones you specify. You can use regular expression to match strings. To check your query use `PetsdbQueryType`.
 
 ```typescript
@@ -139,7 +139,7 @@ const myQuery: PetsdbQueryType<ExampleDataType> = {
 };
 ```
 
-##### Basic sort
+#### Basic sorting
 Basic sorting means are sorting for documents whose fields match the ones you specify. You can use `1` or `-1` to sort. You can use only one field to sort. To check your sort use `PetsdbSortType`.
 
 ```typescript
