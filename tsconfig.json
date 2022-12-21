@@ -1,0 +1,47 @@
+{
+    "compilerOptions": {
+        "outDir": "./tsc-check/",
+
+        "target": "es2019",
+        "module": "es2020",
+        "moduleResolution": "node",
+
+        "strict": true,
+        "alwaysStrict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictPropertyInitialization": true,
+        "strictBindCallApply": true,
+        "noImplicitThis": true,
+        "noImplicitReturns": true,
+        "useDefineForClassFields": false,
+        "allowUnreachableCode": true,
+        "allowUnusedLabels": false,
+        "downlevelIteration": false,
+        "noEmitHelpers": false,
+        "noEmit": false,
+        "noLib": false,
+        "noStrictGenericChecks": false,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "esModuleInterop": true,
+        "preserveConstEnums": true,
+        "removeComments": false,
+        "skipLibCheck": true,
+        "checkJs": false,
+        "allowJs": true,
+        "declaration": false,
+        "experimentalDecorators": false,
+        "useUnknownInCatchVariables": true,
+        "exactOptionalPropertyTypes": true,
+        "emitDecoratorMetadata": false,
+        "sourceMap": true
+    },
+    "exclude": [
+        "./dist/",
+        "./tsc-check/",
+        "./node_modules/",
+        "./coverage-ts/",
+    ]
+}

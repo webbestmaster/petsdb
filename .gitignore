@@ -1,0 +1,22 @@
+# IDE
+/.idea/
+/.vscode/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# npm
+/node_modules/
+
+# report
+/coverage-ts/
+/tsc-check/
+/coverage/
+
+# test data
+/test-unit/test-data/test-db-backup/
+
+# other
+.DS_Store
