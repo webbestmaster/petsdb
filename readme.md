@@ -3,7 +3,9 @@
 [![GitHub license](https://img.shields.io/npm/l/petsdb)](https://github.com/webbestmaster/petsdb/blob/master/license)
 [![codecov](https://codecov.io/gh/webbestmaster/petsdb/branch/master/graph/badge.svg?token=X5SNICUPUQ)](https://codecov.io/gh/webbestmaster/petsdb)
 [![npm version](https://img.shields.io/npm/v/petsdb.svg?style=flat)](https://www.npmjs.com/package/petsdb)
+![Known Vulnerabilities](https://snyk.io/test/github/webbestmaster/petsdb/badge.svg)
 ![Github CI](https://github.com/webbestmaster/petsdb/workflows/Github%20CI/badge.svg)
+![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/webbestmaster/petsdb)
 
 Small database for _prototyping_ and _pet_ projects.
 
