@@ -1,5 +1,7 @@
 # PeTSDB - Pet's TypeScript DataBase
 
+[![codecov](https://codecov.io/gh/webbestmaster/petsdb/branch/master/graph/badge.svg?token=X5SNICUPUQ)](https://codecov.io/gh/webbestmaster/petsdb)
+
 Small database for _prototyping_ and _pet_ projects.
 
 **Embedded persistent database for Node.js, 100% TypeScript/JavaScript, no binary dependency.**
