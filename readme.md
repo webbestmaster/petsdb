@@ -1,6 +1,8 @@
 # PeTSDB - Pet's TypeScript DataBase
 
+[![GitHub license](https://img.shields.io/npm/l/petsdb)](https://github.com/webbestmaster/petsdb/blob/master/license)
 [![codecov](https://codecov.io/gh/webbestmaster/petsdb/branch/master/graph/badge.svg?token=X5SNICUPUQ)](https://codecov.io/gh/webbestmaster/petsdb)
+[![npm version](https://img.shields.io/npm/v/petsdb.svg?style=flat)](https://www.npmjs.com/package/petsdb)
 
 Small database for _prototyping_ and _pet_ projects.
 
