@@ -7,7 +7,7 @@
 ![Github CI](https://github.com/webbestmaster/petsdb/workflows/Github%20CI/badge.svg)
 ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/webbestmaster/petsdb)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/petsdb)
-![node-current](https://img.shields.io/node/v/patsdb)
+![node-current](https://img.shields.io/node/v/petsdb)
 <!--
 [![GitHub stars](https://img.shields.io/github/stars/webbestmaster/petsdb?style=social&maxAge=2592000)](https://github.com/webbestmaster/petsdb/)
 -->
