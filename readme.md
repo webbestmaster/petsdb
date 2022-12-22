@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/webbestmaster/petsdb/branch/master/graph/badge.svg?token=X5SNICUPUQ)](https://codecov.io/gh/webbestmaster/petsdb)
 [![npm version](https://img.shields.io/npm/v/petsdb.svg?style=flat)](https://www.npmjs.com/package/petsdb)
 ![Known Vulnerabilities](https://snyk.io/test/github/webbestmaster/petsdb/badge.svg)
-![Github CI](https://github.com/webbestmaster/petsdb/workflows/Github%20CI/badge.svg)
+[![Github CI](https://github.com/webbestmaster/petsdb/actions/workflows/github-ci.yml/badge.svg)](https://github.com/webbestmaster/petsdb/actions/workflows/github-ci.yml)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/webbestmaster/petsdb/github-ci.yml)
 ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/webbestmaster/petsdb)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/petsdb)
