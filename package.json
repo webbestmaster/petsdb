@@ -29,8 +29,8 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "check": "npm run ts-coverage && npm run tsc && npm run eslint && npm run test:unit",
-    "check:fix": "npm run prettier && npm run ts-coverage && npm run tsc && npm run eslint:fix && npm run test:unit",
+    "check": "npm run ts-coverage && npm run tsc && npm run eslint",
+    "check:fix": "npm run prettier && npm run ts-coverage && npm run tsc && npm run eslint:fix",
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix",
     "prettier": "prettier --write \"./**/*.(js|ts|tsx)\" --loglevel warn",
