@@ -1,6 +1,6 @@
 {
   "name": "petsdb",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "File-based embedded data store for node.js",
   "main": "dist/export.js",
   "types": "dist/export.d.ts",
@@ -45,7 +45,7 @@
     "pre-commit-hook": "npm run check"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.5",
+    "@babel/core": "^7.20.7",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/plugin-transform-strict-mode": "^7.18.6",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
