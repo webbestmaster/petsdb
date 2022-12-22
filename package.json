@@ -1,7 +1,7 @@
 {
   "name": "petsdb",
   "version": "0.0.3",
-  "description": "",
+  "description": "File-based embedded data store for node.js",
   "main": "dist/export.js",
   "types": "dist/export.d.ts",
   "files": [
@@ -11,8 +11,16 @@
     "type": "git",
     "url": "git+https://github.com/webbestmaster/petsdb.git"
   },
-  "author": "webbestmaster",
+  "author": {
+    "name": "WebBestMaster",
+    "email": "web.best.master@gmail.com"
+  },
   "license": "MIT",
+  "oldkeywords": [
+    "database",
+    "datastore",
+    "embedded"
+  ],
   "bugs": {
     "url": "https://github.com/webbestmaster/petsdb/issues"
   },
