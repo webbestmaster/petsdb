@@ -16,7 +16,7 @@
     "email": "web.best.master@gmail.com"
   },
   "license": "MIT",
-  "oldkeywords": [
+  "keywords": [
     "database",
     "datastore",
     "embedded"
@@ -25,6 +25,9 @@
     "url": "https://github.com/webbestmaster/petsdb/issues"
   },
   "homepage": "https://github.com/webbestmaster/petsdb#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "check": "npm run ts-coverage && npm run tsc && npm run eslint && npm run test:unit",
     "check:fix": "npm run prettier && npm run ts-coverage && npm run tsc && npm run eslint:fix && npm run test:unit",
