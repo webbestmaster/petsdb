@@ -9,6 +9,7 @@
 ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/webbestmaster/petsdb)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/petsdb)
 ![node-current](https://img.shields.io/node/v/petsdb)
+![npm type definitions](https://img.shields.io/npm/types/petsdb)
 [![GitHub stars](https://img.shields.io/github/stars/webbestmaster/petsdb?style=social)](https://github.com/webbestmaster/petsdb/)
 
 Small database for _prototyping_ and _pet_ projects.
