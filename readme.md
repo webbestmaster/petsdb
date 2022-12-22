@@ -182,4 +182,4 @@ import type {
 
 ## License
 
-See [license](license)
+See [license](license).
