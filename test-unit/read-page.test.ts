@@ -95,6 +95,54 @@ describe('Read page', () => {
         // await petsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {more: {data: {bool: 1}}}});
     });
 
+    // eslint-disable-next-line max-statements
+    test('Read page by pageSize = 0, return all items, pageIndex is not matter', async () => {
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
+
+        await petsdb.run();
+        await petsdb.drop();
+        const collectionSize = 50;
+
+        const testDataList: Array<TestDataType> = generateTestDataList(collectionSize);
+
+        await Promise.all(
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
+        );
+
+        // pageSize is negative zero
+        let pageData: PetsdbReadPageResultType<TestDataType> = await petsdb.readPage(
+            {},
+            {pageIndex: 0, pageSize: 0, sort: {id: 1}}
+        );
+
+        assert.equal(pageData.list.length, collectionSize);
+        assert.equal(pageData.pageIndex, 0);
+        assert.equal(pageData.pageSize, collectionSize);
+        assert.equal(pageData.totalPageCount, 1);
+        assert.equal(pageData.totalItemCount, collectionSize);
+        assert.deepEqual(pageData.sort, {id: 1});
+
+        // pageSize is negative zero
+        pageData = await petsdb.readPage({}, {pageIndex: 11, pageSize: 0, sort: {id: 1}});
+
+        assert.equal(pageData.list.length, collectionSize);
+        assert.equal(pageData.pageIndex, 11);
+        assert.equal(pageData.pageSize, collectionSize);
+        assert.equal(pageData.totalPageCount, 1);
+        assert.equal(pageData.totalItemCount, collectionSize);
+        assert.deepEqual(pageData.sort, {id: 1});
+
+        // pageSize is negative number
+        pageData = await petsdb.readPage({}, {pageIndex: 11, pageSize: -22, sort: {id: 1}});
+
+        assert.equal(pageData.list.length, collectionSize);
+        assert.equal(pageData.pageIndex, 11);
+        assert.equal(pageData.pageSize, collectionSize);
+        assert.equal(pageData.totalPageCount, 1);
+        assert.equal(pageData.totalItemCount, collectionSize);
+        assert.deepEqual(pageData.sort, {id: 1});
+    });
+
     test('Read-page by non-exists selector - get empty array of items', async () => {
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});

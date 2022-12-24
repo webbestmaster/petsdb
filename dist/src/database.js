@@ -97,6 +97,17 @@ class Petsdb {
             const fullList = yield this.read(itemSelector);
             const { pageIndex, pageSize, sort } = readPageConfig;
             const fullSortedList = fullList.sort((itemA, itemB) => (0, util_1.compareObject)(itemA, itemB, sort));
+            if (pageSize <= 0) {
+                const readPageResultZeroPageSize = {
+                    list: fullSortedList,
+                    pageIndex,
+                    pageSize: fullList.length,
+                    sort,
+                    totalItemCount: fullList.length,
+                    totalPageCount: 1,
+                };
+                return readPageResultZeroPageSize;
+            }
             const neededOfList = fullSortedList.slice(pageIndex * pageSize, pageIndex * pageSize + pageSize);
             const readPageResult = {
                 list: neededOfList,

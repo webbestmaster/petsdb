@@ -148,6 +148,19 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
                 compareObject(itemA, itemB, sort)
         );
 
+        if (pageSize <= 0) {
+            const readPageResultZeroPageSize: PetsdbReadPageResultType<ItemType> = {
+                list: fullSortedList,
+                pageIndex,
+                pageSize: fullList.length,
+                sort,
+                totalItemCount: fullList.length,
+                totalPageCount: 1,
+            };
+
+            return readPageResultZeroPageSize;
+        }
+
         const neededOfList: Array<PetsdbItemType<ItemType>> = fullSortedList.slice(
             pageIndex * pageSize,
             pageIndex * pageSize + pageSize
