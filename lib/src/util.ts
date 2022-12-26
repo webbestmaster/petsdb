@@ -1,7 +1,7 @@
-import {createReadStream, promises as fileSystem} from 'fs';
-import path from 'path';
-
-import readline from 'readline';
+import {createReadStream} from 'node:fs';
+import fileSystem from 'node:fs/promises';
+import path from 'node:path';
+import readline from 'node:readline';
 
 import {PetsdbSortDirectionType, PetsdbSortValueType} from './database-type';
 

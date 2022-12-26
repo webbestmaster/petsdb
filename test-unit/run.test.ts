@@ -82,4 +82,33 @@ describe('Running', () => {
         assert.equal(updatedItem?.foo, newItem.foo);
         assert.equal(petsdb.getSize(), databaseSize);
     });
+
+    test('Run several data base simultaneously -> get the same promise', async () => {
+        const petsdb1: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb2: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb3: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb4: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb5: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
+
+        await petsdb1.run();
+        await petsdb1.drop();
+
+        const testDataList: Array<TestDataType> = generateTestDataList(200);
+
+        await Promise.all(
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb1.create(dataItem))
+        );
+
+        const runPromise1 = petsdb1.run();
+        const runPromise2 = petsdb2.run();
+        const runPromise3 = petsdb3.run();
+        const runPromise4 = petsdb4.run();
+        const runPromise5 = petsdb5.run();
+
+        assert.equal(runPromise1 instanceof Promise, true);
+        assert.equal(runPromise1, runPromise2);
+        assert.equal(runPromise1, runPromise3);
+        assert.equal(runPromise1, runPromise4);
+        assert.equal(runPromise1, runPromise5);
+    });
 });

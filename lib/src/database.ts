@@ -2,7 +2,7 @@
 
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
-import {promises as fileSystem} from 'fs';
+import fileSystem from 'node:fs/promises';
 
 import {
     deepCopy,
@@ -23,11 +23,12 @@ import {
 } from './database-type';
 
 export class Petsdb<ItemType extends Record<string, unknown>> {
-    private dbPath = '';
+    static readonly runningPromise: Record<string, Promise<void> | void> = {};
+    readonly dbPath: string = '';
 
     private dataList: Array<PetsdbItemType<ItemType>> = [];
 
-    static deleteIdPostfix = '-$$delete';
+    static readonly deleteIdPostfix = '-$$delete';
 
     constructor(initialConfig: PetsdbInitialConfigType) {
         const {dbPath} = initialConfig;
@@ -36,7 +37,22 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         return this;
     }
 
-    async run(): Promise<void> {
+    run(): Promise<void> {
+        const currentRunningPromise: Promise<void> | void = Petsdb.runningPromise[this.dbPath];
+
+        if (currentRunningPromise) {
+            return currentRunningPromise;
+        }
+
+        // this promise should be removed when this.innerRun() finished
+        const newRunning = this.innerRun();
+
+        Petsdb.runningPromise[this.dbPath] = newRunning;
+
+        return newRunning;
+    }
+
+    private async innerRun(): Promise<void> {
         const fullLineList: Array<string> = await readFileLineByLine(this.dbPath);
         const filteredLineList: Array<string> = fullLineList.filter<string>(getIsNotEmptyString);
 
@@ -89,6 +105,10 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         }
 
         this.dataList = filteredDataList;
+
+        // remove running promise
+        // eslint-disable-next-line no-undefined
+        Petsdb.runningPromise[this.dbPath] = undefined;
 
         console.log(`Petsdb has been loaded. DbPath ${this.dbPath}.`);
     }
