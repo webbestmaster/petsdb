@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {promises as fileSystem} from 'fs';
+import fileSystem from 'node:fs/promises';
 
 import {describe, test} from '@jest/globals';
 

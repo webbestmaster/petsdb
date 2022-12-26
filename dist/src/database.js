@@ -9,10 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Petsdb = void 0;
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
-const fs_1 = require("fs");
+const promises_1 = __importDefault(require("node:fs/promises"));
 const util_1 = require("./util");
 class Petsdb {
     constructor(initialConfig) {
@@ -23,6 +26,16 @@ class Petsdb {
         return this;
     }
     run() {
+        const currentRunningPromise = Petsdb.runningPromise[this.dbPath];
+        if (currentRunningPromise) {
+            return currentRunningPromise;
+        }
+        // this promise should be removed when this.innerRun() finished
+        const newRunning = this.innerRun();
+        Petsdb.runningPromise[this.dbPath] = newRunning;
+        return newRunning;
+    }
+    innerRun() {
         return __awaiter(this, void 0, void 0, function* () {
             const fullLineList = yield (0, util_1.readFileLineByLine)(this.dbPath);
             const filteredLineList = fullLineList.filter(util_1.getIsNotEmptyString);
@@ -47,22 +60,25 @@ class Petsdb {
                 return !toRemoveIdList.includes(dataItem._id.replace(Petsdb.deleteIdPostfix, ''));
             });
             yield (0, util_1.makeDatabaseBackup)(this.dbPath);
-            yield fs_1.promises.writeFile(this.dbPath, '');
+            yield promises_1.default.writeFile(this.dbPath, '');
             // eslint-disable-next-line no-loops/no-loops
             for (const dataItem of filteredDataList) {
-                yield fs_1.promises.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
+                yield promises_1.default.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
                 const dataIndex = filteredDataList.indexOf(dataItem) + 1;
                 if (dataIndex % 100 === 0) {
                     console.log(`Petsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
                 }
             }
             this.dataList = filteredDataList;
+            // remove running promise
+            // eslint-disable-next-line no-undefined
+            Petsdb.runningPromise[this.dbPath] = undefined;
             console.log(`Petsdb has been loaded. DbPath ${this.dbPath}.`);
         });
     }
     drop() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield fs_1.promises.writeFile(this.dbPath, '');
+            yield promises_1.default.writeFile(this.dbPath, '');
             this.dataList = [];
         });
     }
@@ -72,7 +88,7 @@ class Petsdb {
     create(itemData) {
         return __awaiter(this, void 0, void 0, function* () {
             const tsdbItemData = Object.assign((0, util_1.deepCopy)(itemData), { _id: (0, util_1.makeRandomString)() });
-            yield fs_1.promises.appendFile(this.dbPath, JSON.stringify(tsdbItemData) + '\n');
+            yield promises_1.default.appendFile(this.dbPath, JSON.stringify(tsdbItemData) + '\n');
             this.dataList.push(tsdbItemData);
         });
     }
@@ -127,7 +143,7 @@ class Petsdb {
             for (const dataItem of itemToUpdateList) {
                 const itemToUpdate = Object.assign(Object.assign({}, newItemData), { _id: dataItem._id });
                 const updatedItemIndex = this.dataList.indexOf(dataItem);
-                yield fs_1.promises.appendFile(this.dbPath, JSON.stringify(itemToUpdate) + '\n');
+                yield promises_1.default.appendFile(this.dbPath, JSON.stringify(itemToUpdate) + '\n');
                 this.dataList[updatedItemIndex] = itemToUpdate;
             }
         });
@@ -138,7 +154,7 @@ class Petsdb {
             // eslint-disable-next-line no-loops/no-loops
             for (const dataItem of itemToRemoveList) {
                 const itemToDeleteUpdated = Object.assign(Object.assign({}, dataItem), { _id: dataItem._id + Petsdb.deleteIdPostfix });
-                yield fs_1.promises.appendFile(this.dbPath, JSON.stringify(itemToDeleteUpdated) + '\n');
+                yield promises_1.default.appendFile(this.dbPath, JSON.stringify(itemToDeleteUpdated) + '\n');
             }
             this.dataList = this.dataList.filter((dataItem) => {
                 return !(0, util_1.getIsIncluded)(dataItem, itemSelector);
@@ -147,5 +163,6 @@ class Petsdb {
     }
 }
 exports.Petsdb = Petsdb;
+Petsdb.runningPromise = {};
 Petsdb.deleteIdPostfix = '-$$delete';
 //# sourceMappingURL=database.js.map

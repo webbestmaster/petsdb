@@ -1,10 +1,12 @@
 import { PetsdbInitialConfigType, PetsdbItemType, PetsdbQueryType, PetsdbReadPageConfigType, PetsdbReadPageResultType } from './database-type';
 export declare class Petsdb<ItemType extends Record<string, unknown>> {
-    private dbPath;
+    static readonly runningPromise: Record<string, Promise<void> | void>;
+    readonly dbPath: string;
     private dataList;
-    static deleteIdPostfix: string;
+    static readonly deleteIdPostfix = "-$$delete";
     constructor(initialConfig: PetsdbInitialConfigType);
     run(): Promise<void>;
+    private innerRun;
     drop(): Promise<void>;
     getSize(): number;
     create(itemData: ItemType): Promise<void>;

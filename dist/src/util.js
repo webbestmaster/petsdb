@@ -20,18 +20,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeDatabaseBackup = exports.compareObject = exports.compareBoolean = exports.compareString = exports.compareNumber = exports.getSortByPath = exports.getIsIncluded = exports.getIsArrayIncludedByRegexp = exports.getIsArrayIncludedByValue = exports.getIsNotEmptyString = exports.makeRandomNumber = exports.makeRandomString = exports.deepCopy = exports.readFileLineByLine = void 0;
-const fs_1 = require("fs");
-const path_1 = __importDefault(require("path"));
-const readline_1 = __importDefault(require("readline"));
+const node_fs_1 = require("node:fs");
+const promises_1 = __importDefault(require("node:fs/promises"));
+const node_path_1 = __importDefault(require("node:path"));
+const node_readline_1 = __importDefault(require("node:readline"));
 function readFileLineByLine(pathToFile) {
     var _a, e_1, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         const lineList = [];
         // Note: we use the crlfDelay option to recognize all instances of CR LF
         // ('\r\n') in text file as a single line break.
-        const lineStream = readline_1.default.createInterface({
+        const lineStream = node_readline_1.default.createInterface({
             crlfDelay: Number.POSITIVE_INFINITY,
-            input: (0, fs_1.createReadStream)(pathToFile),
+            input: (0, node_fs_1.createReadStream)(pathToFile),
         });
         try {
             // eslint-disable-next-line no-loops/no-loops
@@ -186,12 +187,12 @@ function makeDatabaseBackup(pathToDatabase) {
     return __awaiter(this, void 0, void 0, function* () {
         const backupFolder = pathToDatabase + '-backup';
         try {
-            yield fs_1.promises.mkdir(backupFolder);
+            yield promises_1.default.mkdir(backupFolder);
         }
         catch (_a) {
             console.error(`Can not make folder! Path: ${backupFolder}`);
         }
-        yield fs_1.promises.copyFile(pathToDatabase, `${path_1.default.join(backupFolder, String(pathToDatabase.split('/').pop()))}-${new Date()
+        yield promises_1.default.copyFile(pathToDatabase, `${node_path_1.default.join(backupFolder, String(pathToDatabase.split('/').pop()))}-${new Date()
             .toISOString()
             .replace(/:/g, '-')}`);
     });
