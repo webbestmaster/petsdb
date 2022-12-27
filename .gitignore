@@ -17,6 +17,8 @@ npm-debug.log*
 
 # test data
 /test-unit/test-data/test-db-backup/
+/test-unit/test-data/test-db-2-backup/
+/test-unit/test-data/test-db-3-backup/
 
 # other
 .DS_Store

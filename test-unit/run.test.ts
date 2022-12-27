@@ -7,7 +7,13 @@ import {Petsdb} from '../lib/export';
 
 import {makeRandomNumber, makeRandomString} from '../lib/src/util';
 
-import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/helper';
+import {
+    generateTestDataList,
+    pathToTestDataBase,
+    pathToTestDataBase2,
+    pathToTestDataBase3,
+    TestDataType,
+} from './helper/helper';
 
 describe('Running', () => {
     test('If file exists -> return resolved promise', async () => {
@@ -83,7 +89,7 @@ describe('Running', () => {
         assert.equal(petsdb.getSize(), databaseSize);
     });
 
-    test('Run several data base simultaneously -> get the same promise', async () => {
+    test('Run several the same data bases simultaneously -> get the same promise', async () => {
         const petsdb1: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
         const petsdb2: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
         const petsdb3: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
@@ -110,5 +116,38 @@ describe('Running', () => {
         assert.equal(runPromise1, runPromise3);
         assert.equal(runPromise1, runPromise4);
         assert.equal(runPromise1, runPromise5);
+    });
+
+    test('Run several different data base simultaneously -> get the same promise', async () => {
+        const petsdb1: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
+        const petsdb2: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase2});
+        const petsdb3: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase3});
+
+        await petsdb1.run();
+        await petsdb1.drop();
+        await petsdb2.run();
+        await petsdb2.drop();
+        await petsdb3.run();
+        await petsdb3.drop();
+
+        const testDataList: Array<TestDataType> = generateTestDataList(20);
+
+        await Promise.all(
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb1.create(dataItem))
+        );
+        await Promise.all(
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb2.create(dataItem))
+        );
+        await Promise.all(
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb3.create(dataItem))
+        );
+
+        const runPromise1 = petsdb1.run();
+        const runPromise2 = petsdb2.run();
+        const runPromise3 = petsdb3.run();
+
+        assert.notEqual(runPromise1, runPromise2);
+        assert.notEqual(runPromise2, runPromise3);
+        assert.notEqual(runPromise3, runPromise1);
     });
 });

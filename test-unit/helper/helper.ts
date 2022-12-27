@@ -1,6 +1,8 @@
 import {makeRandomNumber, makeRandomString} from '../../lib/src/util';
 
 export const pathToTestDataBase = 'test-unit/test-data/test-db';
+export const pathToTestDataBase2 = 'test-unit/test-data/test-db-2';
+export const pathToTestDataBase3 = 'test-unit/test-data/test-db-3';
 
 export type TestDataType = {
     bar: string;
