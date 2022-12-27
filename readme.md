@@ -134,7 +134,7 @@ await petsdb.update({someNumber: 1}, newDocument);
 ```
 
 #### Deleting documents
-Method `.deete()` delete documents by query.
+Method `.delete()` delete documents by query.
 ```typescript
 await petsdb.delete({someNumber: 1});
 ```
