@@ -184,6 +184,7 @@ export async function getHasAccessToDirectory(...args: Array<string>): Promise<b
         return true;
         // eslint-disable-next-line no-empty
     } catch {}
+
     return false;
 }
 
