@@ -53,7 +53,12 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
     }
 
     private async innerRun(): Promise<void> {
+        await makeDatabaseBackup(this.dbPath);
+
+        console.log('[Petsdb]: Petsdb is reading data base file - BEGIN');
         const fullLineList: Array<string> = await readFileLineByLine(this.dbPath);
+
+        console.log('[Petsdb]: Petsdb is reading data base file - END');
         const filteredLineList: Array<string> = fullLineList.filter<string>(getIsNotEmptyString);
 
         const fullDataList: Array<PetsdbItemType<ItemType>> = filteredLineList.map<PetsdbItemType<ItemType>>(
@@ -89,20 +94,23 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
                 }
             );
 
-        await makeDatabaseBackup(this.dbPath);
-
-        await fileSystem.writeFile(this.dbPath, '');
+        const dataInStringList: Array<string> = [];
 
         // eslint-disable-next-line no-loops/no-loops
         for (const dataItem of filteredDataList) {
-            await fileSystem.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
+            dataInStringList.push(JSON.stringify(dataItem));
+            // await fileSystem.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
 
             const dataIndex = filteredDataList.indexOf(dataItem) + 1;
 
             if (dataIndex % 100 === 0) {
-                console.log(`Petsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
+                console.log(`[Petsdb]: Petsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
             }
         }
+
+        await fileSystem.writeFile(this.dbPath, dataInStringList.join('\n') + '\n', {encoding: 'utf8'});
+
+        console.log('[Petsdb]: Petsdb data base file has been updated');
 
         this.dataList = filteredDataList;
 
@@ -110,7 +118,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         // eslint-disable-next-line no-undefined
         Petsdb.runningPromise[this.dbPath] = undefined;
 
-        console.log(`Petsdb has been loaded. DbPath ${this.dbPath}.`);
+        console.log(`[Petsdb]: Petsdb has been loaded. DbPath ${this.dbPath}.`);
     }
 
     async drop(): Promise<void> {

@@ -183,13 +183,14 @@ export async function makeDatabaseBackup(pathToDatabase: string): Promise<void> 
     try {
         await fileSystem.mkdir(backupFolder);
     } catch {
-        console.error(`Can not make folder! Path: ${backupFolder}`);
+        console.error(`[Petsdb]: Can not make folder! Path: ${backupFolder}`);
     }
 
-    await fileSystem.copyFile(
-        pathToDatabase,
-        `${path.join(backupFolder, String(pathToDatabase.split('/').pop()))}-${new Date()
-            .toISOString()
-            .replace(/:/g, '-')}`
-    );
+    const backUpFilePath = `${path.join(backupFolder, String(pathToDatabase.split('/').pop()))}-${new Date()
+        .toISOString()
+        .replace(/:/g, '-')}`;
+
+    await fileSystem.copyFile(pathToDatabase, backUpFilePath);
+
+    console.log(`[Petsdb]: Backup has been created, path is: ${backUpFilePath}`);
 }
