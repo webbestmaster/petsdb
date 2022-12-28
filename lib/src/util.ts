@@ -181,6 +181,7 @@ export async function getHasAccessToDirectory(...args: Array<string>): Promise<b
     try {
         // eslint-disable-next-line no-bitwise
         await fileSystem.access(path.join(...args), constants.R_OK | constants.W_OK);
+
         return true;
         // eslint-disable-next-line no-empty
     } catch {}
