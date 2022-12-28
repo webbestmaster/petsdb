@@ -37,7 +37,10 @@ class Petsdb {
     }
     innerRun() {
         return __awaiter(this, void 0, void 0, function* () {
+            yield (0, util_1.makeDatabaseBackup)(this.dbPath);
+            console.log('[Petsdb]: Petsdb is reading data base file - BEGIN');
             const fullLineList = yield (0, util_1.readFileLineByLine)(this.dbPath);
+            console.log('[Petsdb]: Petsdb is reading data base file - END');
             const filteredLineList = fullLineList.filter(util_1.getIsNotEmptyString);
             const fullDataList = filteredLineList.map((line) => JSON.parse(line));
             const fullIdList = fullDataList.map((dataItem) => dataItem._id);
@@ -59,21 +62,23 @@ class Petsdb {
                 .filter((dataItem) => {
                 return !toRemoveIdList.includes(dataItem._id.replace(Petsdb.deleteIdPostfix, ''));
             });
-            yield (0, util_1.makeDatabaseBackup)(this.dbPath);
-            yield promises_1.default.writeFile(this.dbPath, '');
+            const dataInStringList = [];
             // eslint-disable-next-line no-loops/no-loops
             for (const dataItem of filteredDataList) {
-                yield promises_1.default.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
+                dataInStringList.push(JSON.stringify(dataItem));
+                // await fileSystem.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
                 const dataIndex = filteredDataList.indexOf(dataItem) + 1;
                 if (dataIndex % 100 === 0) {
-                    console.log(`Petsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
+                    console.log(`[Petsdb]: Petsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
                 }
             }
+            yield promises_1.default.writeFile(this.dbPath, dataInStringList.join('\n') + '\n', { encoding: 'utf8' });
+            console.log('[Petsdb]: Petsdb data base file has been updated');
             this.dataList = filteredDataList;
             // remove running promise
             // eslint-disable-next-line no-undefined
             Petsdb.runningPromise[this.dbPath] = undefined;
-            console.log(`Petsdb has been loaded. DbPath ${this.dbPath}.`);
+            console.log(`[Petsdb]: Petsdb has been loaded. DbPath ${this.dbPath}.`);
         });
     }
     drop() {

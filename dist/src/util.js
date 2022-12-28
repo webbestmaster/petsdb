@@ -190,11 +190,13 @@ function makeDatabaseBackup(pathToDatabase) {
             yield promises_1.default.mkdir(backupFolder);
         }
         catch (_a) {
-            console.error(`Can not make folder! Path: ${backupFolder}`);
+            console.error(`[Petsdb]: Can not make folder! Path: ${backupFolder}`);
         }
-        yield promises_1.default.copyFile(pathToDatabase, `${node_path_1.default.join(backupFolder, String(pathToDatabase.split('/').pop()))}-${new Date()
+        const backUpFilePath = `${node_path_1.default.join(backupFolder, String(pathToDatabase.split('/').pop()))}-${new Date()
             .toISOString()
-            .replace(/:/g, '-')}`);
+            .replace(/:/g, '-')}`;
+        yield promises_1.default.copyFile(pathToDatabase, backUpFilePath);
+        console.log(`[Petsdb]: Backup has been created, path is: ${backUpFilePath}`);
     });
 }
 exports.makeDatabaseBackup = makeDatabaseBackup;
