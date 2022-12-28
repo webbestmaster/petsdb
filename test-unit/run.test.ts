@@ -150,4 +150,46 @@ describe('Running', () => {
         assert.notEqual(runPromise2, runPromise3);
         assert.notEqual(runPromise3, runPromise1);
     });
+
+    // eslint-disable-next-line max-statements
+    test('Each awaited .run() should return different promise', async () => {
+        const petsdb1: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
+
+        // Attempt - 1
+        const runPromise1 = petsdb1.run();
+        const runPromiseBeforeCache1: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
+
+        assert.equal(runPromiseBeforeCache1 instanceof Promise, true);
+        await runPromise1;
+        const runPromiseAfterCache1: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
+
+        // eslint-disable-next-line no-undefined
+        assert.equal(runPromiseAfterCache1, undefined);
+
+        // Attempt - 2
+        const runPromise2 = petsdb1.run();
+        const runPromiseBeforeCache2: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
+
+        assert.equal(runPromiseBeforeCache2 instanceof Promise, true);
+        await runPromise2;
+        const runPromiseAfterCache2: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
+
+        // eslint-disable-next-line no-undefined
+        assert.equal(runPromiseAfterCache2, undefined);
+
+        // Attempt - 3
+        const runPromise3 = petsdb1.run();
+        const runPromiseBeforeCache3: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
+
+        assert.equal(runPromiseBeforeCache3 instanceof Promise, true);
+        await runPromise3;
+        const runPromiseAfterCache3: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
+
+        // eslint-disable-next-line no-undefined
+        assert.equal(runPromiseAfterCache3, undefined);
+
+        assert.notEqual(runPromise1, runPromise2);
+        assert.notEqual(runPromise2, runPromise3);
+        assert.notEqual(runPromise3, runPromise1);
+    });
 });
