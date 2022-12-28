@@ -1,4 +1,4 @@
-import {createReadStream} from 'node:fs';
+import {createReadStream, constants} from 'node:fs';
 import fileSystem from 'node:fs/promises';
 import path from 'node:path';
 import readline from 'node:readline';
@@ -177,14 +177,29 @@ export function compareObject(
     return 0;
 }
 
+export async function getHasAccessToDirectory(...args: Array<string>): Promise<boolean> {
+    try {
+        // eslint-disable-next-line no-bitwise
+        await fileSystem.access(path.join(...args), constants.R_OK | constants.W_OK);
+        return true;
+        // eslint-disable-next-line no-empty
+    } catch {}
+    return false;
+}
+
+export async function makeDirectory(...args: Array<string>): Promise<void> {
+    const pathToFolder: string = path.join(...args);
+    const hasAccessToDirectory = await getHasAccessToDirectory(pathToFolder);
+
+    if (!hasAccessToDirectory) {
+        await fileSystem.mkdir(pathToFolder);
+    }
+}
+
 export async function makeDatabaseBackup(pathToDatabase: string): Promise<void> {
     const backupFolder: string = pathToDatabase + '-backup';
 
-    try {
-        await fileSystem.mkdir(backupFolder);
-    } catch {
-        console.error(`[Petsdb]: Can not make folder! Path: ${backupFolder}`);
-    }
+    await makeDirectory(backupFolder);
 
     const backUpFilePath = `${path.join(backupFolder, String(pathToDatabase.split('/').pop()))}-${new Date()
         .toISOString()

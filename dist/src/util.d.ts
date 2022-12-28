@@ -16,4 +16,6 @@ export declare function compareNumber(numberA: number, numberB: number): number;
 export declare function compareString(stringA: string, stringB: string): number;
 export declare function compareBoolean(booleanA: boolean, booleanB: boolean): number;
 export declare function compareObject(itemA: Record<string, unknown>, itemB: Record<string, unknown>, sort: Record<string, unknown>): number;
+export declare function getHasAccessToDirectory(...args: Array<string>): Promise<boolean>;
+export declare function makeDirectory(...args: Array<string>): Promise<void>;
 export declare function makeDatabaseBackup(pathToDatabase: string): Promise<void>;
