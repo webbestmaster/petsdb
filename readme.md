@@ -1,18 +1,18 @@
 # PeTSDB - Pet's TypeScript DataBase
 
 [![GitHub license](https://img.shields.io/npm/l/petsdb)](https://github.com/webbestmaster/petsdb/blob/master/license)
-[![codecov](https://codecov.io/gh/webbestmaster/petsdb/branch/master/graph/badge.svg?token=X5SNICUPUQ)](https://codecov.io/gh/webbestmaster/petsdb)
-[![npm version](https://img.shields.io/npm/v/petsdb.svg?style=flat)](https://www.npmjs.com/package/petsdb)
+[![codecov](https://codecov.io/gh/webbestmaster/petsdb/branch/master/graph/badge.svg)](https://codecov.io/gh/webbestmaster/petsdb)
+[![npm version](https://img.shields.io/npm/v/petsdb.svg)](https://www.npmjs.com/package/petsdb)
 [![Known Vulnerabilities](https://snyk.io/test/github/webbestmaster/petsdb/badge.svg)](https://snyk.io/test/github/webbestmaster/petsdb)
-[![dependency-count](https://badgen.net/bundlephobia/dependency-count/petsdb)](https://badgen.net/bundlephobia/dependency-count/petsdb)
+[![dependency count](https://badgen.net/bundlephobia/dependency-count/petsdb)](https://badgen.net/bundlephobia/dependency-count/petsdb)
 [![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/webbestmaster/petsdb)](https://libraries.io/npm/petsdb)
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/petsdb)](https://bundlephobia.com/package/petsdb)
-[![node-current](https://img.shields.io/node/v/petsdb)](https://nodejs.org/en/docs/)
+[![node version](https://img.shields.io/node/v/petsdb)](https://nodejs.org/en/docs)
 [![Github CI](https://github.com/webbestmaster/petsdb/actions/workflows/github-ci.yml/badge.svg)](https://github.com/webbestmaster/petsdb/actions/workflows/github-ci.yml)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/webbestmaster/petsdb/github-ci.yml)](https://github.com/webbestmaster/petsdb/actions/workflows/github-ci.yml)
-[![npm type definitions](https://img.shields.io/npm/types/petsdb)](https://www.typescriptlang.org/)
+[![type definitions](https://img.shields.io/npm/types/petsdb)](https://www.typescriptlang.org)
 [![Website](https://img.shields.io/website?url=https://github.com/webbestmaster/petsdb)](https://github.com/webbestmaster/petsdb)
-[![GitHub stars](https://img.shields.io/github/stars/webbestmaster/petsdb?style=social)](https://github.com/webbestmaster/petsdb/)
+[![GitHub stars](https://img.shields.io/github/stars/webbestmaster/petsdb?style=social)](https://github.com/webbestmaster/petsdb)
 
 Small database for _prototyping_ and _pet_ projects. Not for production.
 
