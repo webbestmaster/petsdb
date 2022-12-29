@@ -132,8 +132,10 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
     }
 
     async create(itemData: ItemType): Promise<void> {
+        // eslint-disable-next-line id-match
         const tsdbItemData: PetsdbItemType<ItemType> = Object.assign<ItemType, {_id: string}>(
             deepCopy<ItemType>(itemData),
+            // eslint-disable-next-line id-match
             {_id: makeRandomString()}
         );
 
@@ -211,6 +213,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
 
         // eslint-disable-next-line no-loops/no-loops
         for (const dataItem of itemToUpdateList) {
+            // eslint-disable-next-line id-match
             const itemToUpdate: PetsdbItemType<ItemType> = {...newItemData, _id: dataItem._id};
             const updatedItemIndex = this.dataList.indexOf(dataItem);
 
@@ -227,6 +230,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         for (const dataItem of itemToRemoveList) {
             const itemToDeleteUpdated: PetsdbItemType<ItemType> = {
                 ...dataItem,
+                // eslint-disable-next-line id-match
                 _id: dataItem._id + Petsdb.deleteIdPostfix,
             };
 

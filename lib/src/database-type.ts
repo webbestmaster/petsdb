@@ -1,3 +1,4 @@
+// eslint-disable-next-line id-match
 export type PetsdbItemType<DataType> = Readonly<DataType & {_id: string}>;
 
 export type PetsdbQueryType<ItemType extends Record<string, unknown>> = Partial<{
