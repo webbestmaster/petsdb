@@ -92,7 +92,10 @@ class Petsdb {
     }
     create(itemData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const tsdbItemData = Object.assign((0, util_1.deepCopy)(itemData), { _id: (0, util_1.makeRandomString)() });
+            // eslint-disable-next-line id-match
+            const tsdbItemData = Object.assign((0, util_1.deepCopy)(itemData), 
+            // eslint-disable-next-line id-match
+            { _id: (0, util_1.makeRandomString)() });
             yield promises_1.default.appendFile(this.dbPath, JSON.stringify(tsdbItemData) + '\n');
             this.dataList.push(tsdbItemData);
         });
@@ -146,6 +149,7 @@ class Petsdb {
             const itemToUpdateList = yield this.read(itemSelector);
             // eslint-disable-next-line no-loops/no-loops
             for (const dataItem of itemToUpdateList) {
+                // eslint-disable-next-line id-match
                 const itemToUpdate = Object.assign(Object.assign({}, newItemData), { _id: dataItem._id });
                 const updatedItemIndex = this.dataList.indexOf(dataItem);
                 yield promises_1.default.appendFile(this.dbPath, JSON.stringify(itemToUpdate) + '\n');
@@ -158,7 +162,9 @@ class Petsdb {
             const itemToRemoveList = yield this.read(itemSelector);
             // eslint-disable-next-line no-loops/no-loops
             for (const dataItem of itemToRemoveList) {
-                const itemToDeleteUpdated = Object.assign(Object.assign({}, dataItem), { _id: dataItem._id + Petsdb.deleteIdPostfix });
+                const itemToDeleteUpdated = Object.assign(Object.assign({}, dataItem), { 
+                    // eslint-disable-next-line id-match
+                    _id: dataItem._id + Petsdb.deleteIdPostfix });
                 yield promises_1.default.appendFile(this.dbPath, JSON.stringify(itemToDeleteUpdated) + '\n');
             }
             this.dataList = this.dataList.filter((dataItem) => {
