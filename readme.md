@@ -7,7 +7,7 @@
 [![Github CI](https://github.com/webbestmaster/petsdb/actions/workflows/github-ci.yml/badge.svg)](https://github.com/webbestmaster/petsdb/actions/workflows/github-ci.yml)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/webbestmaster/petsdb/github-ci.yml)
 ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/webbestmaster/petsdb)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/petsdb)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/petsdb)](https://bundlephobia.com/package/petsdb)
 ![node-current](https://img.shields.io/node/v/petsdb)
 ![npm type definitions](https://img.shields.io/npm/types/petsdb)
 [![dependency-count](https://badgen.net/bundlephobia/dependency-count/petsdb)](https://badgen.net/bundlephobia/dependency-count/petsdb)
