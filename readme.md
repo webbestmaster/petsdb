@@ -10,9 +10,10 @@
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/petsdb)
 ![node-current](https://img.shields.io/node/v/petsdb)
 ![npm type definitions](https://img.shields.io/npm/types/petsdb)
+[![dependency-count](https://badgen.net/bundlephobia/dependency-count/petsdb)](https://badgen.net/bundlephobia/dependency-count/petsdb)
 [![GitHub stars](https://img.shields.io/github/stars/webbestmaster/petsdb?style=social)](https://github.com/webbestmaster/petsdb/)
 
-Small database for _prototyping_ and _pet_ projects.
+Small database for _prototyping_ and _pet_ projects. Not for production.
 
 **Embedded persistent database for Node.js, 100% TypeScript/JavaScript, no binary dependency.**
 
