@@ -17,23 +17,21 @@ exports.Petsdb = void 0;
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 const promises_1 = __importDefault(require("node:fs/promises"));
 const util_1 = require("./util");
+const queue_1 = require("./queue");
 class Petsdb {
     constructor(initialConfig) {
         this.dbPath = '';
         this.dataList = [];
         const { dbPath } = initialConfig;
         this.dbPath = dbPath;
+        Petsdb.queueByPath[this.dbPath] = Petsdb.queueByPath[this.dbPath] || new queue_1.Queue();
         return this;
     }
+    getQueue() {
+        return Petsdb.queueByPath[this.dbPath];
+    }
     run() {
-        const currentRunningPromise = Petsdb.runningPromise[this.dbPath];
-        if (currentRunningPromise) {
-            return currentRunningPromise;
-        }
-        // this promise should be removed when this.innerRun() finished
-        const newRunning = this.innerRun();
-        Petsdb.runningPromise[this.dbPath] = newRunning;
-        return newRunning;
+        return this.getQueue().add(() => this.innerRun());
     }
     innerRun() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -75,13 +73,15 @@ class Petsdb {
             yield promises_1.default.writeFile(this.dbPath, dataInStringList.join('\n') + '\n', { encoding: 'utf8' });
             console.log('[Petsdb]: Petsdb data base file has been updated');
             this.dataList = filteredDataList;
-            // remove running promise
-            // eslint-disable-next-line no-undefined
-            Petsdb.runningPromise[this.dbPath] = undefined;
             console.log(`[Petsdb]: Petsdb has been loaded. DbPath ${this.dbPath}.`);
         });
     }
     drop() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.getQueue().add(() => this.dropInner());
+        });
+    }
+    dropInner() {
         return __awaiter(this, void 0, void 0, function* () {
             yield promises_1.default.writeFile(this.dbPath, '');
             this.dataList = [];
@@ -91,6 +91,11 @@ class Petsdb {
         return this.dataList.length;
     }
     create(itemData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.getQueue().add(() => this.createInner(itemData));
+        });
+    }
+    createInner(itemData) {
         return __awaiter(this, void 0, void 0, function* () {
             // eslint-disable-next-line id-match
             const tsdbItemData = Object.assign((0, util_1.deepCopy)(itemData), 
@@ -146,6 +151,11 @@ class Petsdb {
     }
     update(itemSelector, newItemData) {
         return __awaiter(this, void 0, void 0, function* () {
+            return this.getQueue().add(() => this.updateInner(itemSelector, newItemData));
+        });
+    }
+    updateInner(itemSelector, newItemData) {
+        return __awaiter(this, void 0, void 0, function* () {
             const itemToUpdateList = yield this.read(itemSelector);
             // eslint-disable-next-line no-loops/no-loops
             for (const dataItem of itemToUpdateList) {
@@ -158,6 +168,11 @@ class Petsdb {
         });
     }
     delete(itemSelector) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.getQueue().add(() => this.deleteInner(itemSelector));
+        });
+    }
+    deleteInner(itemSelector) {
         return __awaiter(this, void 0, void 0, function* () {
             const itemToRemoveList = yield this.read(itemSelector);
             // eslint-disable-next-line no-loops/no-loops
@@ -174,6 +189,6 @@ class Petsdb {
     }
 }
 exports.Petsdb = Petsdb;
-Petsdb.runningPromise = {};
+Petsdb.queueByPath = {};
 Petsdb.deleteIdPostfix = '-$$delete';
 //# sourceMappingURL=database.js.map

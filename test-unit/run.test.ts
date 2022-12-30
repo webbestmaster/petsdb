@@ -96,7 +96,7 @@ describe('Running', () => {
         const petsdb3: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
         const petsdb4: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
         const petsdb5: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
-        const itemCount = 200;
+        const itemCount = 5;
 
         await petsdb1.run();
         await petsdb1.drop();
@@ -130,83 +130,4 @@ describe('Running', () => {
         assert.deepEqual(await petsdb3.read({}), await petsdb4.read({}));
         assert.deepEqual(await petsdb4.read({}), await petsdb5.read({}));
     });
-
-    /*
-    test('Run several different data base simultaneously -> get the same promise', async () => {
-        const petsdb1: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
-        const petsdb2: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase2});
-        const petsdb3: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase3});
-
-        await petsdb1.run();
-        await petsdb1.drop();
-        await petsdb2.run();
-        await petsdb2.drop();
-        await petsdb3.run();
-        await petsdb3.drop();
-
-        const testDataList: Array<TestDataType> = generateTestDataList(20);
-
-        await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb1.create(dataItem))
-        );
-        await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb2.create(dataItem))
-        );
-        await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb3.create(dataItem))
-        );
-
-        const runPromise1 = petsdb1.run();
-        const runPromise2 = petsdb2.run();
-        const runPromise3 = petsdb3.run();
-
-        assert.notEqual(runPromise1, runPromise2);
-        assert.notEqual(runPromise2, runPromise3);
-        assert.notEqual(runPromise3, runPromise1);
-    });
-*/
-
-    /*
-    // eslint-disable-next-line max-statements
-    test('Each awaited .run() should return different promise', async () => {
-        const petsdb1: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
-
-        // Attempt - 1
-        const runPromise1 = petsdb1.run();
-        const runPromiseBeforeCache1: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
-
-        assert.equal(runPromiseBeforeCache1 instanceof Promise, true);
-        await runPromise1;
-        const runPromiseAfterCache1: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
-
-        // eslint-disable-next-line no-undefined
-        assert.equal(runPromiseAfterCache1, undefined);
-
-        // Attempt - 2
-        const runPromise2 = petsdb1.run();
-        const runPromiseBeforeCache2: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
-
-        assert.equal(runPromiseBeforeCache2 instanceof Promise, true);
-        await runPromise2;
-        const runPromiseAfterCache2: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
-
-        // eslint-disable-next-line no-undefined
-        assert.equal(runPromiseAfterCache2, undefined);
-
-        // Attempt - 3
-        const runPromise3 = petsdb1.run();
-        const runPromiseBeforeCache3: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
-
-        assert.equal(runPromiseBeforeCache3 instanceof Promise, true);
-        await runPromise3;
-        const runPromiseAfterCache3: Promise<void> | void = Petsdb.runningPromise[pathToTestDataBase];
-
-        // eslint-disable-next-line no-undefined
-        assert.equal(runPromiseAfterCache3, undefined);
-
-        assert.notEqual(runPromise1, runPromise2);
-        assert.notEqual(runPromise2, runPromise3);
-        assert.notEqual(runPromise3, runPromise1);
-    });
-*/
 });

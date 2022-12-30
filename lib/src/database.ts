@@ -22,34 +22,30 @@ import {
     PetsdbReadPageResultType,
 } from './database-type';
 
+import {Queue} from './queue';
+
 export class Petsdb<ItemType extends Record<string, unknown>> {
-    static readonly runningPromise: Record<string, Promise<void> | void> = {};
+    static readonly queueByPath: Record<string, Queue> = {};
     readonly dbPath: string = '';
-
     private dataList: Array<PetsdbItemType<ItemType>> = [];
-
     static readonly deleteIdPostfix = '-$$delete';
 
     constructor(initialConfig: PetsdbInitialConfigType) {
         const {dbPath} = initialConfig;
 
         this.dbPath = dbPath;
+
+        Petsdb.queueByPath[this.dbPath] = Petsdb.queueByPath[this.dbPath] || new Queue();
+
         return this;
     }
 
-    async run(): Promise<void> {
-        const currentRunningPromise: Promise<void> | void = Petsdb.runningPromise[this.dbPath];
+    private getQueue(): Queue {
+        return Petsdb.queueByPath[this.dbPath];
+    }
 
-        if (currentRunningPromise) {
-            // wait previous .run()
-            await currentRunningPromise;
-        }
-
-        const newRunning: Promise<void> = this.innerRun();
-
-        Petsdb.runningPromise[this.dbPath] = newRunning;
-
-        return newRunning;
+    run(): Promise<void> {
+        return this.getQueue().add((): Promise<void> => this.innerRun());
     }
 
     private async innerRun(): Promise<void> {
@@ -109,19 +105,17 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         }
 
         await fileSystem.writeFile(this.dbPath, dataInStringList.join('\n') + '\n', {encoding: 'utf8'});
-
         console.log('[Petsdb]: Petsdb data base file has been updated');
 
         this.dataList = filteredDataList;
-
-        // remove running promise
-        // eslint-disable-next-line no-undefined
-        Petsdb.runningPromise[this.dbPath] = undefined;
-
         console.log(`[Petsdb]: Petsdb has been loaded. DbPath ${this.dbPath}.`);
     }
 
     async drop(): Promise<void> {
+        return this.getQueue().add(() => this.dropInner());
+    }
+
+    private async dropInner(): Promise<void> {
         await fileSystem.writeFile(this.dbPath, '');
 
         this.dataList = [];
@@ -132,6 +126,10 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
     }
 
     async create(itemData: ItemType): Promise<void> {
+        return this.getQueue().add(() => this.createInner(itemData));
+    }
+
+    private async createInner(itemData: ItemType): Promise<void> {
         // eslint-disable-next-line id-match
         const tsdbItemData: PetsdbItemType<ItemType> = Object.assign<ItemType, {_id: string}>(
             deepCopy<ItemType>(itemData),
@@ -209,6 +207,10 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
     }
 
     async update(itemSelector: PetsdbQueryType<ItemType>, newItemData: ItemType): Promise<void> {
+        return this.getQueue().add(() => this.updateInner(itemSelector, newItemData));
+    }
+
+    private async updateInner(itemSelector: PetsdbQueryType<ItemType>, newItemData: ItemType): Promise<void> {
         const itemToUpdateList: Array<PetsdbItemType<ItemType>> = await this.read(itemSelector);
 
         // eslint-disable-next-line no-loops/no-loops
@@ -224,6 +226,10 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
     }
 
     async delete(itemSelector: PetsdbQueryType<ItemType>): Promise<void> {
+        return this.getQueue().add(() => this.deleteInner(itemSelector));
+    }
+
+    private async deleteInner(itemSelector: PetsdbQueryType<ItemType>): Promise<void> {
         const itemToRemoveList: Array<PetsdbItemType<ItemType>> = await this.read(itemSelector);
 
         // eslint-disable-next-line no-loops/no-loops
