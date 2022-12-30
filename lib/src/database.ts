@@ -37,15 +37,15 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         return this;
     }
 
-    run(): Promise<void> {
+    async run(): Promise<void> {
         const currentRunningPromise: Promise<void> | void = Petsdb.runningPromise[this.dbPath];
 
         if (currentRunningPromise) {
-            return currentRunningPromise;
+            // wait previous .run()
+            await currentRunningPromise;
         }
 
-        // this promise should be removed when this.innerRun() finished
-        const newRunning = this.innerRun();
+        const newRunning: Promise<void> = this.innerRun();
 
         Petsdb.runningPromise[this.dbPath] = newRunning;
 
