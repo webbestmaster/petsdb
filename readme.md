@@ -12,6 +12,7 @@
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/webbestmaster/petsdb/github-ci.yml)](https://github.com/webbestmaster/petsdb/actions/workflows/github-ci.yml)
 [![Type definitions](https://img.shields.io/npm/types/petsdb)](https://www.typescriptlang.org)
 [![Website](https://img.shields.io/website?url=https://github.com/webbestmaster/petsdb)](https://github.com/webbestmaster/petsdb)
+[![CodeFactor](https://www.codefactor.io/repository/github/webbestmaster/petsdb/badge)](https://www.codefactor.io/repository/github/webbestmaster/petsdb)
 [![Package Quality](https://packagequality.com/shield/petsdb.svg)](https://packagequality.com/#?package=petsdb)
 [![GitHub stars](https://img.shields.io/github/stars/webbestmaster/petsdb?style=social)](https://github.com/webbestmaster/petsdb)
 
