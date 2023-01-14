@@ -5,7 +5,6 @@
 [![npm version](https://img.shields.io/npm/v/petsdb.svg)](https://www.npmjs.com/package/petsdb)
 [![Known Vulnerabilities](https://snyk.io/test/github/webbestmaster/petsdb/badge.svg)](https://snyk.io/test/github/webbestmaster/petsdb)
 [![Dependency count](https://badgen.net/bundlephobia/dependency-count/petsdb)](https://libraries.io/npm/petsdb)
-[![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/webbestmaster/petsdb)](https://libraries.io/npm/petsdb)
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/petsdb)](https://bundlephobia.com/package/petsdb)
 [![nodejs version](https://img.shields.io/node/v/petsdb)](https://nodejs.org/en/docs)
 [![Github CI](https://github.com/webbestmaster/petsdb/actions/workflows/github-ci.yml/badge.svg)](https://github.com/webbestmaster/petsdb/actions/workflows/github-ci.yml)
@@ -16,6 +15,9 @@
 [![Package Quality](https://packagequality.com/shield/petsdb.svg)](https://packagequality.com/#?package=petsdb)
 [![GitHub stars](https://img.shields.io/github/stars/webbestmaster/petsdb?style=social)](https://github.com/webbestmaster/petsdb)
 
+<!--
+[![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/webbestmaster/petsdb)](https://libraries.io/npm/petsdb)
+-->
 
 Small database for _prototyping_ and _pet_ projects. Not for production.
 
