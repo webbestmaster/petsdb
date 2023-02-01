@@ -18,29 +18,34 @@ export class Queue {
     }
 
     add(runningTask: QueueRunningTaskType): Promise<void> {
-        return new Promise<void>(
-            (resolve: PromiseResolveType<void>, reject: PromiseResolveType<Error>): Promise<void> => {
-                this.taskList.push({reject, resolve, task: runningTask});
+        return new Promise<void>((resolve: PromiseResolveType<void>, reject: PromiseResolveType<Error>): void => {
+            this.taskList.push({reject, resolve, task: runningTask});
 
-                return this.isWorking ? Promise.resolve() : this.run();
+            if (!this.isWorking) {
+                this.run();
             }
-        );
+        });
     }
 
     private async run() {
         this.isWorking = true;
+
         const [fistTask] = this.taskList;
+
+        this.taskList.splice(0, 1);
 
         if (fistTask) {
             try {
                 await fistTask.task();
                 fistTask.resolve();
-            } catch {
-                fistTask.reject(new Error('[Queue]: Task running with error!'));
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    fistTask.reject(error);
+                } else {
+                    fistTask.reject(new Error('[Queue]: Task running with error!'));
+                }
             }
         }
-
-        this.taskList.splice(0, 1);
 
         if (this.taskList.length > 0) {
             await this.run();

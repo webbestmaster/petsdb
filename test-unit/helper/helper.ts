@@ -1,8 +1,8 @@
+/* global setTimeout */
+
 import {makeRandomNumber, makeRandomString} from '../../lib/src/util';
 
 export const pathToTestDataBase = 'test-unit/test-data/test-db';
-export const pathToTestDataBase2 = 'test-unit/test-data/test-db-2';
-export const pathToTestDataBase3 = 'test-unit/test-data/test-db-3';
 
 export type TestDataType = {
     bar: string;
@@ -54,4 +54,10 @@ export function generateTestDataList(count: number): Array<TestDataType> {
             };
         }
     );
+}
+
+export function waitForTime(timeInMs: number): Promise<void> {
+    return new Promise<void>((resolve: () => void) => {
+        setTimeout(resolve, timeInMs);
+    });
 }

@@ -20,23 +20,30 @@ class Queue {
     add(runningTask) {
         return new Promise((resolve, reject) => {
             this.taskList.push({ reject, resolve, task: runningTask });
-            return this.isWorking ? Promise.resolve() : this.run();
+            if (!this.isWorking) {
+                this.run();
+            }
         });
     }
     run() {
         return __awaiter(this, void 0, void 0, function* () {
             this.isWorking = true;
             const [fistTask] = this.taskList;
+            this.taskList.splice(0, 1);
             if (fistTask) {
                 try {
                     yield fistTask.task();
                     fistTask.resolve();
                 }
-                catch (_a) {
-                    fistTask.reject(new Error('[Queue]: Task running with error!'));
+                catch (error) {
+                    if (error instanceof Error) {
+                        fistTask.reject(error);
+                    }
+                    else {
+                        fistTask.reject(new Error('[Queue]: Task running with error!'));
+                    }
                 }
             }
-            this.taskList.splice(0, 1);
             if (this.taskList.length > 0) {
                 yield this.run();
                 return;
