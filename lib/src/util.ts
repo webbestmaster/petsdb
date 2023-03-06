@@ -1,3 +1,4 @@
+/* global structuredClone */
 import {createReadStream, constants} from 'node:fs';
 import fileSystem from 'node:fs/promises';
 import path from 'node:path';
@@ -25,7 +26,7 @@ export async function readFileLineByLine(pathToFile: string): Promise<Array<stri
 }
 
 export function deepCopy<DataType>(object: DataType): DataType {
-    return JSON.parse(JSON.stringify(object));
+    return structuredClone(object);
 }
 
 export function makeRandomString(): string {

@@ -20,6 +20,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeDatabaseBackup = exports.makeDirectory = exports.getHasAccessToDirectory = exports.compareObject = exports.compareBoolean = exports.compareString = exports.compareNumber = exports.getSortByPath = exports.getIsIncluded = exports.getIsArrayIncludedByRegexp = exports.getIsArrayIncludedByValue = exports.getIsNotEmptyString = exports.makeRandomNumber = exports.makeRandomString = exports.deepCopy = exports.readFileLineByLine = void 0;
+/* global structuredClone */
 const node_fs_1 = require("node:fs");
 const promises_1 = __importDefault(require("node:fs/promises"));
 const node_path_1 = __importDefault(require("node:path"));
@@ -61,7 +62,7 @@ function readFileLineByLine(pathToFile) {
 }
 exports.readFileLineByLine = readFileLineByLine;
 function deepCopy(object) {
-    return JSON.parse(JSON.stringify(object));
+    return structuredClone(object);
 }
 exports.deepCopy = deepCopy;
 function makeRandomString() {
