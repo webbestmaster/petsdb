@@ -20,22 +20,22 @@ export type PetsdbSortType<ItemType extends Record<string, unknown>> = Partial<{
         : never;
 }>;
 
-export type PetsdbInitialConfigType = {
+export interface PetsdbInitialConfigType {
     dbPath: string;
-};
+}
 
-export type PetsdbReadPageConfigType<ItemType extends Record<string, unknown>> = {
+export interface PetsdbReadPageConfigType<ItemType extends Record<string, unknown>> {
     pageIndex: number;
     pageSize: number;
     sort: PetsdbSortType<ItemType>;
-};
-export type PetsdbReadPageResultType<ItemType extends Record<string, unknown>> = {
+}
+export interface PetsdbReadPageResultType<ItemType extends Record<string, unknown>> {
     list: Array<PetsdbItemType<ItemType>>;
     pageIndex: number;
     pageSize: number;
     sort: PetsdbSortType<ItemType>;
     totalItemCount: number;
     totalPageCount: number;
-};
+}
 
 export type PromiseResolveType<Result> = (result: Result) => unknown;

@@ -4,6 +4,7 @@ import {makeRandomNumber, makeRandomString} from '../../lib/src/util';
 
 export const pathToTestDataBase = 'test-unit/test-data/test-db';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TestDataType = {
     bar: string;
     foo: string;
@@ -41,7 +42,9 @@ export function generateTestDataList(count: number): Array<TestDataType> {
                         Number.NaN,
                         makeRandomNumber(1, 10),
                         makeRandomString(),
-                    ].sort((): number => Math.random() - 0.5);
+                    ].sort((): number => {
+                        return Math.random() - 0.5;
+                    });
 
                     return randomValue;
                 }),

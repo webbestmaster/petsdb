@@ -1,14 +1,14 @@
-import assert from 'node:assert/strict';
 import fileSystem from 'node:fs/promises';
 
-import {describe, test} from '@jest/globals';
+import {describe, it, expect} from '@jest/globals';
 
 import {Petsdb} from '../lib/export';
 
 import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/helper';
 
-describe('Create', () => {
-    test('Add data to database', async () => {
+describe('create', () => {
+    it('add data to database', async () => {
+        expect.assertions(4);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -20,12 +20,12 @@ describe('Create', () => {
         await petsdb.create(testData2);
         await petsdb.create(testData3);
 
-        assert.equal(petsdb.getSize(), 3);
+        expect(petsdb.getSize()).toBe(3);
 
         const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: 'utf8'});
 
-        assert.equal(fileContent.includes(testData1.id), true);
-        assert.equal(fileContent.includes(testData2.id), true);
-        assert.equal(fileContent.includes(testData3.id), true);
+        expect(fileContent).toContain(testData1.id);
+        expect(fileContent).toContain(testData2.id);
+        expect(fileContent).toContain(testData3.id);
     });
 });

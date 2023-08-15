@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-import {describe, test} from '@jest/globals';
+import {describe, it} from '@jest/globals';
 
 import {Petsdb, PetsdbItemType, PetsdbReadPageResultType} from '../lib/export';
 
@@ -8,9 +8,9 @@ import {compareBoolean, compareNumber, compareString, makeRandomString} from '..
 
 import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/helper';
 
-describe('Read page', () => {
+describe('read page', () => {
     // eslint-disable-next-line max-statements
-    test('Read page by simple selector', async () => {
+    it('read page by simple selector', async () => {
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -96,7 +96,7 @@ describe('Read page', () => {
     });
 
     // eslint-disable-next-line max-statements
-    test('Read page by pageSize = 0, return all items, pageIndex is not matter', async () => {
+    it('Read page by pageSize = 0, return all items, pageIndex is not matter', async () => {
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -143,7 +143,7 @@ describe('Read page', () => {
         assert.deepEqual(pageData.sort, {id: 1});
     });
 
-    test('Read-page by non-exists selector - get empty array of items', async () => {
+    it('Read-page by non-exists selector - get empty array of items', async () => {
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 

@@ -1,11 +1,11 @@
 export type PromiseResolveType<Result> = (result: Result) => unknown;
-export type QueueRunningTaskType = () => Promise<unknown> | unknown;
+export type QueueRunningTaskType = () => Promise<unknown>;
 
-type QueueTaskType = {
+interface QueueTaskType {
     reject: PromiseResolveType<Error>;
-    resolve: PromiseResolveType<void>;
+    resolve: PromiseResolveType<undefined>;
     task: QueueRunningTaskType;
-};
+}
 
 export class Queue {
     private taskList: Array<QueueTaskType> = [];
@@ -17,27 +17,31 @@ export class Queue {
         this.isWorking = false;
     }
 
-    add(runningTask: QueueRunningTaskType): Promise<void> {
-        return new Promise<void>((resolve: PromiseResolveType<void>, reject: PromiseResolveType<Error>): void => {
-            this.taskList.push({reject, resolve, task: runningTask});
+    add(runningTask: QueueRunningTaskType): Promise<undefined> {
+        return new Promise<undefined>(
+            (resolve: PromiseResolveType<undefined>, reject: PromiseResolveType<Error>): undefined => {
+                this.taskList.push({reject, resolve, task: runningTask});
 
-            if (!this.isWorking) {
-                this.run();
+                if (!this.isWorking) {
+                    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                    this.run();
+                }
             }
-        });
+        );
     }
 
     private async run() {
         this.isWorking = true;
 
-        const [fistTask] = this.taskList;
+        const fistTask = this.taskList.at(0);
 
         this.taskList.splice(0, 1);
 
         if (fistTask) {
             try {
                 await fistTask.task();
-                fistTask.resolve();
+                // eslint-disable-next-line no-undefined, unicorn/no-useless-undefined
+                fistTask.resolve(undefined);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     fistTask.reject(error);

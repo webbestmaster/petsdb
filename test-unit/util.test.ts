@@ -1,6 +1,4 @@
-import assert from 'node:assert/strict';
-
-import {describe, test} from '@jest/globals';
+import {describe, it, expect} from '@jest/globals';
 
 import {
     compareBoolean,
@@ -11,74 +9,83 @@ import {
     getSortByPath,
 } from '../lib/src/util';
 
-describe('Util', () => {
-    test('Compare strings', () => {
+describe('util', () => {
+    it('compare strings', () => {
+        expect.assertions(2);
         const list: Array<string> = ['и', 'з', 'а', 'в', 'г', 'ё', 'д', 'б', 'е', 'ж'];
 
-        const sortedAbsList: Array<string> = list.sort((itemA: string, itemB: string): number =>
-            compareString(itemA, itemB)
-        );
+        const sortedAbsList: Array<string> = list.sort((itemA: string, itemB: string): number => {
+            return compareString(itemA, itemB);
+        });
 
-        assert.deepEqual(sortedAbsList, ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и']);
+        expect(sortedAbsList).toStrictEqual(['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и']);
 
-        const sortedDescList: Array<string> = list.sort(
-            (itemA: string, itemB: string): number => -compareString(itemA, itemB)
-        );
+        const sortedDescList: Array<string> = list.sort((itemA: string, itemB: string): number => {
+            return -compareString(itemA, itemB);
+        });
 
-        assert.deepEqual(sortedDescList, ['и', 'з', 'ж', 'ё', 'е', 'д', 'г', 'в', 'б', 'а']);
+        expect(sortedDescList).toStrictEqual(['и', 'з', 'ж', 'ё', 'е', 'д', 'г', 'в', 'б', 'а']);
     });
 
-    test('Compare number', () => {
+    it('compare number', () => {
+        expect.assertions(2);
         const list: Array<number> = [1, 4, 3, 2, 5];
 
-        const sortedAbsList: Array<number> = list.sort((itemA: number, itemB: number): number =>
-            compareNumber(itemA, itemB)
-        );
+        const sortedAbsList: Array<number> = list.sort((itemA: number, itemB: number): number => {
+            return compareNumber(itemA, itemB);
+        });
 
-        assert.deepEqual(sortedAbsList, [1, 2, 3, 4, 5]);
+        expect(sortedAbsList).toStrictEqual([1, 2, 3, 4, 5]);
 
-        const sortedDescList: Array<number> = list.sort(
-            (itemA: number, itemB: number): number => -compareNumber(itemA, itemB)
-        );
+        const sortedDescList: Array<number> = list.sort((itemA: number, itemB: number): number => {
+            return -compareNumber(itemA, itemB);
+        });
 
-        assert.deepEqual(sortedDescList, [5, 4, 3, 2, 1]);
+        expect(sortedDescList).toStrictEqual([5, 4, 3, 2, 1]);
     });
 
-    test('Compare boolean', () => {
+    it('compare boolean', () => {
+        expect.assertions(2);
         const list: Array<boolean> = [false, true, false, true, false];
 
-        const sortedAbsList: Array<boolean> = list.sort((itemA: boolean, itemB: boolean): number =>
-            compareBoolean(itemA, itemB)
-        );
+        const sortedAbsList: Array<boolean> = list.sort((itemA: boolean, itemB: boolean): number => {
+            return compareBoolean(itemA, itemB);
+        });
 
-        assert.deepEqual(sortedAbsList, [false, false, false, true, true]);
+        expect(sortedAbsList).toStrictEqual([false, false, false, true, true]);
 
-        const sortedDescList: Array<boolean> = list.sort(
-            (itemA: boolean, itemB: boolean): number => -compareBoolean(itemA, itemB)
-        );
+        const sortedDescList: Array<boolean> = list.sort((itemA: boolean, itemB: boolean): number => {
+            return -compareBoolean(itemA, itemB);
+        });
 
-        assert.deepEqual(sortedDescList, [true, true, false, false, false]);
+        expect(sortedDescList).toStrictEqual([true, true, false, false, false]);
     });
 
-    test('Check getIsArrayIncludedByRegexp', () => {
-        assert.equal(getIsArrayIncludedByRegexp(['I', 'am', 'the', 'test'], /th/), true);
-        assert.equal(getIsArrayIncludedByRegexp([1, 2, 3], /4/), false);
+    it('check getIsArrayIncludedByRegexp', () => {
+        expect.assertions(2);
+        expect(getIsArrayIncludedByRegexp(['I', 'am', 'the', 'test'], /th/u)).toBe(true);
+        expect(getIsArrayIncludedByRegexp([1, 2, 3], /4/u)).toBe(false);
     });
 
-    test('Check getSortByPath', () => {
-        assert.deepEqual(getSortByPath({check: {test: {now: 'test'}}}, {check: {test: {now: 1}}}), {
+    it('check getSortByPath', () => {
+        expect.assertions(3);
+        expect(getSortByPath({check: {test: {now: 'test'}}}, {check: {test: {now: 1}}})).toStrictEqual({
             direction: 1,
             value: 'test',
         });
-        assert.throws(() => getSortByPath({check: {test: {now: {test: {more: true}}}}}, {check: {test: {now: 1}}}));
-        assert.throws(() => getSortByPath({check: {small: true}}, {check: {test: {now: 1}}}));
+        expect(() => {
+            return getSortByPath({check: {test: {now: {test: {more: true}}}}}, {check: {test: {now: 1}}});
+        }).toThrow('Can not find value by');
+        expect(() => {
+            return getSortByPath({check: {small: true}}, {check: {test: {now: 1}}});
+        }).toThrow('Can not find value by');
     });
 
-    test('Check compareObject', () => {
-        // check for non comparing objects
-        assert.equal(
-            compareObject({check: {test: {now: true}}}, {check: {test: {now: 'test'}}}, {check: {test: {now: 1}}}),
-            0
-        );
+    it('check compareObject', () => {
+        expect.assertions(1);
+        // Check for non comparing objects
+        expect(
+            compareObject({check: {test: {now: true}}}, {check: {test: {now: 'test'}}}, {check: {test: {now: 1}}})
+        ).toBe(0);
     });
 });

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-import {describe, test} from '@jest/globals';
+import {describe, it} from '@jest/globals';
 
 import {Queue} from '../lib/src/queue';
 
@@ -8,14 +8,14 @@ import {waitForTime} from './helper/helper';
 
 const defaultTimeOut = 50;
 
-describe('Queue', () => {
-    test('Constructor', () => {
+describe('queue', () => {
+    it('constructor', () => {
         const queue = new Queue();
 
         assert.equal(queue instanceof Queue, true);
     });
 
-    test('Add task', async () => {
+    it('Add task', async () => {
         const queue = new Queue();
 
         let increaseMe = 0;
@@ -28,7 +28,7 @@ describe('Queue', () => {
         assert.equal(increaseMe, 1);
     });
 
-    test('Check queue order', async () => {
+    it('Check queue order', async () => {
         const queue = new Queue();
 
         let increaseMe = 0;
@@ -48,7 +48,7 @@ describe('Queue', () => {
         assert.equal(increaseMe, 2);
     });
 
-    test('Add task with known/regular Error', async () => {
+    it('Add task with known/regular Error', async () => {
         const queue = new Queue();
 
         let increaseMe = 0;
@@ -78,7 +78,7 @@ describe('Queue', () => {
         assert.equal(isErrorCaught, true);
     });
 
-    test('Add task with unknown Error', async () => {
+    it('Add task with unknown Error', async () => {
         const queue = new Queue();
 
         let increaseMe = 0;

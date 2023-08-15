@@ -1,6 +1,8 @@
+/* eslint-disable multiline-comment-style, capitalized-comments, line-comment-position, multiline-comment-style */
+
 import assert from 'node:assert/strict';
 
-import {describe, test} from '@jest/globals';
+import {describe, it} from '@jest/globals';
 
 import {Petsdb} from '../lib/export';
 
@@ -8,8 +10,8 @@ import {makeRandomNumber, makeRandomString} from '../lib/src/util';
 
 import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/helper';
 
-describe('Read One', () => {
-    test('Read-one by simple selector, get single item', async () => {
+describe('read one', () => {
+    it('read-one by simple selector, get single item', async () => {
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -31,7 +33,7 @@ describe('Read One', () => {
         assert.deepEqual(findResult?.id, itemToFind.id);
     });
 
-    test('Read-one by value in array / string', async () => {
+    it('Read-one by value in array / string', async () => {
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -50,7 +52,7 @@ describe('Read One', () => {
         assert.deepEqual(findResult?.id, randomItem.id);
     });
 
-    test('Read-one by value in array / number', async () => {
+    it('Read-one by value in array / number', async () => {
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -69,7 +71,7 @@ describe('Read One', () => {
         assert.deepEqual(findResult?.id, randomItem.id);
     });
 
-    test('Read-one by Regexp', async () => {
+    it('Read-one by Regexp', async () => {
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -88,7 +90,7 @@ describe('Read One', () => {
         assert.deepEqual(findResult?.id, randomItem.id);
     });
 
-    test('Read-one by empty object selector', async () => {
+    it('Read-one by empty object selector', async () => {
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -105,7 +107,7 @@ describe('Read One', () => {
         assert.notEqual(findResult, null);
     });
 
-    test('Read-one in object by regexp', async () => {
+    it('Read-one in object by regexp', async () => {
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -126,7 +128,7 @@ describe('Read One', () => {
         assert.equal(findResult?.more.data.text, randomItem.more.data.text);
     });
 
-    test('Read-one in array by regexp', async () => {
+    it('Read-one in array by regexp', async () => {
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -166,7 +168,7 @@ describe('Read One', () => {
     });
 */
 
-    test('Read-one by non-exists selector - get null', async () => {
+    it('Read-one by non-exists selector - get null', async () => {
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 

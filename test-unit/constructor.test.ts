@@ -1,15 +1,14 @@
-import assert from 'node:assert/strict';
-
-import {describe, test} from '@jest/globals';
+import {describe, it, expect} from '@jest/globals';
 
 import {Petsdb} from '../lib/export';
 
 import {TestDataType} from './helper/helper';
 
-describe('Constructor', () => {
-    test('Return instance of class', () => {
+describe('constructor', () => {
+    it('return instance of class', () => {
+        expect.assertions(1);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: '/no/matter/path'});
 
-        assert.equal(petsdb instanceof Petsdb, true);
+        expect(petsdb instanceof Petsdb).toBe(true);
     });
 });

@@ -1,9 +1,8 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
-import assert from 'node:assert/strict';
 import fileSystem from 'node:fs/promises';
 
-import {describe, test} from '@jest/globals';
+import {describe, it, expect} from '@jest/globals';
 
 import {Petsdb} from '../lib/export';
 
@@ -11,8 +10,9 @@ import {makeRandomNumber, makeRandomString} from '../lib/src/util';
 
 import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/helper';
 
-describe('Delete', () => {
-    test('Delete by simple selector', async () => {
+describe('delete', () => {
+    it('delete by simple selector', async () => {
+        expect.assertions(2);
         const idToDelete = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -26,7 +26,9 @@ describe('Delete', () => {
         testDataList[makeRandomNumber(10, 40)] = itemToDelete;
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+                return petsdb.create(dataItem);
+            })
         );
 
         const fullItemToDelete = await petsdb.readOne({id: idToDelete});
@@ -34,7 +36,7 @@ describe('Delete', () => {
         await petsdb.delete({id: idToDelete});
         const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: 'utf8'});
 
-        assert.equal(petsdb.getSize(), testDataList.length - 1);
-        assert.equal(fileContent.includes(`${fullItemToDelete?._id + Petsdb.deleteIdPostfix}`), true);
+        expect(petsdb.getSize()).toBe(testDataList.length - 1);
+        expect(fileContent).toContain(`${fullItemToDelete?._id + Petsdb.deleteIdPostfix}`);
     });
 });

@@ -1,36 +1,38 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, no-unused-vars */
-import {describe, test} from '@jest/globals';
+import {describe, it, expect} from '@jest/globals';
 
-import {Petsdb} from '../lib/export';
-import type {
-    PetsdbInitialConfigType,
-    PetsdbItemType,
-    PetsdbQueryType,
-    PetsdbReadPageConfigType,
-    PetsdbReadPageResultType,
-    PetsdbSortDirectionType,
-    PetsdbSortType,
-    PetsdbSortValueType,
+import {
+    Petsdb,
+    type PetsdbInitialConfigType,
+    type PetsdbItemType,
+    type PetsdbQueryType,
+    type PetsdbReadPageConfigType,
+    type PetsdbReadPageResultType,
+    type PetsdbSortDirectionType,
+    type PetsdbSortType,
+    type PetsdbSortValueType,
 } from '../lib/export';
 
 import {pathToTestDataBase} from './helper/helper';
 
-describe('Example', () => {
-    test('Example for readme.md', async () => {
-        // ### Creating/loading a database
-        type ExampleDataType = {
-            listOfNumber: Array<number>;
-            listOfString: Array<string>;
-            someData: {
-                data: {
-                    isExists: boolean;
-                    text: string;
-                };
-            };
-            someNumber: number;
-            someString: string;
+// eslint-disable-next-line  @typescript-eslint/consistent-type-definitions
+type ExampleDataType = {
+    listOfNumber: Array<number>;
+    listOfString: Array<string>;
+    someData: {
+        data: {
+            isExists: boolean;
+            text: string;
         };
+    };
+    someNumber: number;
+    someString: string;
+};
+describe('example', () => {
+    it('example for readme.md', async () => {
+        expect.assertions(0);
 
+        // ### Creating/loading a database
         const petsdb: Petsdb<ExampleDataType> = new Petsdb<ExampleDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -49,35 +51,36 @@ describe('Example', () => {
             someString: 'the string',
         };
 
-        // create document into dataBase, use async/await OR Promises
+        // Create document into dataBase, use async/await OR Promises
         await petsdb.create(someDocument);
 
         // ### Reading documents: read\readOne
 
-        // search by key\value
+        // Search by key\value
         await petsdb.read({someString: 'the string'});
 
-        // search by nested object
+        // Search by nested object
         await petsdb.read({someData: {data: {isExists: false}}});
 
-        // search by value of array
+        // Search by value of array
         await petsdb.read({listOfString: ['one']});
 
-        // search by RegExp instead of string
-        await petsdb.read({someString: /the/});
+        // Search by RegExp instead of string
+        await petsdb.read({someString: /the/u});
 
-        // search by RegExp instead of array of string
-        await petsdb.read({listOfString: /thr/});
+        // Search by RegExp instead of array of string
+        await petsdb.read({listOfString: /thr/u});
 
         // #### Reading documents: readPage
-        // get page by index 0, set page's size as 10 and sort by `someNumber`
-        await petsdb.readPage({someString: /the/}, {pageIndex: 0, pageSize: 10, sort: {someNumber: 1}});
 
-        // the same, but use for sort nested object
-        await petsdb.readPage({someString: /the/}, {pageIndex: 0, pageSize: 10, sort: {someData: {data: {text: -1}}}});
+        // Get page by index 0, set page's size as 10 and sort by `someNumber`
+        await petsdb.readPage({someString: /the/u}, {pageIndex: 0, pageSize: 10, sort: {someNumber: 1}});
+
+        // The same, but use for sort nested object
+        await petsdb.readPage({someString: /the/u}, {pageIndex: 0, pageSize: 10, sort: {someData: {data: {text: -1}}}});
 
         // #### Updating documents
-        const newDocument: ExampleDataType = {
+        const createdDocument: ExampleDataType = {
             listOfNumber: [100, 200, 300],
             listOfString: ['not one', 'not two', 'not three'],
             someData: {
@@ -90,7 +93,7 @@ describe('Example', () => {
             someString: 'new string',
         };
 
-        await petsdb.update({someNumber: 1}, newDocument);
+        await petsdb.update({someNumber: 1}, createdDocument);
 
         // #### Deleting documents
         await petsdb.delete({someNumber: 1});
@@ -98,7 +101,7 @@ describe('Example', () => {
         // #### Basic querying
         const myQuery: PetsdbQueryType<ExampleDataType> = {
             someData: {data: {isExists: true}},
-            someString: /one/,
+            someString: /one/u,
         };
 
         // #### Basic sorting

@@ -9,8 +9,7 @@ import {PetsdbSortDirectionType, PetsdbSortValueType} from './database-type';
 export async function readFileLineByLine(pathToFile: string): Promise<Array<string>> {
     const lineList: Array<string> = [];
 
-    // Note: we use the crlfDelay option to recognize all instances of CR LF
-    // ('\r\n') in text file as a single line break.
+    // Note: we use the crlfDelay option to recognize all instances of CR LF, ('\r\n') in text file as a single line break.
     const lineStream = readline.createInterface({
         crlfDelay: Number.POSITIVE_INFINITY,
         input: createReadStream(pathToFile),
@@ -50,7 +49,9 @@ export function getIsNotEmptyString(line: string): line is string {
 }
 
 export function getIsArrayIncludedByValue(fullArray: Array<unknown>, partialArray: Array<unknown>): boolean {
-    return partialArray.every((value: unknown): boolean => fullArray.includes(value));
+    return partialArray.every((value: unknown): boolean => {
+        return fullArray.includes(value);
+    });
 }
 
 export function getIsArrayIncludedByRegexp(fullArray: Array<unknown>, partialValue: RegExp): boolean {
@@ -85,7 +86,7 @@ export function getIsIncluded(item: Record<string, unknown>, partial: Record<str
             }
         }
 
-        // check by value
+        // Check by value
         if (itemValue === partialValue) {
             return true;
         }
@@ -107,7 +108,10 @@ export function getIsIncluded(item: Record<string, unknown>, partial: Record<str
     });
 }
 
-export type GetSortByPathResultType = {direction: PetsdbSortDirectionType; value: PetsdbSortValueType};
+export interface GetSortByPathResultType {
+    direction: PetsdbSortDirectionType;
+    value: PetsdbSortValueType;
+}
 
 // eslint-disable-next-line complexity
 export function getSortByPath(
@@ -200,13 +204,13 @@ export async function makeDirectory(...args: Array<string>): Promise<void> {
 }
 
 export async function makeDatabaseBackup(pathToDatabase: string): Promise<void> {
-    const backupFolder: string = pathToDatabase + '-backup';
+    const backupFolder = `${pathToDatabase}-backup`;
 
     await makeDirectory(backupFolder);
 
     const backUpFilePath = `${path.join(backupFolder, String(pathToDatabase.split('/').pop()))}-${new Date()
         .toISOString()
-        .replace(/:/g, '-')}`;
+        .replace(/:/gu, '-')}`;
 
     await fileSystem.copyFile(pathToDatabase, backUpFilePath);
 

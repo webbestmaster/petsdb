@@ -1,14 +1,14 @@
-import assert from 'node:assert/strict';
 import fileSystem from 'node:fs/promises';
 
-import {describe, test} from '@jest/globals';
+import {describe, it, expect} from '@jest/globals';
 
 import {Petsdb} from '../lib/export';
 
 import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/helper';
 
-describe('Drop', () => {
-    test('Just remove all data', async () => {
+describe('drop', () => {
+    it('just remove all data', async () => {
+        expect.assertions(3);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -20,15 +20,15 @@ describe('Drop', () => {
         await petsdb.create(testDataList[1]);
         await petsdb.create(testDataList[2]);
 
-        assert.equal(petsdb.getSize(), 3);
+        expect(petsdb.getSize()).toBe(3);
 
         await petsdb.drop();
         const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: 'utf8'});
 
-        // check database's content
-        assert.equal(petsdb.getSize(), 0);
+        // Check database's content
+        expect(petsdb.getSize()).toBe(0);
 
-        // check file's content
-        assert.equal(fileContent, '');
+        // Check file's content
+        expect(fileContent).toBe('');
     });
 });
