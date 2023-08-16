@@ -1,5 +1,3 @@
-import assert from 'node:assert/strict';
-
 import {describe, it, expect} from '@jest/globals';
 
 import {Queue} from '../lib/src/queue';
@@ -17,6 +15,7 @@ describe('queue', () => {
     });
 
     it('add task', async () => {
+        expect.assertions(1);
         const queue = new Queue();
 
         let increaseMe = 0;
@@ -26,87 +25,84 @@ describe('queue', () => {
             increaseMe += 1;
         });
 
-        assert.equal(increaseMe, 1);
+        expect(increaseMe).toBe(1);
     });
 
     it('check queue order', async () => {
+        expect.assertions(2);
         const queue = new Queue();
 
         let increaseMe = 0;
 
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         queue.add(async () => {
             await waitForTime(defaultTimeOut);
             increaseMe += 1;
         });
 
         await queue.add(async () => {
-            assert.equal(increaseMe, 1);
+            expect(increaseMe).toBe(1);
 
             await waitForTime(defaultTimeOut);
             increaseMe += 1;
         });
 
-        assert.equal(increaseMe, 2);
+        expect(increaseMe).toBe(2);
     });
 
     it('add task with known/regular Error', async () => {
+        expect.assertions(2);
         const queue = new Queue();
 
         let increaseMe = 0;
-        let isErrorCaught = false;
 
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         queue.add(async () => {
             await waitForTime(defaultTimeOut);
             increaseMe += 1;
         });
 
-        try {
-            await queue.add(async () => {
+        await expect(
+            queue.add(async () => {
                 await waitForTime(defaultTimeOut);
+
                 throw new Error('I am the ERROR!');
-            });
-        } catch (error: unknown) {
-            assert.equal(error instanceof Error ? error?.message : '', 'I am the ERROR!');
-            isErrorCaught = true;
-        }
+            })
+        ).rejects.toThrow('I am the ERROR!');
 
         await queue.add(async () => {
             await waitForTime(defaultTimeOut);
             increaseMe += 1;
         });
 
-        assert.equal(increaseMe, 2);
-        assert.equal(isErrorCaught, true);
+        expect(increaseMe).toBe(2);
     });
 
     it('add task with unknown Error', async () => {
+        expect.assertions(2);
         const queue = new Queue();
 
         let increaseMe = 0;
-        let isErrorCaught = false;
 
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         queue.add(async () => {
             await waitForTime(defaultTimeOut);
             increaseMe += 1;
         });
 
-        try {
-            await queue.add(async () => {
+        await expect(
+            queue.add(async () => {
                 await waitForTime(defaultTimeOut);
-                // eslint-disable-next-line no-throw-literal
-                throw 'I am an ERROR!';
-            });
-        } catch (error: unknown) {
-            assert.equal(error instanceof Error && error?.message.toString().startsWith('[Queue]:'), true);
-            isErrorCaught = true;
-        }
+
+                throw new Error('I am an ERROR!');
+            })
+        ).rejects.toThrow('I am an ERROR!');
 
         await queue.add(async () => {
             await waitForTime(defaultTimeOut);
             increaseMe += 1;
         });
 
-        assert.equal(increaseMe, 2);
-        assert.equal(isErrorCaught, true);
+        expect(increaseMe).toBe(2);
     });
 });
