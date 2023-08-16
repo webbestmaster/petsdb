@@ -1,6 +1,5 @@
-import assert from 'node:assert/strict';
-
-import {describe, it} from '@jest/globals';
+/* eslint-disable multiline-comment-style, capitalized-comments, line-comment-position, multiline-comment-style, jest/max-expects */
+import {describe, it, expect} from '@jest/globals';
 
 import {Petsdb, PetsdbItemType, PetsdbReadPageResultType} from '../lib/export';
 
@@ -11,6 +10,7 @@ import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/h
 describe('read page', () => {
     // eslint-disable-next-line max-statements
     it('read page by simple selector', async () => {
+        expect.assertions(10);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -19,7 +19,9 @@ describe('read page', () => {
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+                return petsdb.create(dataItem);
+            })
         );
 
         let pageData: PetsdbReadPageResultType<TestDataType> = await petsdb.readPage(
@@ -27,76 +29,120 @@ describe('read page', () => {
             {pageIndex: 1, pageSize: 10, sort: {id: 1}}
         );
 
-        assert.equal(pageData.list.length, 10);
-        assert.equal(pageData.totalPageCount, 5);
-        assert.equal(pageData.totalItemCount, 50);
+        expect(pageData.list).toHaveLength(10);
+        expect(pageData.totalPageCount).toBe(5);
+        expect(pageData.totalItemCount).toBe(50);
 
-        // check UP sort string
-        assert.deepEqual(
-            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): string => dataItem.id),
+        // Check UP sort string
+        expect(
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): string => {
+                return dataItem.id;
+            })
+        ).toStrictEqual(
             pageData.list
-                .map((dataItem: PetsdbItemType<TestDataType>): string => dataItem.id)
-                .sort((valueA: string, valueB: string): number => compareString(valueA, valueB))
+                .map((dataItem: PetsdbItemType<TestDataType>): string => {
+                    return dataItem.id;
+                })
+                .sort((valueA: string, valueB: string): number => {
+                    return compareString(valueA, valueB);
+                })
         );
 
         pageData = await petsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {id: -1}});
 
-        // check DOWN sort string
-        assert.deepEqual(
-            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): string => dataItem.id),
+        // Check DOWN sort string
+        expect(
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): string => {
+                return dataItem.id;
+            })
+        ).toStrictEqual(
             pageData.list
-                .map((dataItem: PetsdbItemType<TestDataType>): string => dataItem.id)
-                .sort((valueA: string, valueB: string): number => -compareString(valueA, valueB))
+                .map((dataItem: PetsdbItemType<TestDataType>): string => {
+                    return dataItem.id;
+                })
+                .sort((valueA: string, valueB: string): number => {
+                    return -compareString(valueA, valueB);
+                })
         );
 
         pageData = await petsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {index: 1}});
 
-        // check UP sort number
-        assert.deepEqual(
-            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): number => dataItem.index),
+        // Check UP sort number
+        expect(
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): number => {
+                return dataItem.index;
+            })
+        ).toStrictEqual(
             pageData.list
-                .map((dataItem: PetsdbItemType<TestDataType>): number => dataItem.index)
-                .sort((valueA: number, valueB: number): number => compareNumber(valueA, valueB))
+                .map((dataItem: PetsdbItemType<TestDataType>): number => {
+                    return dataItem.index;
+                })
+                .sort((valueA: number, valueB: number): number => {
+                    return compareNumber(valueA, valueB);
+                })
         );
 
         pageData = await petsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {index: -1}});
 
-        // check DOWN sort number
-        assert.deepEqual(
-            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): number => dataItem.index),
+        // Check DOWN sort number
+        expect(
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): number => {
+                return dataItem.index;
+            })
+        ).toStrictEqual(
             pageData.list
-                .map((dataItem: PetsdbItemType<TestDataType>): number => dataItem.index)
-                .sort((valueA: number, valueB: number): number => -compareNumber(valueA, valueB))
+                .map((dataItem: PetsdbItemType<TestDataType>): number => {
+                    return dataItem.index;
+                })
+                .sort((valueA: number, valueB: number): number => {
+                    return -compareNumber(valueA, valueB);
+                })
         );
 
         pageData = await petsdb.readPage({}, {pageIndex: 0, pageSize: 45, sort: {more: {data: {bool: 1}}}});
 
-        assert.equal(pageData.totalPageCount, 2);
+        expect(pageData.totalPageCount).toBe(2);
 
-        // check UP sort bool
-        assert.deepEqual(
-            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): boolean => dataItem.more.data.bool),
+        // Check UP sort bool
+        expect(
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): boolean => {
+                return dataItem.more.data.bool;
+            })
+        ).toStrictEqual(
             pageData.list
-                .map((dataItem: PetsdbItemType<TestDataType>): boolean => dataItem.more.data.bool)
-                .sort((valueA: boolean, valueB: boolean): number => compareBoolean(valueA, valueB))
+                .map((dataItem: PetsdbItemType<TestDataType>): boolean => {
+                    return dataItem.more.data.bool;
+                })
+                .sort((valueA: boolean, valueB: boolean): number => {
+                    return compareBoolean(valueA, valueB);
+                })
         );
 
         pageData = await petsdb.readPage({}, {pageIndex: 0, pageSize: 45, sort: {more: {data: {bool: -1}}}});
 
-        // check DOWN sort bool
-        assert.deepEqual(
-            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): boolean => dataItem.more.data.bool),
+        // Check DOWN sort bool
+        expect(
+            pageData.list.map((dataItem: PetsdbItemType<TestDataType>): boolean => {
+                return dataItem.more.data.bool;
+            })
+        ).toStrictEqual(
             pageData.list
-                .map((dataItem: PetsdbItemType<TestDataType>): boolean => dataItem.more.data.bool)
-                .sort((valueA: boolean, valueB: boolean): number => -compareBoolean(valueA, valueB))
+                .map((dataItem: PetsdbItemType<TestDataType>): boolean => {
+                    return dataItem.more.data.bool;
+                })
+                .sort((valueA: boolean, valueB: boolean): number => {
+                    return -compareBoolean(valueA, valueB);
+                })
         );
 
-        // check do not throw error if selector is not number or string
-        // await petsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {more: {data: {bool: 1}}}});
+        // Check do not throw error if selector is not number or string
+
+        // Await petsdb.readPage({}, {pageIndex: 1, pageSize: 10, sort: {more: {data: {bool: 1}}}});
     });
 
     // eslint-disable-next-line max-statements
-    it('Read page by pageSize = 0, return all items, pageIndex is not matter', async () => {
+    it('read page by pageSize = 0, return all items, pageIndex is not matter', async () => {
+        expect.assertions(18);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -106,7 +152,9 @@ describe('read page', () => {
         const testDataList: Array<TestDataType> = generateTestDataList(collectionSize);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+                return petsdb.create(dataItem);
+            })
         );
 
         // pageSize is negative zero
@@ -115,35 +163,36 @@ describe('read page', () => {
             {pageIndex: 0, pageSize: 0, sort: {id: 1}}
         );
 
-        assert.equal(pageData.list.length, collectionSize);
-        assert.equal(pageData.pageIndex, 0);
-        assert.equal(pageData.pageSize, collectionSize);
-        assert.equal(pageData.totalPageCount, 1);
-        assert.equal(pageData.totalItemCount, collectionSize);
-        assert.deepEqual(pageData.sort, {id: 1});
+        expect(pageData.list).toHaveLength(collectionSize);
+        expect(pageData.pageIndex).toBe(0);
+        expect(pageData.pageSize).toBe(collectionSize);
+        expect(pageData.totalPageCount).toBe(1);
+        expect(pageData.totalItemCount).toBe(collectionSize);
+        expect(pageData.sort).toStrictEqual({id: 1});
 
-        // pageSize is negative zero
+        // The pageSize is negative zero
         pageData = await petsdb.readPage({}, {pageIndex: 11, pageSize: 0, sort: {id: 1}});
 
-        assert.equal(pageData.list.length, collectionSize);
-        assert.equal(pageData.pageIndex, 11);
-        assert.equal(pageData.pageSize, collectionSize);
-        assert.equal(pageData.totalPageCount, 1);
-        assert.equal(pageData.totalItemCount, collectionSize);
-        assert.deepEqual(pageData.sort, {id: 1});
+        expect(pageData.list).toHaveLength(collectionSize);
+        expect(pageData.pageIndex).toBe(11);
+        expect(pageData.pageSize).toBe(collectionSize);
+        expect(pageData.totalPageCount).toBe(1);
+        expect(pageData.totalItemCount).toBe(collectionSize);
+        expect(pageData.sort).toStrictEqual({id: 1});
 
-        // pageSize is negative number
+        // The pageSize is negative number
         pageData = await petsdb.readPage({}, {pageIndex: 11, pageSize: -22, sort: {id: 1}});
 
-        assert.equal(pageData.list.length, collectionSize);
-        assert.equal(pageData.pageIndex, 11);
-        assert.equal(pageData.pageSize, collectionSize);
-        assert.equal(pageData.totalPageCount, 1);
-        assert.equal(pageData.totalItemCount, collectionSize);
-        assert.deepEqual(pageData.sort, {id: 1});
+        expect(pageData.list).toHaveLength(collectionSize);
+        expect(pageData.pageIndex).toBe(11);
+        expect(pageData.pageSize).toBe(collectionSize);
+        expect(pageData.totalPageCount).toBe(1);
+        expect(pageData.totalItemCount).toBe(collectionSize);
+        expect(pageData.sort).toStrictEqual({id: 1});
     });
 
-    it('Read-page by non-exists selector - get empty array of items', async () => {
+    it('read-page by non-exists selector - get empty array of items', async () => {
+        expect.assertions(1);
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -153,7 +202,9 @@ describe('read page', () => {
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => petsdb.create(dataItem))
+            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+                return petsdb.create(dataItem);
+            })
         );
 
         const pageData: PetsdbReadPageResultType<TestDataType> = await petsdb.readPage(
@@ -165,7 +216,7 @@ describe('read page', () => {
             }
         );
 
-        assert.deepEqual(pageData, {
+        expect(pageData).toStrictEqual({
             list: [],
             pageIndex: 0,
             pageSize: 10,
