@@ -30,7 +30,7 @@ export class Queue {
         );
     }
 
-    private async run() {
+    private async run(): Promise<undefined> {
         this.isWorking = true;
 
         const fistTask = this.taskList.at(0);
