@@ -168,8 +168,8 @@
         // TODO: enable this
         // "@typescript-eslint/consistent-type-imports": 0,
         "@typescript-eslint/prefer-readonly-parameter-types": 0,
-        "@typescript-eslint/strict-boolean-expressions": 0,
-        "@typescript-eslint/promise-function-async": 0,
+        // "@typescript-eslint/strict-boolean-expressions": 0,
+        // "@typescript-eslint/promise-function-async": 0,
         "@typescript-eslint/explicit-function-return-type": 0,
         "@typescript-eslint/prefer-readonly": 0,
         // use --fix

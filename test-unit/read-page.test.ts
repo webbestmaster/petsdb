@@ -19,7 +19,7 @@ describe('read page', () => {
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );
@@ -152,7 +152,7 @@ describe('read page', () => {
         const testDataList: Array<TestDataType> = generateTestDataList(collectionSize);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );
@@ -202,7 +202,7 @@ describe('read page', () => {
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );

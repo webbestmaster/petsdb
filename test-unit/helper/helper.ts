@@ -59,7 +59,7 @@ export function generateTestDataList(count: number): Array<TestDataType> {
     );
 }
 
-export function waitForTime(timeInMs: number): Promise<void> {
+export async function waitForTime(timeInMs: number): Promise<void> {
     return new Promise<void>((resolve: () => void) => {
         setTimeout(resolve, timeInMs);
     });

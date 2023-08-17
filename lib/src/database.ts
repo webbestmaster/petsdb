@@ -44,19 +44,19 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
     }
 
     public async drop(): Promise<undefined> {
-        return this.getQueue().add(() => {
+        return this.getQueue().add(async () => {
             return this.dropInner();
         });
     }
 
-    public run(): Promise<undefined> {
-        return this.getQueue().add((): Promise<undefined> => {
+    public async run(): Promise<undefined> {
+        return this.getQueue().add(async (): Promise<undefined> => {
             return this.innerRun();
         });
     }
 
     public async delete(itemSelector: PetsdbQueryType<ItemType>): Promise<undefined> {
-        return this.getQueue().add(() => {
+        return this.getQueue().add(async () => {
             return this.deleteInner(itemSelector);
         });
     }
@@ -66,7 +66,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
     }
 
     public async create(itemData: ItemType): Promise<undefined> {
-        return this.getQueue().add(() => {
+        return this.getQueue().add(async () => {
             return this.createInner(itemData);
         });
     }
@@ -143,7 +143,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
     }
 
     public async update(itemSelector: PetsdbQueryType<ItemType>, updatedItemData: ItemType): Promise<undefined> {
-        return this.getQueue().add(() => {
+        return this.getQueue().add(async () => {
             return this.updateInner(itemSelector, updatedItemData);
         });
     }

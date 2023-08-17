@@ -25,7 +25,7 @@ describe('running', () => {
         expect.assertions(1);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: 'file/do/not/exists'});
 
-        await expect(() => {
+        await expect(async () => {
             return petsdb.run();
         }).rejects.toThrow(Error);
     });
@@ -43,7 +43,7 @@ describe('running', () => {
         testDataList[makeRandomNumber(10, 40)] = {...generateTestDataList(1)[0], id: idToDelete};
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<undefined> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<undefined> => {
                 return petsdb.create(dataItem);
             })
         );
@@ -108,7 +108,7 @@ describe('running', () => {
         const testDataList: Array<TestDataType> = generateTestDataList(itemCount);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb1.create(dataItem);
             })
         );

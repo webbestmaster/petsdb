@@ -17,7 +17,7 @@ export class Queue {
         this.isWorking = false;
     }
 
-    public add(runningTask: QueueRunningTaskType): Promise<undefined> {
+    public async add(runningTask: QueueRunningTaskType): Promise<undefined> {
         return new Promise<undefined>(
             (resolve: PromiseResolveType<undefined>, reject: PromiseResolveType<Error>): undefined => {
                 this.taskList.push({reject, resolve, task: runningTask});

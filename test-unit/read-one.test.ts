@@ -24,7 +24,7 @@ describe('read one', () => {
         testDataList[makeRandomNumber(10, 40)] = itemToFind;
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );
@@ -46,7 +46,7 @@ describe('read one', () => {
         const randomItem = testDataList[makeRandomNumber(10, 40)];
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );
@@ -68,7 +68,7 @@ describe('read one', () => {
         const randomItem = testDataList[makeRandomNumber(10, 40)];
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );
@@ -90,7 +90,7 @@ describe('read one', () => {
         const randomItem = testDataList[makeRandomNumber(10, 40)];
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );
@@ -110,7 +110,7 @@ describe('read one', () => {
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );
@@ -132,7 +132,7 @@ describe('read one', () => {
         const randomItem = testDataList[makeRandomNumber(10, 40)];
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );
@@ -156,7 +156,7 @@ describe('read one', () => {
         const randomItem = testDataList[makeRandomNumber(10, 40)];
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );
@@ -198,7 +198,7 @@ describe('read one', () => {
         const testDataList: Array<TestDataType> = generateTestDataList(50);
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );

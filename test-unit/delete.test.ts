@@ -26,7 +26,7 @@ describe('delete', () => {
         testDataList[makeRandomNumber(10, 40)] = itemToDelete;
 
         await Promise.all(
-            testDataList.map<Promise<void>>((dataItem: TestDataType): Promise<void> => {
+            testDataList.map<Promise<void>>(async (dataItem: TestDataType): Promise<void> => {
                 return petsdb.create(dataItem);
             })
         );
