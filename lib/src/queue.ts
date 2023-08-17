@@ -12,12 +12,12 @@ export class Queue {
 
     private isWorking = false;
 
-    constructor() {
+    public constructor() {
         this.taskList = [];
         this.isWorking = false;
     }
 
-    add(runningTask: QueueRunningTaskType): Promise<undefined> {
+    public add(runningTask: QueueRunningTaskType): Promise<undefined> {
         return new Promise<undefined>(
             (resolve: PromiseResolveType<undefined>, reject: PromiseResolveType<Error>): undefined => {
                 this.taskList.push({reject, resolve, task: runningTask});

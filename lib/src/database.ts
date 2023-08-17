@@ -25,12 +25,12 @@ import type {
 import {Queue} from './queue';
 
 export class Petsdb<ItemType extends Record<string, unknown>> {
-    static readonly queueByPath: Record<string, Queue> = {};
-    readonly dbPath: string = '';
+    public static readonly queueByPath: Record<string, Queue> = {};
+    public readonly dbPath: string = '';
     private dataList: Array<PetsdbItemType<ItemType>> = [];
-    static readonly deleteIdPostfix = '-$$delete';
+    public static readonly deleteIdPostfix = '-$$delete';
 
-    constructor(initialConfig: PetsdbInitialConfigType) {
+    public constructor(initialConfig: PetsdbInitialConfigType) {
         const {dbPath} = initialConfig;
 
         this.dbPath = dbPath;
@@ -46,7 +46,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         return Petsdb.queueByPath[this.dbPath];
     }
 
-    run(): Promise<undefined> {
+    public run(): Promise<undefined> {
         return this.getQueue().add((): Promise<undefined> => {
             return this.innerRun();
         });
@@ -120,7 +120,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         console.log(`[Petsdb]: Petsdb has been loaded. DbPath ${this.dbPath}.`);
     }
 
-    async drop(): Promise<undefined> {
+    public async drop(): Promise<undefined> {
         return this.getQueue().add(() => {
             return this.dropInner();
         });
@@ -132,11 +132,11 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         this.dataList = [];
     }
 
-    getSize(): number {
+    public getSize(): number {
         return this.dataList.length;
     }
 
-    async create(itemData: ItemType): Promise<undefined> {
+    public async create(itemData: ItemType): Promise<undefined> {
         return this.getQueue().add(() => {
             return this.createInner(itemData);
         });
@@ -155,7 +155,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         this.dataList.push(tsdbItemData);
     }
 
-    async read(itemSelector: PetsdbQueryType<ItemType>): Promise<Array<PetsdbItemType<ItemType>>> {
+    public async read(itemSelector: PetsdbQueryType<ItemType>): Promise<Array<PetsdbItemType<ItemType>>> {
         return new Promise((resolve: PromiseResolveType<Array<PetsdbItemType<ItemType>>>) => {
             const itemList: Array<PetsdbItemType<ItemType>> = this.dataList.filter(
                 (dataItem: PetsdbItemType<ItemType>): dataItem is PetsdbItemType<ItemType> => {
@@ -169,7 +169,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         });
     }
 
-    async readOne(itemSelector: PetsdbQueryType<ItemType>): Promise<PetsdbItemType<ItemType> | null> {
+    public async readOne(itemSelector: PetsdbQueryType<ItemType>): Promise<PetsdbItemType<ItemType> | null> {
         return new Promise((resolve: PromiseResolveType<PetsdbItemType<ItemType> | null>) => {
             const item: PetsdbItemType<ItemType> | null =
                 this.dataList.find((dataItem: PetsdbItemType<ItemType>): boolean => {
@@ -182,7 +182,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         });
     }
 
-    async readPage(
+    public async readPage(
         itemSelector: PetsdbQueryType<ItemType>,
         readPageConfig: PetsdbReadPageConfigType<ItemType>
     ): Promise<PetsdbReadPageResultType<ItemType>> {
@@ -226,7 +226,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         return readPageResult;
     }
 
-    async update(itemSelector: PetsdbQueryType<ItemType>, updatedItemData: ItemType): Promise<undefined> {
+    public async update(itemSelector: PetsdbQueryType<ItemType>, updatedItemData: ItemType): Promise<undefined> {
         return this.getQueue().add(() => {
             return this.updateInner(itemSelector, updatedItemData);
         });
@@ -248,7 +248,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         }
     }
 
-    async delete(itemSelector: PetsdbQueryType<ItemType>): Promise<undefined> {
+    public async delete(itemSelector: PetsdbQueryType<ItemType>): Promise<undefined> {
         return this.getQueue().add(() => {
             return this.deleteInner(itemSelector);
         });
