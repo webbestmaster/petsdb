@@ -21,21 +21,21 @@ export type PetsdbSortType<ItemType extends Record<string, unknown>> = Partial<{
 }>;
 
 export interface PetsdbInitialConfigType {
-    dbPath: string;
+    readonly dbPath: string;
 }
 
 export interface PetsdbReadPageConfigType<ItemType extends Record<string, unknown>> {
-    pageIndex: number;
-    pageSize: number;
-    sort: PetsdbSortType<ItemType>;
+    readonly pageIndex: number;
+    readonly pageSize: number;
+    readonly sort: PetsdbSortType<ItemType>;
 }
 export interface PetsdbReadPageResultType<ItemType extends Record<string, unknown>> {
-    list: Array<PetsdbItemType<ItemType>>;
-    pageIndex: number;
-    pageSize: number;
-    sort: PetsdbSortType<ItemType>;
-    totalItemCount: number;
-    totalPageCount: number;
+    readonly list: Array<PetsdbItemType<ItemType>>;
+    readonly pageIndex: number;
+    readonly pageSize: number;
+    readonly sort: PetsdbSortType<ItemType>;
+    readonly totalItemCount: number;
+    readonly totalPageCount: number;
 }
 
 export type PromiseResolveType<Result> = (result: Result) => unknown;

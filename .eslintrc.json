@@ -177,8 +177,8 @@
         // "@typescript-eslint/explicit-module-boundary-types": 0,
         // explicit-member-accessibility - just add public
         // "@typescript-eslint/explicit-member-accessibility": 0,
-        "@typescript-eslint/sort-type-constituents": 0,
-        "@typescript-eslint/member-ordering": 0,
+        // "@typescript-eslint/sort-type-constituents": 0,
+        // "@typescript-eslint/member-ordering": 0,
         // Unicorn
         "unicorn/prefer-string-replace-all": 0,
         "unicorn/prefer-node-protocol": 2,

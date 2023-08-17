@@ -26,9 +26,10 @@ import {Queue} from './queue';
 
 export class Petsdb<ItemType extends Record<string, unknown>> {
     public static readonly queueByPath: Record<string, Queue> = {};
-    public readonly dbPath: string = '';
-    private dataList: Array<PetsdbItemType<ItemType>> = [];
     public static readonly deleteIdPostfix = '-$$delete';
+    public readonly dbPath: string = '';
+
+    private dataList: Array<PetsdbItemType<ItemType>> = [];
 
     public constructor(initialConfig: PetsdbInitialConfigType) {
         const {dbPath} = initialConfig;
@@ -42,8 +43,10 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         return this;
     }
 
-    private getQueue(): Queue {
-        return Petsdb.queueByPath[this.dbPath];
+    public async drop(): Promise<undefined> {
+        return this.getQueue().add(() => {
+            return this.dropInner();
+        });
     }
 
     public run(): Promise<undefined> {
@@ -52,84 +55,10 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         });
     }
 
-    private async innerRun(): Promise<undefined> {
-        await makeDatabaseBackup(this.dbPath);
-
-        console.log('[Petsdb]: Petsdb is reading data base file - BEGIN');
-        const fullLineList: Array<string> = await readFileLineByLine(this.dbPath);
-
-        console.log('[Petsdb]: Petsdb is reading data base file - END');
-        const filteredLineList: Array<string> = fullLineList.filter<string>(getIsNotEmptyString);
-
-        const fullDataList: Array<PetsdbItemType<ItemType>> = filteredLineList.map<PetsdbItemType<ItemType>>(
-            (line: string): PetsdbItemType<ItemType> => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                return JSON.parse(line);
-            }
-        );
-
-        const fullIdList: Array<string> = fullDataList.map<string>((dataItem: PetsdbItemType<ItemType>): string => {
-            return dataItem._id;
-        });
-
-        // eslint-disable-next-line unicorn/prefer-set-has
-        const toRemoveIdList: Array<string> = fullIdList
-            .map<string>((dataItemId: string): string => {
-                if (dataItemId.endsWith(Petsdb.deleteIdPostfix)) {
-                    return dataItemId.replace(Petsdb.deleteIdPostfix, '');
-                }
-
-                return '';
-            })
-            .filter<string>((itemToRemoveId: string): itemToRemoveId is string => {
-                return itemToRemoveId !== '';
-            });
-
-        const filteredDataList: Array<PetsdbItemType<ItemType>> = fullDataList
-            // Updated
-            .filter<PetsdbItemType<ItemType>>(
-                (dataItem: PetsdbItemType<ItemType>, dataItemIndex: number): dataItem is PetsdbItemType<ItemType> => {
-                    return dataItemIndex === fullIdList.lastIndexOf(dataItem._id);
-                }
-            )
-            // Deleted items
-            .filter<PetsdbItemType<ItemType>>(
-                (dataItem: PetsdbItemType<ItemType>): dataItem is PetsdbItemType<ItemType> => {
-                    return !toRemoveIdList.includes(dataItem._id.replace(Petsdb.deleteIdPostfix, ''));
-                }
-            );
-
-        const dataInStringList: Array<string> = [];
-
-        // eslint-disable-next-line no-loops/no-loops
-        for (const dataItem of filteredDataList) {
-            dataInStringList.push(JSON.stringify(dataItem));
-            // Debug await fileSystem.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
-
-            const dataIndex = filteredDataList.indexOf(dataItem) + 1;
-
-            if (dataIndex % 100 === 0) {
-                console.log(`[Petsdb]: Petsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
-            }
-        }
-
-        await fileSystem.writeFile(this.dbPath, `${dataInStringList.join('\n')}\n`, {encoding: 'utf8'});
-        console.log('[Petsdb]: Petsdb data base file has been updated');
-
-        this.dataList = filteredDataList;
-        console.log(`[Petsdb]: Petsdb has been loaded. DbPath ${this.dbPath}.`);
-    }
-
-    public async drop(): Promise<undefined> {
+    public async delete(itemSelector: PetsdbQueryType<ItemType>): Promise<undefined> {
         return this.getQueue().add(() => {
-            return this.dropInner();
+            return this.deleteInner(itemSelector);
         });
-    }
-
-    private async dropInner(): Promise<undefined> {
-        await fileSystem.writeFile(this.dbPath, '');
-
-        this.dataList = [];
     }
 
     public getSize(): number {
@@ -140,19 +69,6 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         return this.getQueue().add(() => {
             return this.createInner(itemData);
         });
-    }
-
-    private async createInner(itemData: ItemType): Promise<undefined> {
-        // eslint-disable-next-line id-match
-        const tsdbItemData: PetsdbItemType<ItemType> = Object.assign<ItemType, {_id: string}>(
-            deepCopy<ItemType>(itemData),
-            // eslint-disable-next-line id-match
-            {_id: makeRandomString()}
-        );
-
-        await fileSystem.appendFile(this.dbPath, `${JSON.stringify(tsdbItemData)}\n`);
-
-        this.dataList.push(tsdbItemData);
     }
 
     public async read(itemSelector: PetsdbQueryType<ItemType>): Promise<Array<PetsdbItemType<ItemType>>> {
@@ -232,6 +148,97 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
         });
     }
 
+    private getQueue(): Queue {
+        return Petsdb.queueByPath[this.dbPath];
+    }
+
+    private async innerRun(): Promise<undefined> {
+        await makeDatabaseBackup(this.dbPath);
+
+        console.log('[Petsdb]: Petsdb is reading data base file - BEGIN');
+        const fullLineList: Array<string> = await readFileLineByLine(this.dbPath);
+
+        console.log('[Petsdb]: Petsdb is reading data base file - END');
+        const filteredLineList: Array<string> = fullLineList.filter<string>(getIsNotEmptyString);
+
+        const fullDataList: Array<PetsdbItemType<ItemType>> = filteredLineList.map<PetsdbItemType<ItemType>>(
+            (line: string): PetsdbItemType<ItemType> => {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                return JSON.parse(line);
+            }
+        );
+
+        const fullIdList: Array<string> = fullDataList.map<string>((dataItem: PetsdbItemType<ItemType>): string => {
+            return dataItem._id;
+        });
+
+        // eslint-disable-next-line unicorn/prefer-set-has
+        const toRemoveIdList: Array<string> = fullIdList
+            .map<string>((dataItemId: string): string => {
+                if (dataItemId.endsWith(Petsdb.deleteIdPostfix)) {
+                    return dataItemId.replace(Petsdb.deleteIdPostfix, '');
+                }
+
+                return '';
+            })
+            .filter<string>((itemToRemoveId: string): itemToRemoveId is string => {
+                return itemToRemoveId !== '';
+            });
+
+        const filteredDataList: Array<PetsdbItemType<ItemType>> = fullDataList
+            // Updated
+            .filter<PetsdbItemType<ItemType>>(
+                (dataItem: PetsdbItemType<ItemType>, dataItemIndex: number): dataItem is PetsdbItemType<ItemType> => {
+                    return dataItemIndex === fullIdList.lastIndexOf(dataItem._id);
+                }
+            )
+            // Deleted items
+            .filter<PetsdbItemType<ItemType>>(
+                (dataItem: PetsdbItemType<ItemType>): dataItem is PetsdbItemType<ItemType> => {
+                    return !toRemoveIdList.includes(dataItem._id.replace(Petsdb.deleteIdPostfix, ''));
+                }
+            );
+
+        const dataInStringList: Array<string> = [];
+
+        // eslint-disable-next-line no-loops/no-loops
+        for (const dataItem of filteredDataList) {
+            dataInStringList.push(JSON.stringify(dataItem));
+            // Debug await fileSystem.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
+
+            const dataIndex = filteredDataList.indexOf(dataItem) + 1;
+
+            if (dataIndex % 100 === 0) {
+                console.log(`[Petsdb]: Petsdb is loading: ${Math.floor((100 * dataIndex) / filteredDataList.length)}%`);
+            }
+        }
+
+        await fileSystem.writeFile(this.dbPath, `${dataInStringList.join('\n')}\n`, {encoding: 'utf8'});
+        console.log('[Petsdb]: Petsdb data base file has been updated');
+
+        this.dataList = filteredDataList;
+        console.log(`[Petsdb]: Petsdb has been loaded. DbPath ${this.dbPath}.`);
+    }
+
+    private async dropInner(): Promise<undefined> {
+        await fileSystem.writeFile(this.dbPath, '');
+
+        this.dataList = [];
+    }
+
+    private async createInner(itemData: ItemType): Promise<undefined> {
+        // eslint-disable-next-line id-match
+        const tsdbItemData: PetsdbItemType<ItemType> = Object.assign<ItemType, {_id: string}>(
+            deepCopy<ItemType>(itemData),
+            // eslint-disable-next-line id-match
+            {_id: makeRandomString()}
+        );
+
+        await fileSystem.appendFile(this.dbPath, `${JSON.stringify(tsdbItemData)}\n`);
+
+        this.dataList.push(tsdbItemData);
+    }
+
     private async updateInner(itemSelector: PetsdbQueryType<ItemType>, updatedItemData: ItemType): Promise<undefined> {
         const itemToUpdateList: Array<PetsdbItemType<ItemType>> = await this.read(itemSelector);
 
@@ -246,12 +253,6 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
 
             this.dataList[updatedItemIndex] = itemToUpdate;
         }
-    }
-
-    public async delete(itemSelector: PetsdbQueryType<ItemType>): Promise<undefined> {
-        return this.getQueue().add(() => {
-            return this.deleteInner(itemSelector);
-        });
     }
 
     private async deleteInner(itemSelector: PetsdbQueryType<ItemType>): Promise<undefined> {
