@@ -8,7 +8,7 @@ interface QueueTaskType {
 }
 
 export class Queue {
-    private taskList: Array<QueueTaskType> = [];
+    private readonly taskList: Array<QueueTaskType> = [];
 
     private isWorking = false;
 
