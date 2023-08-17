@@ -2,7 +2,7 @@ import {describe, it, expect} from '@jest/globals';
 
 import {Petsdb} from '../lib/export';
 
-import {TestDataType} from './helper/helper';
+import type {TestDataType} from './helper/helper';
 
 describe('constructor', () => {
     it('return instance of class', () => {

@@ -6,7 +6,7 @@ import {Petsdb} from '../lib/export';
 
 import {makeRandomNumber, makeRandomString} from '../lib/src/util';
 
-import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/helper';
+import {generateTestDataList, pathToTestDataBase, type TestDataType} from './helper/helper';
 
 describe('read one', () => {
     it('read-one by simple selector, get single item', async () => {

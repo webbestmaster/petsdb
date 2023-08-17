@@ -13,7 +13,7 @@ import {
     readFileLineByLine,
     compareObject,
 } from './util';
-import {
+import type {
     PromiseResolveType,
     PetsdbInitialConfigType,
     PetsdbItemType,

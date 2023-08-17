@@ -4,7 +4,7 @@ import {describe, it, expect} from '@jest/globals';
 
 import {Petsdb} from '../lib/export';
 
-import {generateTestDataList, pathToTestDataBase, TestDataType} from './helper/helper';
+import {generateTestDataList, pathToTestDataBase, type TestDataType} from './helper/helper';
 
 describe('update', () => {
     it('update', async () => {

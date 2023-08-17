@@ -4,7 +4,7 @@ import fileSystem from 'node:fs/promises';
 import path from 'node:path';
 import readline from 'node:readline';
 
-import {PetsdbSortDirectionType, PetsdbSortValueType} from './database-type';
+import type {PetsdbSortDirectionType, PetsdbSortValueType} from './database-type';
 
 export async function readFileLineByLine(pathToFile: string): Promise<Array<string>> {
     const lineList: Array<string> = [];
