@@ -24,9 +24,9 @@ import type {
 
 import {Queue} from './queue';
 
-export class Petsdb<ItemType extends Record<string, unknown>> {
+export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>> {
     public static readonly queueByPath: Record<string, Queue> = {};
-    public static readonly deleteIdPostfix = '-$$delete';
+    public static readonly deleteIdPostfix: string = '-$$delete';
     public readonly dbPath: string = '';
 
     private dataList: Array<PetsdbItemType<ItemType>> = [];
@@ -263,7 +263,7 @@ export class Petsdb<ItemType extends Record<string, unknown>> {
             const itemToDeleteUpdated: PetsdbItemType<ItemType> = {
                 ...dataItem,
                 // eslint-disable-next-line id-match
-                _id: dataItem._id + Petsdb.deleteIdPostfix,
+                _id: String(dataItem._id) + Petsdb.deleteIdPostfix,
             };
 
             // eslint-disable-next-line no-await-in-loop

@@ -48,13 +48,16 @@ export function getIsNotEmptyString(line: string): line is string {
     return line.trim() !== '';
 }
 
-export function getIsArrayIncludedByValue(fullArray: Array<unknown>, partialArray: Array<unknown>): boolean {
+export function getIsArrayIncludedByValue(
+    fullArray: ReadonlyArray<unknown>,
+    partialArray: ReadonlyArray<unknown>
+): boolean {
     return partialArray.every((value: unknown): boolean => {
         return fullArray.includes(value);
     });
 }
 
-export function getIsArrayIncludedByRegexp(fullArray: Array<unknown>, partialValue: RegExp): boolean {
+export function getIsArrayIncludedByRegexp(fullArray: ReadonlyArray<unknown>, partialValue: Readonly<RegExp>): boolean {
     return fullArray.some((itemValueAsItemInList: unknown): boolean => {
         if (typeof itemValueAsItemInList === 'string') {
             return partialValue.test(itemValueAsItemInList);
@@ -65,7 +68,10 @@ export function getIsArrayIncludedByRegexp(fullArray: Array<unknown>, partialVal
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
-export function getIsIncluded(item: Record<string, unknown>, partial: Record<string, unknown>): boolean {
+export function getIsIncluded(
+    item: Readonly<Record<string, unknown>>,
+    partial: Readonly<Record<string, unknown>>
+): boolean {
     const partialKeyList: Array<string> = Object.keys(partial);
 
     if (partialKeyList.length === 0) {
@@ -115,8 +121,8 @@ export interface GetSortByPathResultType {
 
 // eslint-disable-next-line complexity
 export function getSortByPath(
-    itemData: Record<string, unknown>,
-    keyData: Record<string, unknown>
+    itemData: Readonly<Record<string, unknown>>,
+    keyData: Readonly<Record<string, unknown>>
 ): GetSortByPathResultType {
     // eslint-disable-next-line guard-for-in, no-loops/no-loops
     for (const key in keyData) {
@@ -160,9 +166,9 @@ export function compareBoolean(booleanA: boolean, booleanB: boolean): number {
 
 // eslint-disable-next-line complexity
 export function compareObject(
-    itemA: Record<string, unknown>,
-    itemB: Record<string, unknown>,
-    sort: Record<string, unknown>
+    itemA: Readonly<Record<string, unknown>>,
+    itemB: Readonly<Record<string, unknown>>,
+    sort: Readonly<Record<string, unknown>>
 ): number {
     const {value: itemValueA, direction: sortDirection} = getSortByPath(itemA, sort);
     const {value: itemValueB} = getSortByPath(itemB, sort);
@@ -182,7 +188,7 @@ export function compareObject(
     return 0;
 }
 
-export async function getHasAccessToDirectory(...args: Array<string>): Promise<boolean> {
+export async function getHasAccessToDirectory(...args: ReadonlyArray<string>): Promise<boolean> {
     try {
         // eslint-disable-next-line no-bitwise
         await fileSystem.access(path.join(...args), constants.R_OK | constants.W_OK);
@@ -194,7 +200,7 @@ export async function getHasAccessToDirectory(...args: Array<string>): Promise<b
     return false;
 }
 
-export async function makeDirectory(...args: Array<string>): Promise<void> {
+export async function makeDirectory(...args: ReadonlyArray<string>): Promise<void> {
     const pathToFolder: string = path.join(...args);
     const hasAccessToDirectory = await getHasAccessToDirectory(pathToFolder);
 

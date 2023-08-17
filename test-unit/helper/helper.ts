@@ -5,22 +5,22 @@ import {makeRandomNumber, makeRandomString} from '../../lib/src/util';
 export const pathToTestDataBase = 'test-unit/test-data/test-db';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type TestDataType = {
-    bar: string;
-    foo: string;
-    id: string;
-    index: number;
-    listOfNumber: Array<number>;
-    listOfString: Array<string>;
-    listOfUnknown: Array<unknown>;
+export type TestDataType = Readonly<{
+    readonly bar: string;
+    readonly foo: string;
+    readonly id: string;
+    readonly index: number;
+    readonly listOfNumber: ReadonlyArray<number>;
+    readonly listOfString: ReadonlyArray<string>;
+    readonly listOfUnknown: ReadonlyArray<unknown>;
 
-    more: {
-        data: {
-            bool: boolean;
-            text: string;
+    readonly more: {
+        readonly data: {
+            readonly bool: boolean;
+            readonly text: string;
         };
     };
-};
+}>;
 
 export function generateTestDataList(count: number): Array<TestDataType> {
     return Array.from<TestDataType>({length: count}).map<TestDataType>(
