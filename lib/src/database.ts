@@ -2,7 +2,7 @@
 
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
-import fileSystem from 'node:fs/promises';
+import fileSystem from "node:fs/promises";
 
 import {
     deepCopy,
@@ -12,7 +12,7 @@ import {
     makeRandomString,
     readFileLineByLine,
     compareObject,
-} from './util';
+} from "./util";
 import type {
     PromiseResolveType,
     PetsdbInitialConfigType,
@@ -20,14 +20,14 @@ import type {
     PetsdbQueryType,
     PetsdbReadPageConfigType,
     PetsdbReadPageResultType,
-} from './database-type';
+} from "./database-type";
 
-import {Queue} from './queue';
+import {Queue} from "./queue";
 
 export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>> {
     public static readonly queueByPath: Record<string, Queue> = {};
-    public static readonly deleteIdPostfix: string = '-$$delete';
-    public readonly dbPath: string = '';
+    public static readonly deleteIdPostfix: string = "-$$delete";
+    public readonly dbPath: string = "";
 
     private dataList: Array<PetsdbItemType<ItemType>> = [];
 
@@ -155,10 +155,10 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
     private async innerRun(): Promise<undefined> {
         await makeDatabaseBackup(this.dbPath);
 
-        console.log('[Petsdb]: Petsdb is reading data base file - BEGIN');
+        console.log("[Petsdb]: Petsdb is reading data base file - BEGIN");
         const fullLineList: Array<string> = await readFileLineByLine(this.dbPath);
 
-        console.log('[Petsdb]: Petsdb is reading data base file - END');
+        console.log("[Petsdb]: Petsdb is reading data base file - END");
         const filteredLineList: Array<string> = fullLineList.filter<string>(getIsNotEmptyString);
 
         const fullDataList: Array<PetsdbItemType<ItemType>> = filteredLineList.map<PetsdbItemType<ItemType>>(
@@ -176,13 +176,13 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
         const toRemoveIdList: Array<string> = fullIdList
             .map<string>((dataItemId: string): string => {
                 if (dataItemId.endsWith(Petsdb.deleteIdPostfix)) {
-                    return dataItemId.replace(Petsdb.deleteIdPostfix, '');
+                    return dataItemId.replace(Petsdb.deleteIdPostfix, "");
                 }
 
-                return '';
+                return "";
             })
             .filter<string>((itemToRemoveId: string): itemToRemoveId is string => {
-                return itemToRemoveId !== '';
+                return itemToRemoveId !== "";
             });
 
         const filteredDataList: Array<PetsdbItemType<ItemType>> = fullDataList
@@ -195,7 +195,7 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
             // Deleted items
             .filter<PetsdbItemType<ItemType>>(
                 (dataItem: PetsdbItemType<ItemType>): dataItem is PetsdbItemType<ItemType> => {
-                    return !toRemoveIdList.includes(dataItem._id.replace(Petsdb.deleteIdPostfix, ''));
+                    return !toRemoveIdList.includes(dataItem._id.replace(Petsdb.deleteIdPostfix, ""));
                 }
             );
 
@@ -213,15 +213,15 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
             }
         }
 
-        await fileSystem.writeFile(this.dbPath, `${dataInStringList.join('\n')}\n`, {encoding: 'utf8'});
-        console.log('[Petsdb]: Petsdb data base file has been updated');
+        await fileSystem.writeFile(this.dbPath, `${dataInStringList.join("\n")}\n`, {encoding: "utf8"});
+        console.log("[Petsdb]: Petsdb data base file has been updated");
 
         this.dataList = filteredDataList;
         console.log(`[Petsdb]: Petsdb has been loaded. DbPath ${this.dbPath}.`);
     }
 
     private async dropInner(): Promise<undefined> {
-        await fileSystem.writeFile(this.dbPath, '');
+        await fileSystem.writeFile(this.dbPath, "");
 
         this.dataList = [];
     }

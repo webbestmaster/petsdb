@@ -1,16 +1,16 @@
 /* eslint-disable jest/max-expects, jest/prefer-expect-resolves */
-import fileSystem from 'node:fs/promises';
+import fileSystem from "node:fs/promises";
 
-import {describe, it, expect} from '@jest/globals';
+import {describe, it, expect} from "@jest/globals";
 
-import {Petsdb} from '../lib/export';
+import {Petsdb} from "../lib/export";
 
-import {makeRandomNumber, makeRandomString} from '../lib/src/util';
+import {makeRandomNumber, makeRandomString} from "../lib/src/util";
 
-import {generateTestDataList, pathToTestDataBase, type TestDataType} from './helper/helper';
+import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./helper/helper";
 
-describe('running', () => {
-    it('if file exists -> return resolved promise', async () => {
+describe("running", () => {
+    it("if file exists -> return resolved promise", async () => {
         expect.assertions(1);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -21,16 +21,16 @@ describe('running', () => {
         expect(runResult).toBeUndefined();
     });
 
-    it('if file does not exists -> return rejected promise', async () => {
+    it("if file does not exists -> return rejected promise", async () => {
         expect.assertions(1);
-        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: 'file/do/not/exists'});
+        const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: "file/do/not/exists"});
 
         await expect(async () => {
             return petsdb.run();
         }).rejects.toThrow(Error);
     });
 
-    it('remove deleted items from file', async () => {
+    it("remove deleted items from file", async () => {
         expect.assertions(2);
         const idToDelete = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
@@ -55,13 +55,13 @@ describe('running', () => {
 
         await tsdbAfterDeleting.run();
 
-        const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: 'utf8'});
+        const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: "utf8"});
 
         expect(petsdb.getSize()).toBe(testDataList.length - 1);
         expect(fileContent).not.toContain(idToDelete);
     });
 
-    it('remove updated items from file', async () => {
+    it("remove updated items from file", async () => {
         expect.assertions(3);
         const databaseSize = 3;
 
@@ -73,7 +73,7 @@ describe('running', () => {
         const [testData1, testData2, testData3]: Array<TestDataType> = generateTestDataList(databaseSize);
 
         const idToUpdate = testData2.id;
-        const createdItem: TestDataType = {...testData2, bar: 'bar', foo: 'foo'};
+        const createdItem: TestDataType = {...testData2, bar: "bar", foo: "foo"};
 
         await petsdb.create(testData1);
         await petsdb.create(testData2);
@@ -93,7 +93,7 @@ describe('running', () => {
     });
 
     // eslint-disable-next-line max-statements
-    it('run several the same data bases simultaneously -> all data base should have the same data', async () => {
+    it("run several the same data bases simultaneously -> all data base should have the same data", async () => {
         expect.assertions(9);
         const petsdb1: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
         const petsdb2: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});

@@ -1,13 +1,13 @@
-import fileSystem from 'node:fs/promises';
+import fileSystem from "node:fs/promises";
 
-import {describe, it, expect} from '@jest/globals';
+import {describe, it, expect} from "@jest/globals";
 
-import {Petsdb} from '../lib/export';
+import {Petsdb} from "../lib/export";
 
-import {generateTestDataList, pathToTestDataBase, type TestDataType} from './helper/helper';
+import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./helper/helper";
 
-describe('create', () => {
-    it('add data to database', async () => {
+describe("create", () => {
+    it("add data to database", async () => {
         expect.assertions(4);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -22,7 +22,7 @@ describe('create', () => {
 
         expect(petsdb.getSize()).toBe(3);
 
-        const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: 'utf8'});
+        const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: "utf8"});
 
         expect(fileContent).toContain(testData1.id);
         expect(fileContent).toContain(testData2.id);

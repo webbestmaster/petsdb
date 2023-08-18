@@ -1,4 +1,4 @@
-export {Petsdb} from './src/database';
+export {Petsdb} from "./src/database";
 
 export type {
     PetsdbInitialConfigType,
@@ -9,4 +9,4 @@ export type {
     PetsdbSortDirectionType,
     PetsdbSortType,
     PetsdbSortValueType,
-} from './src/database-type';
+} from "./src/database-type";

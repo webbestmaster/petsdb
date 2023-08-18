@@ -1,13 +1,13 @@
-import fileSystem from 'node:fs/promises';
+import fileSystem from "node:fs/promises";
 
-import {describe, it, expect} from '@jest/globals';
+import {describe, it, expect} from "@jest/globals";
 
-import {Petsdb} from '../lib/export';
+import {Petsdb} from "../lib/export";
 
-import {generateTestDataList, pathToTestDataBase, type TestDataType} from './helper/helper';
+import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./helper/helper";
 
-describe('update', () => {
-    it('update', async () => {
+describe("update", () => {
+    it("update", async () => {
         expect.assertions(5);
         const databaseSize = 3;
 
@@ -19,7 +19,7 @@ describe('update', () => {
         const [testData1, testData2, testData3]: Array<TestDataType> = generateTestDataList(databaseSize);
 
         const idToUpdate = testData2.id;
-        const updateItem: TestDataType = {...testData2, bar: 'bar', foo: 'foo'};
+        const updateItem: TestDataType = {...testData2, bar: "bar", foo: "foo"};
 
         await petsdb.create(testData1);
         await petsdb.create(testData2);
@@ -33,7 +33,7 @@ describe('update', () => {
         expect(updatedItem?.bar).toStrictEqual(updateItem.bar);
         expect(petsdb.getSize()).toStrictEqual(databaseSize);
 
-        const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: 'utf8'});
+        const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: "utf8"});
 
         expect(fileContent).toContain('"bar":"bar"');
         expect(fileContent).toContain('"foo":"foo"');

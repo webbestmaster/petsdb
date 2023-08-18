@@ -46,7 +46,7 @@ export class Queue {
                 if (error instanceof Error) {
                     fistTask.reject(error);
                 } else {
-                    fistTask.reject(new Error('[Queue]: Task running with error!'));
+                    fistTask.reject(new Error("[Queue]: Task running with error!"));
                 }
             }
         }

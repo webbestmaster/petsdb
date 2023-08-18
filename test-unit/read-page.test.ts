@@ -1,15 +1,15 @@
 /* eslint-disable multiline-comment-style, capitalized-comments, line-comment-position, multiline-comment-style, jest/max-expects */
-import {describe, it, expect} from '@jest/globals';
+import {describe, it, expect} from "@jest/globals";
 
-import {Petsdb, type PetsdbItemType, type PetsdbReadPageResultType} from '../lib/export';
+import {Petsdb, type PetsdbItemType, type PetsdbReadPageResultType} from "../lib/export";
 
-import {compareBoolean, compareNumber, compareString, makeRandomString} from '../lib/src/util';
+import {compareBoolean, compareNumber, compareString, makeRandomString} from "../lib/src/util";
 
-import {generateTestDataList, pathToTestDataBase, type TestDataType} from './helper/helper';
+import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./helper/helper";
 
-describe('read page', () => {
+describe("read page", () => {
     // eslint-disable-next-line max-statements
-    it('read page by simple selector', async () => {
+    it("read page by simple selector", async () => {
         expect.assertions(10);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -141,7 +141,7 @@ describe('read page', () => {
     });
 
     // eslint-disable-next-line max-statements
-    it('read page by pageSize = 0, return all items, pageIndex is not matter', async () => {
+    it("read page by pageSize = 0, return all items, pageIndex is not matter", async () => {
         expect.assertions(18);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -191,7 +191,7 @@ describe('read page', () => {
         expect(pageData.sort).toStrictEqual({id: 1});
     });
 
-    it('read-page by non-exists selector - get empty array of items', async () => {
+    it("read-page by non-exists selector - get empty array of items", async () => {
         expect.assertions(1);
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});

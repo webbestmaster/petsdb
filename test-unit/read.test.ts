@@ -1,15 +1,15 @@
 /* eslint-disable multiline-comment-style, capitalized-comments, line-comment-position, multiline-comment-style, jest/no-commented-out-tests */
 
-import {describe, it, expect} from '@jest/globals';
+import {describe, it, expect} from "@jest/globals";
 
-import {Petsdb} from '../lib/export';
+import {Petsdb} from "../lib/export";
 
-import {makeRandomNumber, makeRandomString} from '../lib/src/util';
+import {makeRandomNumber, makeRandomString} from "../lib/src/util";
 
-import {generateTestDataList, pathToTestDataBase, type TestDataType} from './helper/helper';
+import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./helper/helper";
 
-describe('read', () => {
-    it('read by simple selector, get array with single item', async () => {
+describe("read", () => {
+    it("read by simple selector, get array with single item", async () => {
         expect.assertions(2);
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
@@ -35,7 +35,7 @@ describe('read', () => {
         expect(findResultList[0].id).toBe(itemToFind.id);
     });
 
-    it('read by value in array / string', async () => {
+    it("read by value in array / string", async () => {
         expect.assertions(2);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -58,7 +58,7 @@ describe('read', () => {
         expect(findResultList[0].id).toBe(randomItem.id);
     });
 
-    it('read by value in array / number', async () => {
+    it("read by value in array / number", async () => {
         expect.assertions(2);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -81,7 +81,7 @@ describe('read', () => {
         expect(findResultList[0].id).toBe(randomItem.id);
     });
 
-    it('read by Regexp', async () => {
+    it("read by Regexp", async () => {
         expect.assertions(2);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -98,13 +98,13 @@ describe('read', () => {
             })
         );
 
-        const findResultList = await petsdb.read({foo: new RegExp(randomItem.foo.slice(2, 12), 'u')});
+        const findResultList = await petsdb.read({foo: new RegExp(randomItem.foo.slice(2, 12), "u")});
 
         expect(findResultList).toHaveLength(1);
         expect(findResultList[0].id).toBe(randomItem.id);
     });
 
-    it('read by empty object selector', async () => {
+    it("read by empty object selector", async () => {
         expect.assertions(1);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -124,7 +124,7 @@ describe('read', () => {
         expect(findResultList).toHaveLength(50);
     });
 
-    it('read in object by regexp', async () => {
+    it("read in object by regexp", async () => {
         expect.assertions(3);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -142,7 +142,7 @@ describe('read', () => {
         );
 
         const findResultList = await petsdb.read({
-            more: {data: {text: new RegExp(randomItem.more.data.text.slice(2, 12), 'u')}},
+            more: {data: {text: new RegExp(randomItem.more.data.text.slice(2, 12), "u")}},
         });
 
         expect(findResultList).toHaveLength(1);
@@ -150,7 +150,7 @@ describe('read', () => {
         expect(findResultList[0]?.more.data.text).toBe(randomItem.more.data.text);
     });
 
-    it('read in array by regexp', async () => {
+    it("read in array by regexp", async () => {
         expect.assertions(2);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -168,7 +168,7 @@ describe('read', () => {
         );
 
         const findResultList = await petsdb.read({
-            listOfString: new RegExp(randomItem.listOfString[0].slice(2, 12), 'u'),
+            listOfString: new RegExp(randomItem.listOfString[0].slice(2, 12), "u"),
         });
 
         expect(findResultList).toHaveLength(1);
@@ -194,7 +194,7 @@ describe('read', () => {
     });
     */
 
-    it('read by non-exists selector - get empty array', async () => {
+    it("read by non-exists selector - get empty array", async () => {
         expect.assertions(1);
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
@@ -215,7 +215,7 @@ describe('read', () => {
         expect(findResultList).toStrictEqual([]);
     });
 
-    it('read by non-exists regexp - get empty array', async () => {
+    it("read by non-exists regexp - get empty array", async () => {
         expect.assertions(1);
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
