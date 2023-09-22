@@ -18,29 +18,33 @@ class Queue {
         this.isWorking = false;
     }
     add(runningTask) {
-        return new Promise((resolve, reject) => {
-            this.taskList.push({ reject, resolve, task: runningTask });
-            if (!this.isWorking) {
-                this.run();
-            }
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
+                this.taskList.push({ reject, resolve, task: runningTask });
+                if (!this.isWorking) {
+                    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                    this.run();
+                }
+            });
         });
     }
     run() {
         return __awaiter(this, void 0, void 0, function* () {
             this.isWorking = true;
-            const [fistTask] = this.taskList;
+            const fistTask = this.taskList.at(0);
             this.taskList.splice(0, 1);
             if (fistTask) {
                 try {
                     yield fistTask.task();
-                    fistTask.resolve();
+                    // eslint-disable-next-line no-undefined, unicorn/no-useless-undefined
+                    fistTask.resolve(undefined);
                 }
                 catch (error) {
                     if (error instanceof Error) {
                         fistTask.reject(error);
                     }
                     else {
-                        fistTask.reject(new Error('[Queue]: Task running with error!'));
+                        fistTask.reject(new Error("[Queue]: Task running with error!"));
                     }
                 }
             }

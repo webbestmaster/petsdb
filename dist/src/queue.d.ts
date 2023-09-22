@@ -1,9 +1,9 @@
 export type PromiseResolveType<Result> = (result: Result) => unknown;
-export type QueueRunningTaskType = () => Promise<unknown> | unknown;
+export type QueueRunningTaskType = () => Promise<unknown>;
 export declare class Queue {
-    private taskList;
+    private readonly taskList;
     private isWorking;
     constructor();
-    add(runningTask: QueueRunningTaskType): Promise<void>;
+    add(runningTask: QueueRunningTaskType): Promise<undefined>;
     private run;
 }

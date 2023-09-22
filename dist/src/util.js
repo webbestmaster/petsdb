@@ -29,25 +29,19 @@ function readFileLineByLine(pathToFile) {
     var _a, e_1, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         const lineList = [];
-        // Note: we use the crlfDelay option to recognize all instances of CR LF
-        // ('\r\n') in text file as a single line break.
+        // Note: we use the crlfDelay option to recognize all instances of CR LF, ('\r\n') in text file as a single line break.
         const lineStream = node_readline_1.default.createInterface({
             crlfDelay: Number.POSITIVE_INFINITY,
             input: (0, node_fs_1.createReadStream)(pathToFile),
         });
         try {
             // eslint-disable-next-line no-loops/no-loops
-            for (var _d = true, lineStream_1 = __asyncValues(lineStream), lineStream_1_1; lineStream_1_1 = yield lineStream_1.next(), _a = lineStream_1_1.done, !_a;) {
+            for (var _d = true, lineStream_1 = __asyncValues(lineStream), lineStream_1_1; lineStream_1_1 = yield lineStream_1.next(), _a = lineStream_1_1.done, !_a; _d = true) {
                 _c = lineStream_1_1.value;
                 _d = false;
-                try {
-                    const line = _c;
-                    // Each line in text file will be successively available here as `line`.
-                    lineList.push(line);
-                }
-                finally {
-                    _d = true;
-                }
+                const line = _c;
+                // Each line in text file will be successively available here as `line`.
+                lineList.push(line);
             }
         }
         catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -67,9 +61,9 @@ function deepCopy(object) {
 exports.deepCopy = deepCopy;
 function makeRandomString() {
     const requiredLength = 16;
-    const fromRandom = Math.random().toString(36).replace('0.', '');
-    const fromRandomPadded = Math.random().toString(36).replace('0.', '');
-    const fromTime = [...Date.now().toString(36)].reverse().join('');
+    const fromRandom = Math.random().toString(36).replace("0.", "");
+    const fromRandomPadded = Math.random().toString(36).replace("0.", "");
+    const fromTime = [...Date.now().toString(36)].reverse().join("");
     return `${fromRandom}${fromTime}`
         .toLowerCase()
         .slice(0, requiredLength)
@@ -81,16 +75,18 @@ function makeRandomNumber(fromInclude, toExclude) {
 }
 exports.makeRandomNumber = makeRandomNumber;
 function getIsNotEmptyString(line) {
-    return line.trim() !== '';
+    return line.trim() !== "";
 }
 exports.getIsNotEmptyString = getIsNotEmptyString;
 function getIsArrayIncludedByValue(fullArray, partialArray) {
-    return partialArray.every((value) => fullArray.includes(value));
+    return partialArray.every((value) => {
+        return fullArray.includes(value);
+    });
 }
 exports.getIsArrayIncludedByValue = getIsArrayIncludedByValue;
 function getIsArrayIncludedByRegexp(fullArray, partialValue) {
     return fullArray.some((itemValueAsItemInList) => {
-        if (typeof itemValueAsItemInList === 'string') {
+        if (typeof itemValueAsItemInList === "string") {
             return partialValue.test(itemValueAsItemInList);
         }
         return false;
@@ -108,19 +104,19 @@ function getIsIncluded(item, partial) {
         const itemValue = item[partialKey];
         const partialValue = partial[partialKey];
         if (partialValue instanceof RegExp) {
-            if (typeof itemValue === 'string') {
+            if (typeof itemValue === "string") {
                 return partialValue.test(itemValue);
             }
             if (Array.isArray(itemValue)) {
                 return getIsArrayIncludedByRegexp(itemValue, partialValue);
             }
         }
-        // check by value
+        // Check by value
         if (itemValue === partialValue) {
             return true;
         }
-        if (typeof itemValue === 'object' &&
-            typeof partialValue === 'object' &&
+        if (typeof itemValue === "object" &&
+            typeof partialValue === "object" &&
             itemValue !== null &&
             partialValue !== null) {
             if (Array.isArray(itemValue) && Array.isArray(partialValue)) {
@@ -138,15 +134,15 @@ function getSortByPath(itemData, keyData) {
     for (const key in keyData) {
         const itemDataValue = itemData[key];
         const keyDataValue = keyData[key];
-        if (typeof itemDataValue === 'boolean' ||
-            typeof itemDataValue === 'number' ||
-            typeof itemDataValue === 'string') {
+        if (typeof itemDataValue === "boolean" ||
+            typeof itemDataValue === "number" ||
+            typeof itemDataValue === "string") {
             return {
                 direction: keyDataValue === -1 ? -1 : 1,
                 value: itemDataValue,
             };
         }
-        if (typeof itemDataValue === 'object' && typeof keyDataValue === 'object') {
+        if (typeof itemDataValue === "object" && typeof keyDataValue === "object") {
             return getSortByPath(Object.assign({}, itemDataValue), Object.assign({}, keyDataValue));
         }
     }
@@ -172,13 +168,13 @@ exports.compareBoolean = compareBoolean;
 function compareObject(itemA, itemB, sort) {
     const { value: itemValueA, direction: sortDirection } = getSortByPath(itemA, sort);
     const { value: itemValueB } = getSortByPath(itemB, sort);
-    if (typeof itemValueA === 'number' && typeof itemValueB === 'number') {
+    if (typeof itemValueA === "number" && typeof itemValueB === "number") {
         return compareNumber(itemValueA, itemValueB) * sortDirection;
     }
-    if (typeof itemValueA === 'string' && typeof itemValueB === 'string') {
+    if (typeof itemValueA === "string" && typeof itemValueB === "string") {
         return compareString(itemValueA, itemValueB) * sortDirection;
     }
-    if (typeof itemValueA === 'boolean' && typeof itemValueB === 'boolean') {
+    if (typeof itemValueA === "boolean" && typeof itemValueB === "boolean") {
         return compareBoolean(itemValueA, itemValueB) * sortDirection;
     }
     return 0;
@@ -209,11 +205,11 @@ function makeDirectory(...args) {
 exports.makeDirectory = makeDirectory;
 function makeDatabaseBackup(pathToDatabase) {
     return __awaiter(this, void 0, void 0, function* () {
-        const backupFolder = pathToDatabase + '-backup';
+        const backupFolder = `${pathToDatabase}-backup`;
         yield makeDirectory(backupFolder);
-        const backUpFilePath = `${node_path_1.default.join(backupFolder, String(pathToDatabase.split('/').pop()))}-${new Date()
+        const backUpFilePath = `${node_path_1.default.join(backupFolder, String(pathToDatabase.split("/").pop()))}-${new Date()
             .toISOString()
-            .replace(/:/g, '-')}`;
+            .replace(/:/gu, "-")}`;
         yield promises_1.default.copyFile(pathToDatabase, backUpFilePath);
         console.log(`[Petsdb]: Backup has been created, path is: ${backUpFilePath}`);
     });
