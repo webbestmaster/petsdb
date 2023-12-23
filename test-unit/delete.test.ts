@@ -37,6 +37,6 @@ describe("delete", () => {
         const fileContent: string = await fileSystem.readFile(pathToTestDataBase, {encoding: "utf8"});
 
         expect(petsdb.getSize()).toBe(testDataList.length - 1);
-        expect(fileContent).toContain(`${fullItemToDelete?._id + Petsdb.deleteIdPostfix}`);
+        expect(fileContent).toContain(fullItemToDelete?._id + Petsdb.deleteIdPostfix);
     });
 });

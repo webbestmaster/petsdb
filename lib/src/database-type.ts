@@ -6,8 +6,8 @@ export type PetsdbQueryType<ItemType extends Record<string, unknown>> = Readonly
         [Key in keyof ItemType]: ItemType[Key] extends Array<string> | ReadonlyArray<string> | string
             ? Readonly<ItemType[Key] | RegExp>
             : ItemType[Key] extends Record<string, unknown>
-            ? PetsdbQueryType<ItemType[Key]>
-            : Readonly<ItemType[Key]>;
+              ? PetsdbQueryType<ItemType[Key]>
+              : Readonly<ItemType[Key]>;
     }>
 >;
 
@@ -19,8 +19,8 @@ export type PetsdbSortType<ItemType extends Record<string, unknown>> = Readonly<
         [Key in keyof ItemType]: ItemType[Key] extends PetsdbSortValueType
             ? Readonly<PetsdbSortDirectionType>
             : ItemType[Key] extends Record<string, unknown>
-            ? Readonly<PetsdbSortType<ItemType[Key]>>
-            : never;
+              ? Readonly<PetsdbSortType<ItemType[Key]>>
+              : never;
     }>
 >;
 
