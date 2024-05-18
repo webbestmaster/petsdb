@@ -37,7 +37,7 @@
     "build": "tsc -p ./tsconfig.build.json",
     "tsc": "tsc -p ./tsconfig.json",
     "tsc:watch": "tsc -p ./tsconfig.json --watch",
-    "ts-coverage": "rimraf coverage-ts && typescript-coverage-report --threshold=100 --strict=true --project ./",
+    "ts-coverage": "rimraf coverage-ts && typescript-coverage-report --threshold=100 --strict=true --project ./ --ignore-files dist/**/*.ts",
     "test:unit": "jest --config='test-unit/config/jest.config.ts' ./test-unit/ --runInBand",
     "test:unit:watch": "jest --config='test-unit/config/jest.config.ts' ./test-unit/ --runInBand --watch",
     "pre-commit-hook": "npm run check"
