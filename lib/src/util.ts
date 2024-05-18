@@ -15,7 +15,6 @@ export async function readFileLineByLine(pathToFile: string): Promise<Array<stri
         input: createReadStream(pathToFile),
     });
 
-    // eslint-disable-next-line no-loops/no-loops
     for await (const line of lineStream) {
         // Each line in text file will be successively available here as `line`.
         lineList.push(line);
@@ -67,7 +66,6 @@ export function getIsArrayIncludedByRegexp(fullArray: ReadonlyArray<unknown>, pa
     });
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export function getIsIncluded(
     item: Readonly<Record<string, unknown>>,
     partial: Readonly<Record<string, unknown>>
@@ -78,7 +76,6 @@ export function getIsIncluded(
         return true;
     }
 
-    // eslint-disable-next-line complexity
     return partialKeyList.every((partialKey: string): boolean => {
         const itemValue = item[partialKey];
         const partialValue = partial[partialKey];
@@ -119,12 +116,11 @@ export interface GetSortByPathResultType {
     value: PetsdbSortValueType;
 }
 
-// eslint-disable-next-line complexity
 export function getSortByPath(
     itemData: Readonly<Record<string, unknown>>,
     keyData: Readonly<Record<string, unknown>>
 ): GetSortByPathResultType {
-    // eslint-disable-next-line guard-for-in, no-loops/no-loops
+    // eslint-disable-next-line guard-for-in
     for (const key in keyData) {
         const itemDataValue = itemData[key];
         const keyDataValue = keyData[key];
@@ -164,7 +160,6 @@ export function compareBoolean(booleanA: boolean, booleanB: boolean): number {
     return booleanA ? 1 : -1;
 }
 
-// eslint-disable-next-line complexity
 export function compareObject(
     itemA: Readonly<Record<string, unknown>>,
     itemB: Readonly<Record<string, unknown>>,

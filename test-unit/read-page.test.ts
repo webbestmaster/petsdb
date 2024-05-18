@@ -1,4 +1,4 @@
-/* eslint-disable multiline-comment-style, capitalized-comments, line-comment-position, multiline-comment-style, jest/max-expects */
+/* eslint-disable capitalized-comments, jest/max-expects */
 import {describe, it, expect} from "@jest/globals";
 
 import {Petsdb, type PetsdbItemType, type PetsdbReadPageResultType} from "../lib/export";

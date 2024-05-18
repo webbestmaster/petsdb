@@ -126,7 +126,7 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
 
         const neededOfList: Array<PetsdbItemType<ItemType>> = fullSortedList.slice(
             pageIndex * pageSize,
-            // eslint-disable-next-line no-mixed-operators
+
             pageIndex * pageSize + pageSize
         );
 
@@ -172,7 +172,6 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
             return dataItem._id;
         });
 
-        // eslint-disable-next-line unicorn/prefer-set-has
         const toRemoveIdList: Array<string> = fullIdList
             .map<string>((dataItemId: string): string => {
                 if (dataItemId.endsWith(Petsdb.deleteIdPostfix)) {
@@ -201,7 +200,6 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
 
         const dataInStringList: Array<string> = [];
 
-        // eslint-disable-next-line no-loops/no-loops
         for (const dataItem of filteredDataList) {
             dataInStringList.push(JSON.stringify(dataItem));
             // Debug await fileSystem.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
@@ -227,10 +225,9 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
     }
 
     private async createInner(itemData: ItemType): Promise<undefined> {
-        // eslint-disable-next-line id-match
         const tsdbItemData: PetsdbItemType<ItemType> = Object.assign<ItemType, {_id: string}>(
             deepCopy<ItemType>(itemData),
-            // eslint-disable-next-line id-match
+
             {_id: makeRandomString()}
         );
 
@@ -242,9 +239,7 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
     private async updateInner(itemSelector: PetsdbQueryType<ItemType>, updatedItemData: ItemType): Promise<undefined> {
         const itemToUpdateList: Array<PetsdbItemType<ItemType>> = await this.read(itemSelector);
 
-        // eslint-disable-next-line no-loops/no-loops
         for (const dataItem of itemToUpdateList) {
-            // eslint-disable-next-line id-match
             const itemToUpdate: PetsdbItemType<ItemType> = {...updatedItemData, _id: dataItem._id};
             const updatedItemIndex = this.dataList.indexOf(dataItem);
 
@@ -258,11 +253,10 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
     private async deleteInner(itemSelector: PetsdbQueryType<ItemType>): Promise<undefined> {
         const itemToRemoveList: Array<PetsdbItemType<ItemType>> = await this.read(itemSelector);
 
-        // eslint-disable-next-line no-loops/no-loops
         for (const dataItem of itemToRemoveList) {
             const itemToDeleteUpdated: PetsdbItemType<ItemType> = {
                 ...dataItem,
-                // eslint-disable-next-line id-match
+
                 _id: String(dataItem._id) + Petsdb.deleteIdPostfix,
             };
 

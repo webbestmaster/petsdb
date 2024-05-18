@@ -104,9 +104,7 @@ class Petsdb {
                 };
                 return readPageResultZeroPageSize;
             }
-            const neededOfList = fullSortedList.slice(pageIndex * pageSize, 
-            // eslint-disable-next-line no-mixed-operators
-            pageIndex * pageSize + pageSize);
+            const neededOfList = fullSortedList.slice(pageIndex * pageSize, pageIndex * pageSize + pageSize);
             const readPageResult = {
                 list: neededOfList,
                 pageIndex,
@@ -142,7 +140,6 @@ class Petsdb {
             const fullIdList = fullDataList.map((dataItem) => {
                 return dataItem._id;
             });
-            // eslint-disable-next-line unicorn/prefer-set-has
             const toRemoveIdList = fullIdList
                 .map((dataItemId) => {
                 if (dataItemId.endsWith(Petsdb.deleteIdPostfix)) {
@@ -163,7 +160,6 @@ class Petsdb {
                 return !toRemoveIdList.includes(dataItem._id.replace(Petsdb.deleteIdPostfix, ""));
             });
             const dataInStringList = [];
-            // eslint-disable-next-line no-loops/no-loops
             for (const dataItem of filteredDataList) {
                 dataInStringList.push(JSON.stringify(dataItem));
                 // Debug await fileSystem.appendFile(this.dbPath, JSON.stringify(dataItem) + '\n');
@@ -186,10 +182,7 @@ class Petsdb {
     }
     createInner(itemData) {
         return __awaiter(this, void 0, void 0, function* () {
-            // eslint-disable-next-line id-match
-            const tsdbItemData = Object.assign((0, util_1.deepCopy)(itemData), 
-            // eslint-disable-next-line id-match
-            { _id: (0, util_1.makeRandomString)() });
+            const tsdbItemData = Object.assign((0, util_1.deepCopy)(itemData), { _id: (0, util_1.makeRandomString)() });
             yield promises_1.default.appendFile(this.dbPath, `${JSON.stringify(tsdbItemData)}\n`);
             this.dataList.push(tsdbItemData);
         });
@@ -197,9 +190,7 @@ class Petsdb {
     updateInner(itemSelector, updatedItemData) {
         return __awaiter(this, void 0, void 0, function* () {
             const itemToUpdateList = yield this.read(itemSelector);
-            // eslint-disable-next-line no-loops/no-loops
             for (const dataItem of itemToUpdateList) {
-                // eslint-disable-next-line id-match
                 const itemToUpdate = Object.assign(Object.assign({}, updatedItemData), { _id: dataItem._id });
                 const updatedItemIndex = this.dataList.indexOf(dataItem);
                 // eslint-disable-next-line no-await-in-loop
@@ -211,11 +202,8 @@ class Petsdb {
     deleteInner(itemSelector) {
         return __awaiter(this, void 0, void 0, function* () {
             const itemToRemoveList = yield this.read(itemSelector);
-            // eslint-disable-next-line no-loops/no-loops
             for (const dataItem of itemToRemoveList) {
-                const itemToDeleteUpdated = Object.assign(Object.assign({}, dataItem), { 
-                    // eslint-disable-next-line id-match
-                    _id: String(dataItem._id) + Petsdb.deleteIdPostfix });
+                const itemToDeleteUpdated = Object.assign(Object.assign({}, dataItem), { _id: String(dataItem._id) + Petsdb.deleteIdPostfix });
                 // eslint-disable-next-line no-await-in-loop
                 yield promises_1.default.appendFile(this.dbPath, `${JSON.stringify(itemToDeleteUpdated)}\n`);
             }

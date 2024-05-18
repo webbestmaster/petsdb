@@ -4,7 +4,6 @@ import {makeRandomNumber, makeRandomString} from "../../lib/src/util";
 
 export const pathToTestDataBase = "test-unit/test-data/test-db";
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TestDataType = Readonly<{
     readonly bar: string;
     readonly foo: string;

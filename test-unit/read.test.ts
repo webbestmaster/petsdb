@@ -1,4 +1,4 @@
-/* eslint-disable multiline-comment-style, capitalized-comments, line-comment-position, multiline-comment-style, jest/no-commented-out-tests */
+/* eslint-disable capitalized-comments, jest/no-commented-out-tests */
 
 import {describe, it, expect} from "@jest/globals";
 

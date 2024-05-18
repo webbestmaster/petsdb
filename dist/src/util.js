@@ -26,8 +26,8 @@ const promises_1 = __importDefault(require("node:fs/promises"));
 const node_path_1 = __importDefault(require("node:path"));
 const node_readline_1 = __importDefault(require("node:readline"));
 function readFileLineByLine(pathToFile) {
-    var _a, e_1, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, e_1, _b, _c;
         const lineList = [];
         // Note: we use the crlfDelay option to recognize all instances of CR LF, ('\r\n') in text file as a single line break.
         const lineStream = node_readline_1.default.createInterface({
@@ -35,7 +35,6 @@ function readFileLineByLine(pathToFile) {
             input: (0, node_fs_1.createReadStream)(pathToFile),
         });
         try {
-            // eslint-disable-next-line no-loops/no-loops
             for (var _d = true, lineStream_1 = __asyncValues(lineStream), lineStream_1_1; lineStream_1_1 = yield lineStream_1.next(), _a = lineStream_1_1.done, !_a; _d = true) {
                 _c = lineStream_1_1.value;
                 _d = false;
@@ -93,13 +92,11 @@ function getIsArrayIncludedByRegexp(fullArray, partialValue) {
     });
 }
 exports.getIsArrayIncludedByRegexp = getIsArrayIncludedByRegexp;
-// eslint-disable-next-line sonarjs/cognitive-complexity
 function getIsIncluded(item, partial) {
     const partialKeyList = Object.keys(partial);
     if (partialKeyList.length === 0) {
         return true;
     }
-    // eslint-disable-next-line complexity
     return partialKeyList.every((partialKey) => {
         const itemValue = item[partialKey];
         const partialValue = partial[partialKey];
@@ -128,9 +125,8 @@ function getIsIncluded(item, partial) {
     });
 }
 exports.getIsIncluded = getIsIncluded;
-// eslint-disable-next-line complexity
 function getSortByPath(itemData, keyData) {
-    // eslint-disable-next-line guard-for-in, no-loops/no-loops
+    // eslint-disable-next-line guard-for-in
     for (const key in keyData) {
         const itemDataValue = itemData[key];
         const keyDataValue = keyData[key];
@@ -164,7 +160,6 @@ function compareBoolean(booleanA, booleanB) {
     return booleanA ? 1 : -1;
 }
 exports.compareBoolean = compareBoolean;
-// eslint-disable-next-line complexity
 function compareObject(itemA, itemB, sort) {
     const { value: itemValueA, direction: sortDirection } = getSortByPath(itemA, sort);
     const { value: itemValueB } = getSortByPath(itemB, sort);

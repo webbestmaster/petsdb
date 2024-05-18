@@ -40,7 +40,7 @@ export class Queue {
         if (fistTask) {
             try {
                 await fistTask.task();
-                // eslint-disable-next-line no-undefined, unicorn/no-useless-undefined
+                // eslint-disable-next-line no-undefined
                 fistTask.resolve(undefined);
             } catch (error: unknown) {
                 if (error instanceof Error) {

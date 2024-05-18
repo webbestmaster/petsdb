@@ -17,7 +17,6 @@ describe("running", () => {
         // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
         const runResult: undefined = await petsdb.run();
 
-        // eslint-disable-next-line no-undefined
         expect(runResult).toBeUndefined();
     });
 
