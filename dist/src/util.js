@@ -19,7 +19,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.makeDatabaseBackup = exports.makeDirectory = exports.getHasAccessToDirectory = exports.compareObject = exports.compareBoolean = exports.compareString = exports.compareNumber = exports.getSortByPath = exports.getIsIncluded = exports.getIsArrayIncludedByRegexp = exports.getIsArrayIncludedByValue = exports.getIsNotEmptyString = exports.makeRandomNumber = exports.makeRandomString = exports.deepCopy = exports.readFileLineByLine = void 0;
+exports.readFileLineByLine = readFileLineByLine;
+exports.deepCopy = deepCopy;
+exports.makeRandomString = makeRandomString;
+exports.makeRandomNumber = makeRandomNumber;
+exports.getIsNotEmptyString = getIsNotEmptyString;
+exports.getIsArrayIncludedByValue = getIsArrayIncludedByValue;
+exports.getIsArrayIncludedByRegexp = getIsArrayIncludedByRegexp;
+exports.getIsIncluded = getIsIncluded;
+exports.getSortByPath = getSortByPath;
+exports.compareNumber = compareNumber;
+exports.compareString = compareString;
+exports.compareBoolean = compareBoolean;
+exports.compareObject = compareObject;
+exports.getHasAccessToDirectory = getHasAccessToDirectory;
+exports.makeDirectory = makeDirectory;
+exports.makeDatabaseBackup = makeDatabaseBackup;
 /* global structuredClone */
 const node_fs_1 = require("node:fs");
 const promises_1 = __importDefault(require("node:fs/promises"));
@@ -53,11 +68,9 @@ function readFileLineByLine(pathToFile) {
         return lineList;
     });
 }
-exports.readFileLineByLine = readFileLineByLine;
 function deepCopy(object) {
     return structuredClone(object);
 }
-exports.deepCopy = deepCopy;
 function makeRandomString() {
     const requiredLength = 16;
     const fromRandom = Math.random().toString(36).replace("0.", "");
@@ -68,21 +81,17 @@ function makeRandomString() {
         .slice(0, requiredLength)
         .padStart(requiredLength, fromRandomPadded + fromTime);
 }
-exports.makeRandomString = makeRandomString;
 function makeRandomNumber(fromInclude, toExclude) {
     return Math.floor(Math.random() * (toExclude - fromInclude)) + fromInclude;
 }
-exports.makeRandomNumber = makeRandomNumber;
 function getIsNotEmptyString(line) {
     return line.trim() !== "";
 }
-exports.getIsNotEmptyString = getIsNotEmptyString;
 function getIsArrayIncludedByValue(fullArray, partialArray) {
     return partialArray.every((value) => {
         return fullArray.includes(value);
     });
 }
-exports.getIsArrayIncludedByValue = getIsArrayIncludedByValue;
 function getIsArrayIncludedByRegexp(fullArray, partialValue) {
     return fullArray.some((itemValueAsItemInList) => {
         if (typeof itemValueAsItemInList === "string") {
@@ -91,7 +100,6 @@ function getIsArrayIncludedByRegexp(fullArray, partialValue) {
         return false;
     });
 }
-exports.getIsArrayIncludedByRegexp = getIsArrayIncludedByRegexp;
 function getIsIncluded(item, partial) {
     const partialKeyList = Object.keys(partial);
     if (partialKeyList.length === 0) {
@@ -124,7 +132,6 @@ function getIsIncluded(item, partial) {
         return false;
     });
 }
-exports.getIsIncluded = getIsIncluded;
 function getSortByPath(itemData, keyData) {
     // eslint-disable-next-line guard-for-in
     for (const key in keyData) {
@@ -144,22 +151,18 @@ function getSortByPath(itemData, keyData) {
     }
     throw new Error(`Can not find value by ${JSON.stringify(keyData)}`);
 }
-exports.getSortByPath = getSortByPath;
 function compareNumber(numberA, numberB) {
     return numberA - numberB;
 }
-exports.compareNumber = compareNumber;
 function compareString(stringA, stringB) {
     return stringA.localeCompare(stringB);
 }
-exports.compareString = compareString;
 function compareBoolean(booleanA, booleanB) {
     if (booleanA === booleanB) {
         return 0;
     }
     return booleanA ? 1 : -1;
 }
-exports.compareBoolean = compareBoolean;
 function compareObject(itemA, itemB, sort) {
     const { value: itemValueA, direction: sortDirection } = getSortByPath(itemA, sort);
     const { value: itemValueB } = getSortByPath(itemB, sort);
@@ -174,7 +177,6 @@ function compareObject(itemA, itemB, sort) {
     }
     return 0;
 }
-exports.compareObject = compareObject;
 function getHasAccessToDirectory(...args) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -187,7 +189,6 @@ function getHasAccessToDirectory(...args) {
         return false;
     });
 }
-exports.getHasAccessToDirectory = getHasAccessToDirectory;
 function makeDirectory(...args) {
     return __awaiter(this, void 0, void 0, function* () {
         const pathToFolder = node_path_1.default.join(...args);
@@ -197,7 +198,6 @@ function makeDirectory(...args) {
         }
     });
 }
-exports.makeDirectory = makeDirectory;
 function makeDatabaseBackup(pathToDatabase) {
     return __awaiter(this, void 0, void 0, function* () {
         const backupFolder = `${pathToDatabase}-backup`;
@@ -209,5 +209,4 @@ function makeDatabaseBackup(pathToDatabase) {
         console.log(`[Petsdb]: Backup has been created, path is: ${backUpFilePath}`);
     });
 }
-exports.makeDatabaseBackup = makeDatabaseBackup;
 //# sourceMappingURL=util.js.map

@@ -16,8 +16,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Petsdb = void 0;
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 const promises_1 = __importDefault(require("node:fs/promises"));
-const util_1 = require("./util");
 const queue_1 = require("./queue");
+const util_1 = require("./util");
 class Petsdb {
     constructor(initialConfig) {
         var _a, _b;

@@ -1,5 +1,4 @@
 export {Petsdb} from "./src/database";
-
 export type {
     PetsdbInitialConfigType,
     PetsdbItemType,

@@ -1,7 +1,6 @@
-import {describe, it, expect} from "@jest/globals";
+import {describe, expect,it} from "@jest/globals";
 
 import {Petsdb} from "../lib/export";
-
 import type {TestDataType} from "./helper/helper";
 
 describe("constructor", () => {

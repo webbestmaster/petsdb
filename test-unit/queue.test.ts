@@ -1,7 +1,6 @@
-import {describe, it, expect} from "@jest/globals";
+import {describe, expect,it} from "@jest/globals";
 
 import {Queue} from "../lib/src/queue";
-
 import {waitForTime} from "./helper/helper";
 
 const defaultTimeOut = 50;

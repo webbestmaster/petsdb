@@ -4,25 +4,24 @@
 
 import fileSystem from "node:fs/promises";
 
+import type {
+    PetsdbInitialConfigType,
+    PetsdbItemType,
+    PetsdbQueryType,
+    PetsdbReadPageConfigType,
+    PetsdbReadPageResultType,
+    PromiseResolveType,
+} from "./database-type";
+import {Queue} from "./queue";
 import {
+    compareObject,
     deepCopy,
     getIsIncluded,
     getIsNotEmptyString,
     makeDatabaseBackup,
     makeRandomString,
     readFileLineByLine,
-    compareObject,
 } from "./util";
-import type {
-    PromiseResolveType,
-    PetsdbInitialConfigType,
-    PetsdbItemType,
-    PetsdbQueryType,
-    PetsdbReadPageConfigType,
-    PetsdbReadPageResultType,
-} from "./database-type";
-
-import {Queue} from "./queue";
 
 export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>> {
     public static readonly queueByPath: Record<string, Queue> = {};

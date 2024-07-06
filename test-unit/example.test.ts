@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {describe, it, expect} from "@jest/globals";
+import {describe, expect,it} from "@jest/globals";
 
 import {
     Petsdb,
@@ -12,7 +12,6 @@ import {
     type PetsdbSortType,
     type PetsdbSortValueType,
 } from "../lib/export";
-
 import {pathToTestDataBase} from "./helper/helper";
 
 // eslint-disable-next-line  @typescript-eslint/consistent-type-definitions

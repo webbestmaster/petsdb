@@ -1,10 +1,8 @@
 /* eslint-disable capitalized-comments, jest/max-expects */
-import {describe, it, expect} from "@jest/globals";
+import {describe, expect,it} from "@jest/globals";
 
 import {Petsdb, type PetsdbItemType, type PetsdbReadPageResultType} from "../lib/export";
-
 import {compareBoolean, compareNumber, compareString, makeRandomString} from "../lib/src/util";
-
 import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./helper/helper";
 
 describe("read page", () => {
