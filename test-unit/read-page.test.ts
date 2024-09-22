@@ -1,5 +1,5 @@
 /* eslint-disable capitalized-comments, jest/max-expects */
-import {describe, expect,it} from "@jest/globals";
+import {describe, expect, it} from "@jest/globals";
 
 import {Petsdb, type PetsdbItemType, type PetsdbReadPageResultType} from "../lib/export";
 import {compareBoolean, compareNumber, compareString, makeRandomString} from "../lib/src/util";
@@ -9,6 +9,7 @@ describe("read page", () => {
     // eslint-disable-next-line max-statements
     it("read page by simple selector", async () => {
         expect.assertions(10);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -141,6 +142,7 @@ describe("read page", () => {
     // eslint-disable-next-line max-statements
     it("read page by pageSize = 0, return all items, pageIndex is not matter", async () => {
         expect.assertions(18);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -191,6 +193,7 @@ describe("read page", () => {
 
     it("read-page by non-exists selector - get empty array of items", async () => {
         expect.assertions(1);
+
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 

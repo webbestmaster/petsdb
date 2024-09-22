@@ -1,7 +1,7 @@
 /* eslint-disable jest/max-expects, jest/prefer-expect-resolves */
 import fileSystem from "node:fs/promises";
 
-import {describe, expect,it} from "@jest/globals";
+import {describe, expect, it} from "@jest/globals";
 
 import {Petsdb} from "../lib/export";
 import {makeRandomNumber, makeRandomString} from "../lib/src/util";
@@ -10,6 +10,7 @@ import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./hel
 describe("running", () => {
     it("if file exists -> return resolved promise", async () => {
         expect.assertions(1);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
@@ -20,6 +21,7 @@ describe("running", () => {
 
     it("if file does not exists -> return rejected promise", async () => {
         expect.assertions(1);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: "file/do/not/exists"});
 
         await expect(async () => {
@@ -29,6 +31,7 @@ describe("running", () => {
 
     it("remove deleted items from file", async () => {
         expect.assertions(2);
+
         const idToDelete = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -60,6 +63,7 @@ describe("running", () => {
 
     it("remove updated items from file", async () => {
         expect.assertions(3);
+
         const databaseSize = 3;
 
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
@@ -92,6 +96,7 @@ describe("running", () => {
     // eslint-disable-next-line max-statements
     it("run several the same data bases simultaneously -> all data base should have the same data", async () => {
         expect.assertions(9);
+
         const petsdb1: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
         const petsdb2: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
         const petsdb3: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});

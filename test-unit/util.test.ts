@@ -1,4 +1,4 @@
-import {describe, expect,it} from "@jest/globals";
+import {describe, expect, it} from "@jest/globals";
 
 import {
     compareBoolean,
@@ -12,15 +12,16 @@ import {
 describe("util", () => {
     it("compare strings", () => {
         expect.assertions(2);
+
         const list: Array<string> = ["и", "з", "а", "в", "г", "ё", "д", "б", "е", "ж"];
 
-        const sortedAbsList: Array<string> = list.sort((itemA: string, itemB: string): number => {
+        const sortedAbsList: Array<string> = list.toSorted((itemA: string, itemB: string): number => {
             return compareString(itemA, itemB);
         });
 
         expect(sortedAbsList).toStrictEqual(["а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и"]);
 
-        const sortedDescList: Array<string> = list.sort((itemA: string, itemB: string): number => {
+        const sortedDescList: Array<string> = list.toSorted((itemA: string, itemB: string): number => {
             return -compareString(itemA, itemB);
         });
 
@@ -29,15 +30,16 @@ describe("util", () => {
 
     it("compare number", () => {
         expect.assertions(2);
+
         const list: Array<number> = [1, 4, 3, 2, 5];
 
-        const sortedAbsList: Array<number> = list.sort((itemA: number, itemB: number): number => {
+        const sortedAbsList: Array<number> = list.toSorted((itemA: number, itemB: number): number => {
             return compareNumber(itemA, itemB);
         });
 
         expect(sortedAbsList).toStrictEqual([1, 2, 3, 4, 5]);
 
-        const sortedDescList: Array<number> = list.sort((itemA: number, itemB: number): number => {
+        const sortedDescList: Array<number> = list.toSorted((itemA: number, itemB: number): number => {
             return -compareNumber(itemA, itemB);
         });
 
@@ -46,15 +48,16 @@ describe("util", () => {
 
     it("compare boolean", () => {
         expect.assertions(2);
+
         const list: Array<boolean> = [false, true, false, true, false];
 
-        const sortedAbsList: Array<boolean> = list.sort((itemA: boolean, itemB: boolean): number => {
+        const sortedAbsList: Array<boolean> = list.toSorted((itemA: boolean, itemB: boolean): number => {
             return compareBoolean(itemA, itemB);
         });
 
         expect(sortedAbsList).toStrictEqual([false, false, false, true, true]);
 
-        const sortedDescList: Array<boolean> = list.sort((itemA: boolean, itemB: boolean): number => {
+        const sortedDescList: Array<boolean> = list.toSorted((itemA: boolean, itemB: boolean): number => {
             return -compareBoolean(itemA, itemB);
         });
 

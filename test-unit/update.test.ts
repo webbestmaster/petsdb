@@ -1,6 +1,6 @@
 import fileSystem from "node:fs/promises";
 
-import {describe, expect,it} from "@jest/globals";
+import {describe, expect, it} from "@jest/globals";
 
 import {Petsdb} from "../lib/export";
 import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./helper/helper";
@@ -8,6 +8,7 @@ import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./hel
 describe("update", () => {
     it("update", async () => {
         expect.assertions(5);
+
         const databaseSize = 3;
 
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});

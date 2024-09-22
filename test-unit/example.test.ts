@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {describe, expect,it} from "@jest/globals";
+/* eslint-disable @typescript-eslint/no-unused-vars, sonarjs/unused-import */
+import {describe, expect, it} from "@jest/globals";
 
 import {
     Petsdb,
@@ -27,6 +27,7 @@ type ExampleDataType = {
     someNumber: number;
     someString: string;
 };
+
 describe("example", () => {
     it("example for readme.md", async () => {
         expect.assertions(0);

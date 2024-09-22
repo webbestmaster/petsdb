@@ -104,7 +104,7 @@ export class Petsdb<ItemType extends Readonly<Record<string, Readonly<unknown>>>
         const fullList: Array<PetsdbItemType<ItemType>> = await this.read(itemSelector);
         const {pageIndex, pageSize, sort} = readPageConfig;
 
-        const fullSortedList: Array<PetsdbItemType<ItemType>> = fullList.sort(
+        const fullSortedList: Array<PetsdbItemType<ItemType>> = fullList.toSorted(
             (itemA: PetsdbItemType<ItemType>, itemB: PetsdbItemType<ItemType>): number => {
                 return compareObject(itemA, itemB, sort);
             }

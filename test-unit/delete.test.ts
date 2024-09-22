@@ -2,7 +2,7 @@
 
 import fileSystem from "node:fs/promises";
 
-import {describe, expect,it} from "@jest/globals";
+import {describe, expect, it} from "@jest/globals";
 
 import {Petsdb} from "../lib/export";
 import {makeRandomNumber, makeRandomString} from "../lib/src/util";
@@ -11,6 +11,7 @@ import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./hel
 describe("delete", () => {
     it("delete by simple selector", async () => {
         expect.assertions(2);
+
         const idToDelete = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 

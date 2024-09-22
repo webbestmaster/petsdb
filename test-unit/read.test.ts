@@ -1,6 +1,6 @@
 /* eslint-disable capitalized-comments, jest/no-commented-out-tests */
 
-import {describe, expect,it} from "@jest/globals";
+import {describe, expect, it} from "@jest/globals";
 
 import {Petsdb} from "../lib/export";
 import {makeRandomNumber, makeRandomString} from "../lib/src/util";
@@ -9,6 +9,7 @@ import {generateTestDataList, pathToTestDataBase, type TestDataType} from "./hel
 describe("read", () => {
     it("read by simple selector, get array with single item", async () => {
         expect.assertions(2);
+
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -35,6 +36,7 @@ describe("read", () => {
 
     it("read by value in array / string", async () => {
         expect.assertions(2);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -58,6 +60,7 @@ describe("read", () => {
 
     it("read by value in array / number", async () => {
         expect.assertions(2);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -81,6 +84,7 @@ describe("read", () => {
 
     it("read by Regexp", async () => {
         expect.assertions(2);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -104,6 +108,7 @@ describe("read", () => {
 
     it("read by empty object selector", async () => {
         expect.assertions(1);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -124,6 +129,7 @@ describe("read", () => {
 
     it("read in object by regexp", async () => {
         expect.assertions(3);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -150,6 +156,7 @@ describe("read", () => {
 
     it("read in array by regexp", async () => {
         expect.assertions(2);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
@@ -194,6 +201,7 @@ describe("read", () => {
 
     it("read by non-exists selector - get empty array", async () => {
         expect.assertions(1);
+
         const idToFind = makeRandomString();
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
@@ -215,6 +223,7 @@ describe("read", () => {
 
     it("read by non-exists regexp - get empty array", async () => {
         expect.assertions(1);
+
         const petsdb: Petsdb<TestDataType> = new Petsdb<TestDataType>({dbPath: pathToTestDataBase});
 
         await petsdb.run();
